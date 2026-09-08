@@ -16,8 +16,8 @@
 
 
 /* Clara stays typographically identical to the surrounding whole-name marker. */
-.acknowledgement-name > .acknowledgement-clara,
-.acknowledgement-name > .acknowledgement-clara:hover:not(:disabled) {
+.acknowledgement-name > .acknowledgement-person-action,
+.acknowledgement-name > .acknowledgement-person-action:hover:not(:disabled) {
   display: inline;
   margin: 0;
   padding: 0;
@@ -32,7 +32,7 @@
   vertical-align: baseline;
   cursor: pointer;
 }
-.acknowledgement-name > .acknowledgement-clara:focus-visible {
+.acknowledgement-name > .acknowledgement-person-action:focus-visible {
   outline: 2px solid #f0eadb;
   outline-offset: 5px;
 }
@@ -52,3 +52,8 @@
   pointer-events: none;
   filter: drop-shadow(0 0 10px #c4a46b20);
 }
+
+
+.acknowledgement-wave-defs{position:fixed;inset:0;width:0;height:0;pointer-events:none;overflow:hidden}
+.acknowledgement-swords{position:fixed;inset:0;z-index:100500;display:grid;place-items:center;pointer-events:none;background:transparent;overflow:hidden}
+.acknowledgement-swords>svg{display:block;width:min(86vw,760px);max-height:86svh;overflow:visible;filter:drop-shadow(0 8px 18px #000a);pointer-events:none}

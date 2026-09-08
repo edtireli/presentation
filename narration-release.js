@@ -6,16 +6,13 @@ let currentDialog=null,linkTimer=null;
 function element(tag,text,className){const node=document.createElement(tag);if(text)node.textContent=text;if(className)node.className=className;return node;}
 function updateLink(){
  clearTimeout(linkTimer);linkTimer=null;
- const link=document.querySelector('#with-narration'),note=document.querySelector('#narration-release-note');if(!link)return;
+ const link=document.querySelector('#with-narration');if(!link)return;
  const locked=!narrationReleased();link.removeAttribute('aria-disabled');link.dataset.locked=String(locked);if(locked)link.setAttribute('aria-haspopup','dialog');else link.removeAttribute('aria-haspopup');link.classList.toggle('is-locked',locked);link.title=locked?`Available on ${NARRATION_RELEASE_LABEL}`:'Watch with narration';
- if(note)note.hidden=!locked;
  if(locked)linkTimer=setTimeout(updateLink,Math.min(60000,Math.max(1,Date.parse(NARRATION_RELEASE_AT)-Date.now())));
 }
 
 /** The gate calls this after preparation, or from an explicit locked link click. */
 export function showNarrationRelease(){
- const gateStatus=document.querySelector('#status');
- if(gateStatus)gateStatus.textContent=narrationReleased()?'':`The narrated presentation opens on ${NARRATION_RELEASE_LABEL}.`;
  if(currentDialog?.dialog.isConnected){currentDialog.update();return currentDialog.dialog;}
  const existing=document.querySelector('#narration-release-dialog');if(existing?.open)return existing;
  const before=document.activeElement,link=document.querySelector('#with-narration');
@@ -53,7 +50,7 @@ export function showNarrationRelease(){
   const released=narrationReleased();
   if(released){
    clearInterval(timer);timer=null;countdown.hidden=true;watch.disabled=false;title.textContent='Narration is available';
-   if(!wasReleased){announcement.textContent='You can now watch the narrated presentation.';updateLink();if(gateStatus)gateStatus.textContent='';}
+   if(!wasReleased){announcement.textContent='You can now watch the narrated presentation.';updateLink();}
    wasReleased=true;return;
   }
   const total=Math.ceil(remaining/1000),values=[Math.floor(total/86400),Math.floor(total%86400/3600),Math.floor(total%3600/60),total%60];
