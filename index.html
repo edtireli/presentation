@@ -1,1 +1,75 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><meta name="referrer" content="no-referrer"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; worker-src 'self'; form-action 'none'; base-uri 'self'"><title>PhD defence · Edis Tireli</title><link rel="icon" href="data:,"><link rel="stylesheet" href="gate.css"></head><body><main><p class="eyebrow">EDIS TIRELI · PhD DEFENCE</p><h1>Exploring<br>the Unseen</h1><p class="intro">Presentation</p><form id="unlock"><label for="password">Password</label><div class="entry"><input id="password" type="password" autocomplete="current-password" required><button>Unlock</button></div></form><p id="status" role="status" aria-live="polite"></p><nav id="modes" hidden><a class="primary" href="app/index.html">Open presentation <span>→</span></a><a href="app/index.html?narration=1">With narration <span>→</span></a><a href="app/speaker.html?deck=decks/phd-defense.spiral">Presenter view <span>→</span></a><button id="lock">Lock presentation</button></nav><p class="footer">Use the arrow keys or your clicker to advance.<br>Press F for fullscreen.</p></main><script type="module" src="gate.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://tireli-presentation-service.nuggedt.chatgpt.site; worker-src 'self'; form-action 'none'; base-uri 'self'">
+  <title>PhD defence · Edis Tireli</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="gate.css">
+</head>
+<body>
+  <canvas id="gate-field" aria-hidden="true"></canvas>
+  <main id="gate-main">
+    <p class="eyebrow">PhD defence · 10 September 2026</p>
+    <h1>Exploring<br>the Unseen</h1>
+    <p class="author">Edis Devin Tireli</p>
+    <form id="unlock">
+      <label for="password">Password</label>
+      <div class="entry">
+        <input id="password" type="password" autocomplete="current-password" required>
+        <button id="unlockbutton" type="submit">Unlock <span aria-hidden="true">→</span></button>
+      </div>
+    </form>
+    <p id="status" role="status" aria-live="polite"></p>
+    <nav id="modes" aria-label="Presentation options" hidden>
+      <a class="primary" id="watch-live" href="app/index.html?live=1">Watch presentation live <span aria-hidden="true">↗</span></a>
+      <button class="ack-link" id="read-acknowledgements" type="button">I only want to read the acknowledgements <span aria-hidden="true">→</span></button>
+      <div class="other-modes">
+        <a href="app/index.html?narration=1">With narration</a>
+        <a href="app/speaker.html?deck=decks/phd-defense.spiral">Presenter view</a>
+        <button id="lock" type="button">Lock</button>
+      </div>
+    </nav>
+    <p class="footer">University of Copenhagen · Rigshospitalet</p>
+  </main>
+  <dialog id="acknowledgements" aria-labelledby="ack-title">
+    <div class="dialog-heading">
+      <h2 id="ack-title">Acknowledgements</h2>
+      <button type="button" class="close" id="close-ack" aria-label="Close acknowledgements">×</button>
+    </div>
+    <div id="ack-reading" class="reading" tabindex="0" aria-label="Acknowledgements text">
+      <p id="ack-status" role="status">Loading acknowledgements…</p>
+      <div id="ack-text"></div>
+    </div>
+    <div id="complaint-offer" hidden>
+      <p>Were you not mentioned?</p>
+      <button id="open-complaint" class="text-button" type="button">Send a complaint! <span aria-hidden="true">→</span></button>
+    </div>
+  </dialog>
+  <dialog id="complaint-dialog" aria-labelledby="complaint-title">
+    <div class="dialog-heading">
+      <h2 id="complaint-title">A formal complaint.</h2>
+      <button type="button" class="close" id="close-complaint" aria-label="Close complaint form">×</button>
+    </div>
+    <form id="complaint-form">
+      <div class="complaint-sheet" id="complaint-paper">
+        <label for="complaint-message">What did I miss?</label>
+        <textarea id="complaint-message" name="message" rows="5" maxlength="3000" required placeholder="I carried this entire PhD, actually."></textarea>
+      </div>
+      <p class="privacy-note">Complaints are saved privately for Edis.</p>
+      <button type="submit" id="send-complaint">Submit complaint <span aria-hidden="true">→</span></button>
+    </form>
+    <p id="complaint-status" role="status" aria-live="polite"></p>
+    <div class="complaint-disposal" aria-hidden="true">
+      <svg id="complaint-bin" viewBox="0 0 90 98" fill="none">
+        <path d="M20 24 27 85 Q45 96 63 85L70 24M17 24Q45 33 73 24M17 24Q45 15 73 24M27 34 33 81M39 36 40 85M51 36 50 85M63 34 57 81"/>
+      </svg>
+    </div>
+    <button id="complaint-done" class="text-button" type="button" hidden>Back to the acknowledgements <span aria-hidden="true">→</span></button>
+  </dialog>
+  <script type="module" src="gate.js"></script>
+</body>
+</html>
