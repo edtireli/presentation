@@ -1,6 +1,8 @@
 import {narrationReleased} from './narration-release.js';
 import {createJellyfishRenderer} from './acknowledgement-jellyfish.js';
 import {createUnderwaterRenderer} from './acknowledgement-water.js';
+import {createDancerRenderer} from './acknowledgement-dancer.js';
+import {addEtchedLogo} from './acknowledgement-etched-logo.js';
 
 // Explicit personal mentions in the source acknowledgements. “my dad” identifies
 // a person whose name is not supplied; preserve that phrase rather than invent one.
@@ -136,14 +138,12 @@ function showUnderwater() {
 
 function showDance() {
   clearAcknowledgementEffect?.();
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches, duration = reduced ? 1500 : 2800;
   const field = document.createElement('div');field.className = 'acknowledgement-dance';field.dataset.effect = 'dance';
   field.setAttribute('aria-hidden', 'true');field.inert = true;
-  const image = document.createElement('img');image.alt = '';image.decoding = 'async';image.draggable = false;
-  image.src = new URL(reduced ? './acknowledgement-dance-poster.png' : './acknowledgement-dance.gif', import.meta.url).href;
-  field.append(image);document.body.append(field);
-  const animation = field.animate([{opacity: 0}, {opacity: 1, offset: .18}, {opacity: 1, offset: .72}, {opacity: 0}], {duration, easing: 'ease-in-out'});
-  manageEffect({nodes: [field], animations: [animation], duration, onCleanup: () => image.removeAttribute('src')});
+  const canvas = document.createElement('canvas');canvas.className = 'acknowledgement-dancer';field.append(canvas);document.body.append(field);
+  const renderer = createDancerRenderer(canvas, {reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches});
+  renderer.render(0);
+  manageEffect({nodes: [field], duration: renderer.durationMs, onFrame: progress => renderer.render(progress), onCleanup: () => renderer.dispose()});
 }
 
 let rikkeCycle = 0, nicholasCycle = 0;
@@ -222,36 +222,6 @@ function katana(angle) {
   return sword;
 }
 
-// The source files remain unchanged. Palette mapping preserves every supplied
-// glyph; the Jak image's black matte becomes transparent at display time.
-function addWarmLogo(field, filename, className, {blackMatte = false} = {}) {
-  const canvas = document.createElement('canvas');canvas.className = `acknowledgement-logo ${className}`;
-  const image = document.createElement('img');image.decoding = 'async';
-  let disposed = false;
-  image.onload = () => {
-    if (disposed) return;
-    canvas.width = image.naturalWidth;canvas.height = image.naturalHeight;
-    const context = canvas.getContext('2d', {willReadFrequently: true});
-    context.drawImage(image, 0, 0);
-    const pixels = context.getImageData(0, 0, canvas.width, canvas.height), data = pixels.data;
-    for (let index = 0; index < data.length; index += 4) {
-      const red = data[index], green = data[index + 1], blue = data[index + 2];
-      const luminance = (.2126 * red + .7152 * green + .0722 * blue) / 255;
-      if (blackMatte) data[index + 3] *= Math.max(red, green, blue) / 255;
-      data[index] = 20 + 226 * Math.pow(luminance, .60);
-      data[index + 1] = 16 + 218 * Math.pow(luminance, .70);
-      data[index + 2] = 13 + 206 * Math.pow(luminance, .94);
-    }
-    context.putImageData(pixels, 0, 0);
-  };
-  image.src = new URL(filename, import.meta.url).href;
-  field.append(canvas);
-  return () => {
-    disposed = true;image.onload = image.onerror = null;image.removeAttribute('src');
-    canvas.width = canvas.height = 0;
-  };
-}
-
 function showNicholasSwords() {
   clearAcknowledgementEffect?.();
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches, duration = reduced ? 1100 : 2000;
@@ -274,9 +244,9 @@ function showNicholasSwords() {
     animations.push(motion.animate(frames, {duration, easing: 'cubic-bezier(.2,.65,.35,1)'}));
   });
   field.append(svg);
-  const disposeLogo = addWarmLogo(field, './acknowledgement-ichiran.png', 'acknowledgement-ichiran-logo');
+  const disposeLogo = addEtchedLogo(field, './acknowledgement-ichiran.png', 'acknowledgement-ichiran-logo');
   const logo = field.querySelector('.acknowledgement-logo');
-  animations.push(logo.animate([{opacity: 0}, {opacity: .96, offset: .25}, {opacity: .96, offset: .72}, {opacity: 0}], {duration, easing: 'ease-in-out'}));
+  animations.push(logo.animate([{opacity: 0}, {opacity: 1, offset: .18}, {opacity: 1, offset: .72}, {opacity: 0}], {duration, easing: 'ease-in-out'}));
   document.body.append(field);manageEffect({nodes: [field], animations, duration, onCleanup: disposeLogo});
 }
 
@@ -285,7 +255,7 @@ function showJakDaxter() {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches, duration = reduced ? 1500 : 2200;
   const field = document.createElement('div');field.className = 'acknowledgement-jak-daxter acknowledgement-nicholas-effect';
   field.dataset.effect = 'jak-daxter';field.setAttribute('aria-hidden', 'true');field.inert = true;
-  const disposeLogo = addWarmLogo(field, './acknowledgement-jak-daxter.png', 'acknowledgement-jak-daxter-logo', {blackMatte: true});
+  const disposeLogo = addEtchedLogo(field, './acknowledgement-jak-daxter.png', 'acknowledgement-jak-daxter-logo', {kind: 'jak-daxter'});
   document.body.append(field);
   const frames = reduced ? [{opacity: 0}, {opacity: .98, offset: .25}, {opacity: .98, offset: .7}, {opacity: 0}]
     : [{opacity: 0, transform: 'translateY(8px) scale(.97)'}, {opacity: .98, transform: 'translateY(0) scale(1)', offset: .25}, {opacity: .98, transform: 'translateY(0) scale(1)', offset: .7}, {opacity: 0, transform: 'translateY(-4px) scale(1)'}];
