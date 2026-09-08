@@ -7,7 +7,7 @@ const controlURL=name=>new URL('__offline__/'+name,base).href;
 async function readControl(name){const c=await caches.open(CONTROL),r=await c.match(controlURL(name));return r?await r.json():null;}
 async function writeControl(name,value){const c=await caches.open(CONTROL);await c.put(controlURL(name),new Response(JSON.stringify(value),{headers:{'Content-Type':'application/json'}}));}
 const cipherHash=file=>{const match=/^sealed\/([a-f0-9]{64})\.bin$/.exec(file);if(!match)throw Error('Invalid package asset path.');return match[1];};
-const shellPath=file=>typeof file==='string'&&!file.startsWith('/')&&!file.includes('..')&&!/[?#\\:]/.test(file)&&(file==='.nojekyll'||/\.(?:html|js|css|svg|png|jpe?g|webp|ico|txt|md|json|woff2?)$/.test(file))&&!/(?:^|\/)(?:api|complaints|presenter-session|__offline__)(?:\/|\.|$)/.test(file)&&!file.startsWith('app/')&&!file.startsWith('sealed/')&&file!=='access.json';
+const shellPath=file=>typeof file==='string'&&!file.startsWith('/')&&!file.includes('..')&&!/[?#\\:]/.test(file)&&(file==='.nojekyll'||/\.(?:html|js|css|svg|png|gif|jpe?g|webp|ico|txt|md|json|woff2?)$/.test(file))&&!/(?:^|\/)(?:api|complaints|presenter-session|__offline__)(?:\/|\.|$)/.test(file)&&!file.startsWith('app/')&&!file.startsWith('sealed/')&&file!=='access.json';
 function metadataOK(meta){try{return meta?.version===1&&typeof meta.revision==='string'&&typeof meta.publicKey==='string'&&bytes(meta.publicKey).length===32&&bytes(meta.iv).length===12&&!!cipherHash(meta.index);}catch{return false;}}
 const packageID=meta=>sha(new TextEncoder().encode(JSON.stringify({index:meta.index,iv:meta.iv,publicKey:meta.publicKey,shell:meta.shell})));
 const shellCacheName=record=>SHELL+(record.packageRevision||record.revision);
