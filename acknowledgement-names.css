@@ -1,0 +1,15 @@
+/* Exact presentation marker treatment from defense-overview.css and the
+   p-Brain captions. Each whole personal mention remains one unbroken mark. */
+.acknowledgement-name {
+  font: inherit;
+  font-weight: 500;
+  color: #18170b;
+  background: linear-gradient(178deg, transparent 0 5%, #efdc60 8%, #f7e979 52%, #e9d453 91%, transparent 95%);
+  padding: .05em .14em;
+  border-radius: .12em .07em .15em .05em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  text-shadow: none;
+  filter: drop-shadow(0 2px 5px #000);
+  white-space: nowrap;
+}

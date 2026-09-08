@@ -9,46 +9,42 @@
   <title>PhD defence · Edis Tireli</title>
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="gate.css">
+  <link rel="stylesheet" href="acknowledgement-names.css">
 </head>
 <body>
   <canvas id="gate-field" aria-hidden="true"></canvas>
   <main id="gate-main">
+    <div id="landing">
     <p class="eyebrow">PhD defence · 10 September 2026</p>
     <h1>Exploring<br>the Unseen</h1>
     <p class="author">Edis Devin Tireli</p>
-    <form id="unlock">
-      <label for="password">Password</label>
-      <div class="entry">
-        <input id="password" type="password" autocomplete="current-password" required>
-        <button id="unlockbutton" type="submit">Unlock <span aria-hidden="true">→</span></button>
-      </div>
-    </form>
     <p id="status" role="status" aria-live="polite"></p>
-    <nav id="modes" aria-label="Presentation options" hidden>
-      <a class="primary" id="watch-live" href="app/index.html?live=1">Watch presentation live <span aria-hidden="true">↗</span></a>
-      <button class="ack-link" id="read-acknowledgements" type="button">I only want to read the acknowledgements <span aria-hidden="true">→</span></button>
+    <button id="retry-open" type="button" hidden>Try again</button>
+    <nav id="modes" aria-label="Presentation options">
+      <a class="primary" id="watch-live" data-presentation href="app/index.html?live=1">Follow presentation live <span aria-hidden="true">↗</span></a>
+      <a class="primary" id="download-thesis" href="/thesis/Edis_Tireli_PhD_Thesis.pdf" download="Edis_Tireli_PhD_Thesis.pdf">Download the thesis <span aria-hidden="true">↓</span></a>
+      <a class="ack-link" id="read-acknowledgements" href="#acknowledgements">I only want to read the acknowledgements <span aria-hidden="true">→</span></a>
       <div class="other-modes">
-        <a href="app/index.html?narration=1">With narration</a>
-        <a href="app/speaker.html?deck=decks/phd-defense.spiral">Presenter view</a>
-        <button id="lock" type="button">Lock</button>
+        <a data-presentation href="app/index.html?narration=1">With narration</a>
+        <a id="give-presentation" data-presentation href="app/speaker.html?deck=decks/phd-defense.spiral">Give presentation</a>
       </div>
     </nav>
     <p class="footer">University of Copenhagen · Rigshospitalet</p>
+    </div>
+    <section id="acknowledgements" class="ack-reading-view" aria-labelledby="ack-title" hidden>
+      <a class="ack-back" id="close-ack" href="#"><span aria-hidden="true">←</span> Back</a>
+      <h2 id="ack-title" tabindex="-1">Acknowledgements</h2>
+      <div id="ack-reading" class="ack-prose">
+        <p id="ack-status" role="status">Loading acknowledgements…</p>
+        <div id="ack-text"></div>
+      </div>
+      <div id="complaint-offer" hidden>
+        <p>Were you not mentioned?</p>
+        <button id="open-complaint" class="text-button" type="button">Send a complaint! <span aria-hidden="true">→</span></button>
+      </div>
+      <a class="ack-back ack-back-bottom" data-ack-back href="#"><span aria-hidden="true">←</span> Back to the presentation</a>
+    </section>
   </main>
-  <dialog id="acknowledgements" aria-labelledby="ack-title">
-    <div class="dialog-heading">
-      <h2 id="ack-title">Acknowledgements</h2>
-      <button type="button" class="close" id="close-ack" aria-label="Close acknowledgements">×</button>
-    </div>
-    <div id="ack-reading" class="reading" tabindex="0" aria-label="Acknowledgements text">
-      <p id="ack-status" role="status">Loading acknowledgements…</p>
-      <div id="ack-text"></div>
-    </div>
-    <div id="complaint-offer" hidden>
-      <p>Were you not mentioned?</p>
-      <button id="open-complaint" class="text-button" type="button">Send a complaint! <span aria-hidden="true">→</span></button>
-    </div>
-  </dialog>
   <dialog id="complaint-dialog" aria-labelledby="complaint-title">
     <div class="dialog-heading">
       <h2 id="complaint-title">A formal complaint.</h2>
