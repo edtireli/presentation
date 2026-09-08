@@ -27,4 +27,24 @@ body.is-reading-ack #gate-field{opacity:.32}
 @media(max-width:600px){body.is-reading-ack{padding:28px 24px 44px}.ack-reading-view #ack-title{font-size:clamp(32px,8.3vw,46px);margin:30px 0 32px}.ack-prose p{font-size:18px;line-height:1.7;margin-bottom:1.5em}.ack-reading-view #complaint-offer{margin-top:36px}.ack-reading-view #complaint-offer p,.ack-reading-view #complaint-offer .text-button{font-size:18px}}
 @media(prefers-reduced-motion:reduce){#gate-field{transition:none}}
 
-.narration-entry{display:flex;flex-direction:column;gap:5px}#narration-release-note{font-size:11px;color:#8e887d;line-height:1.4}.other-modes a.is-locked{opacity:.55;cursor:not-allowed}
+.narration-entry{display:flex;flex-direction:column;gap:5px}#narration-release-note{font-size:11px;color:#8e887d;line-height:1.4}.other-modes a.is-locked{opacity:.55;cursor:pointer}
+
+/* Narration release: a quiet countdown in the same black, ivory and gold theme. */
+.narration-release-dialog{width:min(640px,calc(100vw - 32px));padding:32px 36px;background:#000;border:1px solid #514938;border-radius:0;overflow:auto;max-height:calc(100svh - 32px)}
+.narration-release-dialog::backdrop{background:#000b}
+.narration-release-dialog .dialog-heading{border:0;padding:0;align-items:start}
+.narration-release-dialog h2{font:400 clamp(28px,4.4vw,40px)/1.15 var(--serif);color:var(--hi);padding-top:3px}
+.narration-release-description{color:var(--mid);font:15px/1.65 var(--serif);margin:20px 0 32px}
+.narration-countdown{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:8px 0 32px;text-align:center}
+.narration-countdown-unit{min-width:0}
+.narration-countdown-value{display:block;color:#d7bd80;font:400 clamp(36px,6vw,66px)/1.1 var(--serif);font-variant-numeric:tabular-nums;letter-spacing:-.025em}
+.narration-countdown-label{display:block;color:var(--mid);font:12px/1.5 system-ui,sans-serif;margin-top:7px}
+.narration-release-announcement{font:19px/1.55 var(--serif);color:var(--hi);margin:0 0 22px}
+.narration-release-announcement:empty{display:none}
+.narration-release-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.narration-release-actions button{font:16px/1.5 var(--serif);padding:11px 18px}
+.narration-release-actions .narration-release-back{color:var(--mid);background:none;border:1px solid #4a4538}
+.narration-release-actions .narration-release-back:hover{color:var(--hi);background:#11100d}
+.narration-release-actions .narration-release-watch{background:#efdc60;color:#18170b}
+.narration-release-actions .narration-release-watch:disabled{cursor:default;opacity:.4}
+@media(max-width:480px){.narration-release-dialog{padding:24px 20px}.narration-release-dialog h2{font-size:29px}.narration-release-description{font-size:14px;margin-bottom:26px}.narration-countdown{gap:5px}.narration-countdown-value{font-size:40px}.narration-countdown-label{font-size:10px}.narration-release-actions button{font-size:15px;padding:10px 14px}}
