@@ -17,3 +17,7 @@ The acknowledgements complaint form sends messages to a separate service. The ce
 This is a published snapshot; presentation-content updates require rebuilding and redeploying. Each presenter startup checks for those updates. A completed update replaces the saved copy atomically; an interrupted download can be resumed. An existing talk remains pinned to its loaded revision. If an update cannot be checked or completed, a saved version is identified explicitly.
 
 Offline access works in the browser that completed the download, including after restarting it. First sign in while online to save a local password verifier, then allow the automatic file download to finish. Browser storage is device-specific: prepare each backup laptop once while connected. Clearing site data or using a private browser session removes that saved copy.
+
+The audience narration option opens at 17:00 Europe/Copenhagen on 10 September 2026 (15:00 UTC). Direct narrated entry is gated too. Local slide presentation and live following are available before then. The restored narration uses complete original recordings at natural speed, with cues remapped to the recording timeline.
+
+Live followers check the shared state on a 500 ms cadence, allowing only one request at a time. The presenter sends one small state update per change plus a heartbeat; audience devices load presentation assets directly from GitHub.

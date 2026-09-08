@@ -1,6 +1,7 @@
 import {createGateVisuals,fileComplaintPaper} from './gate-visuals.js';
 import {renderAcknowledgementParagraph} from './acknowledgement-names.js';
 import {ensurePresenterReady} from './presenter-ready.js';
+import {narrationReleased,showNarrationRelease} from './narration-release.js';
 
 const base=new URL('./',import.meta.url),storageKey='spiral.private:'+base.pathname;
 const status=document.querySelector('#status'),retryButton=document.querySelector('#retry-open');
@@ -14,11 +15,72 @@ const paper=document.querySelector('#complaint-paper'),done=document.querySelect
 let sending=false,submission=null;
 const returnFocus=new WeakMap();
 
-async function rpc(message){await navigator.serviceWorker.ready;const worker=navigator.serviceWorker.controller;if(!worker)throw Error('The presentation is still preparing. Please try again.');return new Promise((resolve,reject)=>{const channel=new MessageChannel();const timeout=setTimeout(reject,30000,Error('Could not prepare presentation. Please refresh.'));channel.port1.onmessage=({data})=>{clearTimeout(timeout);data.ok?resolve(data):reject(Error(data.error||'Could not prepare the presentation.'));};worker.postMessage(message,[channel.port2]);});}
-async function start(){if(!('serviceWorker'in navigator)||!crypto.subtle)throw Error('Please use an up-to-date Chrome, Edge, Safari, or Firefox browser.');await navigator.serviceWorker.register(new URL('sw.js',base),{scope:base.pathname,updateViaCache:'none'});await navigator.serviceWorker.ready;if(!navigator.serviceWorker.controller)await new Promise(resolve=>navigator.serviceWorker.addEventListener('controllerchange',resolve,{once:true}));}
-const ready=start();
+const HANDOFF_MS=12000;
+let registration=null,startup=null,preparedUnlock=null;
+const handoffError=()=>Error('The presentation is updating. Please try again.');
+function controllingWorker(reg){const candidate=reg.installing||reg.waiting||reg.active,controller=navigator.serviceWorker.controller;return candidate?.state==='activated'&&candidate===controller?controller:null;}
+function bounded(promise,deadline){return new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(handoffError()),Math.max(0,deadline-Date.now()));promise.then(value=>{clearTimeout(timer);resolve(value);},error=>{clearTimeout(timer);reject(error);});});}
+function waitForControl(reg,deadline){
+ const current=controllingWorker(reg);if(current)return Promise.resolve(current);
+ return new Promise((resolve,reject)=>{
+  const watched=new Set();let timer,finished=false;
+  const finish=(error,worker)=>{if(finished)return;finished=true;clearTimeout(timer);reg.removeEventListener('updatefound',check);navigator.serviceWorker.removeEventListener('controllerchange',check);for(const item of watched)item.removeEventListener('statechange',check);error?reject(error):resolve(worker);};
+  function check(){for(const item of [reg.installing,reg.waiting,reg.active])if(item&&!watched.has(item)){watched.add(item);item.addEventListener('statechange',check);}const worker=controllingWorker(reg);if(worker)finish(null,worker);}
+  reg.addEventListener('updatefound',check);navigator.serviceWorker.addEventListener('controllerchange',check);timer=setTimeout(()=>finish(handoffError()),Math.max(0,deadline-Date.now()));check();
+ });
+}
+function start(){
+ if(startup)return startup;
+ startup=(async()=>{
+  if(!('serviceWorker'in navigator)||!crypto.subtle)throw Error('Please use an up-to-date Chrome, Edge, Safari, or Firefox browser.');
+  const deadline=Date.now()+HANDOFF_MS;
+  const existing=await bounded(navigator.serviceWorker.getRegistration(base.href),deadline);
+  // A saved offline talk must not wait for a network update that cannot happen.
+  registration=navigator.onLine===false&&existing?.active&&navigator.serviceWorker.controller?existing:await bounded(navigator.serviceWorker.register(new URL('sw.js',base),{scope:base.pathname,updateViaCache:'none'}),deadline);
+  await waitForControl(registration,deadline);return registration;
+ })().catch(error=>{startup=null;throw error;});return startup;
+}
+function sendToWorker(worker,message,deadline){
+ return new Promise((resolve,reject)=>{
+  const channel=new MessageChannel();let finished=false,timer;
+  const finish=(error,data)=>{if(finished)return;finished=true;clearTimeout(timer);navigator.serviceWorker.removeEventListener('controllerchange',changed);channel.port1.close();error?reject(error):resolve(data);};
+  const changed=()=>{if(navigator.serviceWorker.controller!==worker)finish(Object.assign(handoffError(),{controllerChanged:true}));};
+  navigator.serviceWorker.addEventListener('controllerchange',changed);
+  timer=setTimeout(()=>finish(handoffError()),Math.max(0,deadline-Date.now()));
+  channel.port1.onmessage=({data})=>{if(navigator.serviceWorker.controller!==worker){changed();return;}data?.ok?finish(null,data):finish(Error(data?.error||'Could not prepare the presentation.'));};
+  try{worker.postMessage(message,[channel.port2]);}catch(error){finish(error);}
+ });
+}
+async function rpc(message){
+ const deadline=Date.now()+HANDOFF_MS;await bounded(start(),deadline);
+ for(let attempt=0;attempt<4&&Date.now()<deadline;attempt++){
+  const worker=await waitForControl(registration,deadline);
+  try{
+   const data=await sendToWorker(worker,message,deadline);
+   if(controllingWorker(registration)!==worker)continue;
+   if(message.type==='unlock'){
+    const state=await sendToWorker(worker,{type:'public-session'},deadline);
+    if(controllingWorker(registration)!==worker)continue;
+    if(!state.result?.available||state.result.revision!==message.revision)throw handoffError();
+    preparedUnlock=message;
+   }else if(message.type==='public-session'&&!data.result?.available){
+    // A replacement may claim the gate after preparation, while its opening animation runs.
+    if(!preparedUnlock)throw handoffError();
+    await sendToWorker(worker,preparedUnlock,deadline);
+    if(controllingWorker(registration)!==worker)continue;
+    const state=await sendToWorker(worker,{type:'public-session'},deadline);
+    if(controllingWorker(registration)!==worker)continue;
+    if(!state.result?.available||state.result.revision!==preparedUnlock.revision)throw handoffError();
+    return state;
+   }
+   return data;
+  }catch(error){if(!error.controllerChanged)throw error;}
+ }
+ throw handoffError();
+}
+void start().catch(()=>{});
 async function openPresentation(saved){
- await ready;
+ await start();
  const response=await fetch(new URL('access.json',base),{cache:'no-store'});
  if(!response.ok)throw Error('The presentation could not be prepared. Please try again.');
  const metadata=await response.json();
@@ -35,9 +97,9 @@ async function openPresentation(saved){
  const session={revision:metadata.revision,key:b64(raw),manifest};
  sessionStorage.setItem(storageKey,JSON.stringify(session));
  await rpc({type:'unlock',key,manifest,revision:metadata.revision});
- unlocked=true;status.textContent='';document.body.classList.add('is-ready');
+ unlocked=true;status.textContent='';document.body.classList.add('is-ready');if(new URLSearchParams(location.search).get('narration')==='locked')showNarrationRelease();
  const target=new URLSearchParams(location.search).get('return');
- if(target){const dest=new URL(target,base);if(dest.origin===base.origin&&dest.pathname.startsWith(base.pathname+'app/')){if(!dest.hash&&location.hash)dest.hash=location.hash;if(isPresenterDestination(dest)&&!await ensurePresenterReady({handoff:true}))return;location.replace(dest.href);}}
+ if(target){const dest=new URL(target,base);if(dest.origin===base.origin&&dest.pathname.startsWith(base.pathname+'app/')){if(!dest.hash&&location.hash)dest.hash=location.hash;if(dest.searchParams.get('narration')==='1'&&!narrationReleased()){showNarrationRelease();return;}if(isPresenterDestination(dest)&&!await ensurePresenterReady({handoff:true}))return;await rpc({type:'public-session'});location.replace(dest.href);}}
 }
 function isPresenterDestination(url){return /speaker\.html$/.test(url.pathname)||url.searchParams.get('broadcast')==='1';}
 let preparation,navigating=false;
@@ -51,7 +113,7 @@ retryButton.onclick=prepare;
 for(const link of document.querySelectorAll('a[data-presentation]'))link.addEventListener('click',async event=>{
  if(event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
  event.preventDefault();if(navigating)return;navigating=true;
- try{if(!await preparation)return;if(isPresenterDestination(new URL(link.href))&&!await ensurePresenterReady({handoff:true}))return;await visuals.bloom();location.assign(link.href);}finally{navigating=false;}
+ try{if(!await preparation)return;if(new URL(link.href).searchParams.get('narration')==='1'&&!narrationReleased()){showNarrationRelease();return;}if(isPresenterDestination(new URL(link.href))&&!await ensurePresenterReady({handoff:true}))return;await visuals.bloom();await rpc({type:'public-session'});location.assign(link.href);}catch(error){status.textContent=error.message;retryButton.hidden=false;}finally{navigating=false;}
 });
 
 function showDialog(dialog,initial){returnFocus.set(dialog,document.activeElement);dialog.showModal();initial?.focus({preventScroll:true});}
