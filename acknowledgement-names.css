@@ -57,3 +57,4 @@
 .acknowledgement-wave-defs{position:fixed;inset:0;width:0;height:0;pointer-events:none;overflow:hidden}
 .acknowledgement-swords{position:fixed;inset:0;z-index:100500;display:grid;place-items:center;pointer-events:none;background:transparent;overflow:hidden}
 .acknowledgement-swords>svg{display:block;width:min(86vw,760px);max-height:86svh;overflow:visible;filter:drop-shadow(0 8px 18px #000a);pointer-events:none}
+.acknowledgement-jellyfish{position:fixed;inset:0;width:100%;height:100%;z-index:100500;pointer-events:none;background:transparent;contain:strict}

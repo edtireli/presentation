@@ -1,4 +1,5 @@
 import {narrationReleased} from './narration-release.js';
+import {createJellyfishRenderer} from './acknowledgement-jellyfish.js';
 
 // Explicit personal mentions in the source acknowledgements. “my dad” identifies
 // a person whose name is not supplied; preserve that phrase rather than invent one.
@@ -79,13 +80,14 @@ function showClaraHearts() {
   manageEffect({nodes: [field], animations, duration: reduced ? 900 : 2100});
 }
 
-function manageEffect({nodes, animations, duration, onFrame}) {
+function manageEffect({nodes, animations = [], duration, onFrame, onCleanup}) {
   let ended = false, timer, frame, readingObserver;
   const started = performance.now();
   const hidden = () => {if (document.hidden) cleanup();};
   const cleanup = () => {
     if (ended) return;ended = true;clearTimeout(timer);cancelAnimationFrame(frame);readingObserver?.disconnect();
     animations.forEach(animation => animation.cancel());nodes.forEach(node => node.remove());
+    onCleanup?.();
     removeEventListener('pagehide', cleanup);removeEventListener('hashchange', cleanup);
     document.removeEventListener('visibilitychange', hidden);
     if (clearAcknowledgementEffect === cleanup) clearAcknowledgementEffect = null;
@@ -100,10 +102,22 @@ function manageEffect({nodes, animations, duration, onFrame}) {
   document.addEventListener('visibilitychange', hidden);
   timer = setTimeout(cleanup, duration + 100);
   if (onFrame) {
-    const tick = time => {if (ended) return;onFrame(Math.min(1, (time - started) / duration));frame = requestAnimationFrame(tick);};
+    const tick = time => {if (ended) return;const progress = Math.min(1, (time - started) / duration);onFrame(progress);if(progress >= 1){cleanup();return;}frame = requestAnimationFrame(tick);};
     frame = requestAnimationFrame(tick);
   }
-  Promise.allSettled(animations.map(animation => animation.finished)).then(cleanup);
+  if (animations.length) Promise.allSettled(animations.map(animation => animation.finished)).then(cleanup);
+}
+
+function showMiriamJellyfish() {
+  clearAcknowledgementEffect?.();
+  const field = document.createElement('canvas');
+  field.className = 'acknowledgement-jellyfish';field.setAttribute('aria-hidden', 'true');field.inert = true;
+  document.body.append(field);
+  let renderer;
+  try {renderer = createJellyfishRenderer(field, {reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches});}
+  catch (error) {field.remove();throw error;}
+  renderer.render(0);
+  manageEffect({nodes: [field], duration: renderer.durationMs, onFrame: progress => renderer.render(progress), onCleanup: () => renderer.dispose()});
 }
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
@@ -197,7 +211,7 @@ function showNicholasSwords() {
 
 const personalActions = Object.freeze({
   Clara: {label: 'show hearts', show: showClaraHearts},
-  Miriam: {label: 'show a colour wave', show: showColourWave},
+  Miriam: {label: 'spray a jellyfish', show: showMiriamJellyfish},
   Rikke: {label: 'show a colour wave', show: showColourWave},
   Nicholas: {label: 'show swords', show: showNicholasSwords},
 });
