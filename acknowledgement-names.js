@@ -1,5 +1,6 @@
 import {narrationReleased} from './narration-release.js';
 import {createJellyfishRenderer} from './acknowledgement-jellyfish.js';
+import {createUnderwaterRenderer} from './acknowledgement-water.js';
 
 // Explicit personal mentions in the source acknowledgements. “my dad” identifies
 // a person whose name is not supplied; preserve that phrase rather than invent one.
@@ -120,6 +121,41 @@ function showMiriamJellyfish() {
   manageEffect({nodes: [field], duration: renderer.durationMs, onFrame: progress => renderer.render(progress), onCleanup: () => renderer.dispose()});
 }
 
+function showUnderwater() {
+  clearAcknowledgementEffect?.();
+  const field = document.createElement('canvas');
+  field.className = 'acknowledgement-underwater';field.dataset.effect = 'underwater';
+  field.setAttribute('aria-hidden', 'true');field.inert = true;
+  document.body.append(field);
+  let renderer;
+  try {renderer = createUnderwaterRenderer(field, {reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches});}
+  catch (error) {field.remove();throw error;}
+  renderer.render(0);
+  manageEffect({nodes: [field], duration: renderer.durationMs, onFrame: progress => renderer.render(progress), onCleanup: () => renderer.dispose()});
+}
+
+function showDance() {
+  clearAcknowledgementEffect?.();
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches, duration = reduced ? 1500 : 2800;
+  const field = document.createElement('div');field.className = 'acknowledgement-dance';field.dataset.effect = 'dance';
+  field.setAttribute('aria-hidden', 'true');field.inert = true;
+  const image = document.createElement('img');image.alt = '';image.decoding = 'async';image.draggable = false;
+  image.src = new URL(reduced ? './acknowledgement-dance-poster.png' : './acknowledgement-dance.gif', import.meta.url).href;
+  field.append(image);document.body.append(field);
+  const animation = field.animate([{opacity: 0}, {opacity: 1, offset: .18}, {opacity: 1, offset: .72}, {opacity: 0}], {duration, easing: 'ease-in-out'});
+  manageEffect({nodes: [field], animations: [animation], duration, onCleanup: () => image.removeAttribute('src')});
+}
+
+let rikkeCycle = 0, nicholasCycle = 0;
+function showRikkeCycle() {
+  const effects = [showColourWave, showUnderwater, showDance];
+  const effect = effects[rikkeCycle];rikkeCycle = (rikkeCycle + 1) % effects.length;effect();
+}
+function showNicholasCycle() {
+  const effect = nicholasCycle === 0 ? showNicholasSwords : showJakDaxter;
+  nicholasCycle = (nicholasCycle + 1) % 2;effect();
+}
+
 const SVG_NS = 'http://www.w3.org/2000/svg';
 function svgNode(tag, attributes = {}) {
   const node = document.createElementNS(SVG_NS, tag);
@@ -185,10 +221,41 @@ function katana(angle) {
   sword.append(svgNode('rect', {x: -8, y: 197, width: 17, height: 8, rx: 2, fill: '#927749', stroke: '#d3ba84'}));
   return sword;
 }
+
+// The source files remain unchanged. Palette mapping preserves every supplied
+// glyph; the Jak image's black matte becomes transparent at display time.
+function addWarmLogo(field, filename, className, {blackMatte = false} = {}) {
+  const canvas = document.createElement('canvas');canvas.className = `acknowledgement-logo ${className}`;
+  const image = document.createElement('img');image.decoding = 'async';
+  let disposed = false;
+  image.onload = () => {
+    if (disposed) return;
+    canvas.width = image.naturalWidth;canvas.height = image.naturalHeight;
+    const context = canvas.getContext('2d', {willReadFrequently: true});
+    context.drawImage(image, 0, 0);
+    const pixels = context.getImageData(0, 0, canvas.width, canvas.height), data = pixels.data;
+    for (let index = 0; index < data.length; index += 4) {
+      const red = data[index], green = data[index + 1], blue = data[index + 2];
+      const luminance = (.2126 * red + .7152 * green + .0722 * blue) / 255;
+      if (blackMatte) data[index + 3] *= Math.max(red, green, blue) / 255;
+      data[index] = 20 + 226 * Math.pow(luminance, .60);
+      data[index + 1] = 16 + 218 * Math.pow(luminance, .70);
+      data[index + 2] = 13 + 206 * Math.pow(luminance, .94);
+    }
+    context.putImageData(pixels, 0, 0);
+  };
+  image.src = new URL(filename, import.meta.url).href;
+  field.append(canvas);
+  return () => {
+    disposed = true;image.onload = image.onerror = null;image.removeAttribute('src');
+    canvas.width = canvas.height = 0;
+  };
+}
+
 function showNicholasSwords() {
   clearAcknowledgementEffect?.();
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches, duration = reduced ? 1100 : 2000;
-  const field = document.createElement('div');field.className = 'acknowledgement-swords';field.setAttribute('aria-hidden', 'true');field.inert = true;
+  const field = document.createElement('div');field.className = 'acknowledgement-swords acknowledgement-nicholas-effect';field.dataset.effect = 'ichiran';field.setAttribute('aria-hidden', 'true');field.inert = true;
   const svg = svgNode('svg', {viewBox: '-360 -280 720 560', focusable: 'false'}), defs = svgNode('defs');
   const gradient = svgNode('linearGradient', {id: 'acknowledgement-steel', x1: 0, y1: 0, x2: 1, y2: .15});
   [[0, '#786f60'], [.27, '#f4eedc'], [.46, '#b8b09b'], [.72, '#eee7d3'], [1, '#756956']].forEach(([offset, color]) => gradient.append(svgNode('stop', {offset, 'stop-color': color})));
@@ -206,12 +273,29 @@ function showNicholasSwords() {
       : [{opacity: 0, transform: `translate(${index ? 45 : -45}px, 10px)`}, {opacity: .94, transform: 'translate(0px, 0px)', offset: .25}, {opacity: .94, transform: 'translate(0px, 0px)', offset: .72}, {opacity: 0, transform: 'translate(0px, -8px)'}];
     animations.push(motion.animate(frames, {duration, easing: 'cubic-bezier(.2,.65,.35,1)'}));
   });
-  field.append(svg);document.body.append(field);manageEffect({nodes: [field], animations, duration});
+  field.append(svg);
+  const disposeLogo = addWarmLogo(field, './acknowledgement-ichiran.png', 'acknowledgement-ichiran-logo');
+  const logo = field.querySelector('.acknowledgement-logo');
+  animations.push(logo.animate([{opacity: 0}, {opacity: .96, offset: .25}, {opacity: .96, offset: .72}, {opacity: 0}], {duration, easing: 'ease-in-out'}));
+  document.body.append(field);manageEffect({nodes: [field], animations, duration, onCleanup: disposeLogo});
+}
+
+function showJakDaxter() {
+  clearAcknowledgementEffect?.();
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches, duration = reduced ? 1500 : 2200;
+  const field = document.createElement('div');field.className = 'acknowledgement-jak-daxter acknowledgement-nicholas-effect';
+  field.dataset.effect = 'jak-daxter';field.setAttribute('aria-hidden', 'true');field.inert = true;
+  const disposeLogo = addWarmLogo(field, './acknowledgement-jak-daxter.png', 'acknowledgement-jak-daxter-logo', {blackMatte: true});
+  document.body.append(field);
+  const frames = reduced ? [{opacity: 0}, {opacity: .98, offset: .25}, {opacity: .98, offset: .7}, {opacity: 0}]
+    : [{opacity: 0, transform: 'translateY(8px) scale(.97)'}, {opacity: .98, transform: 'translateY(0) scale(1)', offset: .25}, {opacity: .98, transform: 'translateY(0) scale(1)', offset: .7}, {opacity: 0, transform: 'translateY(-4px) scale(1)'}];
+  const animation = field.querySelector('.acknowledgement-logo').animate(frames, {duration, easing: 'cubic-bezier(.2,.65,.35,1)'});
+  manageEffect({nodes: [field], animations: [animation], duration, onCleanup: disposeLogo});
 }
 
 const personalActions = Object.freeze({
   Clara: {label: 'show hearts', show: showClaraHearts},
   Miriam: {label: 'spray a jellyfish', show: showMiriamJellyfish},
-  Rikke: {label: 'show a colour wave', show: showColourWave},
-  Nicholas: {label: 'show swords', show: showNicholasSwords},
+  Rikke: {label: 'show a surprise', show: showRikkeCycle},
+  Nicholas: {label: 'show a surprise', show: showNicholasCycle},
 });
