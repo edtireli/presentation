@@ -154,7 +154,9 @@ async function shellResponse(request){
  const entry=active?.resources?.find(r=>r.kind==='shell'&&r.file===file);
  // Only the publisher's explicit static-shell allowlist receives a cached
  // response. API calls, credentials and submission bodies never enter a cache.
- if(!entry)return fetch(request);
+ // GitHub caches public scripts for ten minutes; use fresh shell files when
+ // no verified offline generation has been selected.
+ if(!entry)return fetch(request,{cache:'no-store'});
  const cache=await caches.open(shellCacheName(active));
  try{const result=await verifiedResponse(cache,new URL(file,base).href,entry,{allowNetwork:false});return request.method==='HEAD'?new Response(null,{status:200,headers:result.response.headers}):result.response;}
  catch{return new Response('Offline shell unavailable. Prepare offline again when connected.',{status:503});}
