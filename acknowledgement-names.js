@@ -1,7 +1,5 @@
 import {narrationReleased} from './narration-release.js';
 import {createJellyfishRenderer} from './acknowledgement-jellyfish.js';
-import {createUnderwaterRenderer} from './acknowledgement-water.js';
-import {createDancerRenderer} from './acknowledgement-dancer.js';
 import {addEtchedLogo} from './acknowledgement-etched-logo.js';
 
 // Explicit personal mentions in the source acknowledgements. “my dad” identifies
@@ -111,7 +109,7 @@ function manageEffect({nodes, animations = [], duration, onFrame, onCleanup}) {
   if (animations.length) Promise.allSettled(animations.map(animation => animation.finished)).then(cleanup);
 }
 
-function showMiriamJellyfish() {
+function showMiriamGraffiti() {
   clearAcknowledgementEffect?.();
   const field = document.createElement('canvas');
   field.className = 'acknowledgement-jellyfish';field.setAttribute('aria-hidden', 'true');field.inert = true;
@@ -123,34 +121,7 @@ function showMiriamJellyfish() {
   manageEffect({nodes: [field], duration: renderer.durationMs, onFrame: progress => renderer.render(progress), onCleanup: () => renderer.dispose()});
 }
 
-function showUnderwater() {
-  clearAcknowledgementEffect?.();
-  const field = document.createElement('canvas');
-  field.className = 'acknowledgement-underwater';field.dataset.effect = 'underwater';
-  field.setAttribute('aria-hidden', 'true');field.inert = true;
-  document.body.append(field);
-  let renderer;
-  try {renderer = createUnderwaterRenderer(field, {reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches});}
-  catch (error) {field.remove();throw error;}
-  renderer.render(0);
-  manageEffect({nodes: [field], duration: renderer.durationMs, onFrame: progress => renderer.render(progress), onCleanup: () => renderer.dispose()});
-}
-
-function showDance() {
-  clearAcknowledgementEffect?.();
-  const field = document.createElement('div');field.className = 'acknowledgement-dance';field.dataset.effect = 'dance';
-  field.setAttribute('aria-hidden', 'true');field.inert = true;
-  const canvas = document.createElement('canvas');canvas.className = 'acknowledgement-dancer';field.append(canvas);document.body.append(field);
-  const renderer = createDancerRenderer(canvas, {reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches});
-  renderer.render(0);
-  manageEffect({nodes: [field], duration: renderer.durationMs, onFrame: progress => renderer.render(progress), onCleanup: () => renderer.dispose()});
-}
-
-let rikkeCycle = 0, nicholasCycle = 0;
-function showRikkeCycle() {
-  const effects = [showColourWave, showUnderwater, showDance];
-  const effect = effects[rikkeCycle];rikkeCycle = (rikkeCycle + 1) % effects.length;effect();
-}
+let nicholasCycle = 0;
 function showNicholasCycle() {
   const effect = nicholasCycle === 0 ? showNicholasSwords : showJakDaxter;
   nicholasCycle = (nicholasCycle + 1) % 2;effect();
@@ -265,7 +236,7 @@ function showJakDaxter() {
 
 const personalActions = Object.freeze({
   Clara: {label: 'show hearts', show: showClaraHearts},
-  Miriam: {label: 'spray a jellyfish', show: showMiriamJellyfish},
-  Rikke: {label: 'show a surprise', show: showRikkeCycle},
+  Miriam: {label: 'spray graffiti', show: showMiriamGraffiti},
+  Rikke: {label: 'show a psychedelic colour wave', show: showColourWave},
   Nicholas: {label: 'show a surprise', show: showNicholasCycle},
 });
