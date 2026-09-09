@@ -1,5 +1,7 @@
 import {narrationReleased} from './narration-release.js';
-import {createJellyfishRenderer} from './acknowledgement-jellyfish.js';
+import {createMuralRenderer} from './acknowledgement-mural.js';
+import {createWordHeartsEffect} from './acknowledgement-word-hearts.js';
+import {createPsychedelicTextEffect} from './acknowledgement-psychedelic.js';
 import {addEtchedLogo} from './acknowledgement-etched-logo.js';
 
 // Explicit personal mentions in the source acknowledgements. “my dad” identifies
@@ -47,38 +49,7 @@ export function renderAcknowledgementParagraph(text) {
 let clearAcknowledgementEffect = null;
 function showClaraHearts() {
   clearAcknowledgementEffect?.();
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const field = document.createElement('div');
-  field.className = 'acknowledgement-hearts';field.id = 'acknowledgement-heart-field';
-  field.setAttribute('aria-hidden', 'true');field.inert = true;
-  const colors = ['#f0eadb', '#c4a46b', '#a8785d', '#d4c4a0'];
-  const columns = innerWidth < 600 ? 5 : 8, rows = 5, animations = [];
-  for (let i = 0; i < columns * rows; i++) {
-    const heart = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    heart.setAttribute('viewBox', '0 0 48 48');heart.setAttribute('focusable', 'false');
-    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    path.setAttribute('d', 'M24 42C20 37 5 27 5 16C5 5 19 1 24 12C29 1 43 5 43 16C43 27 28 37 24 42Z');
-    path.setAttribute('fill', i % 3 === 0 ? 'currentColor' : 'none');
-    path.setAttribute('stroke', 'currentColor');path.setAttribute('stroke-width', i % 3 === 0 ? '0.7' : '1.25');
-    heart.append(path);
-    const column = i % columns, row = Math.floor(i / columns);
-    const size = 23 + Math.random() * (innerWidth < 600 ? 28 : 46);
-    Object.assign(heart.style, {
-      left: `${(column + 0.22 + Math.random() * .56) / columns * 100}%`,
-      top: `${(row + .25 + Math.random() * .65) / rows * 100}%`,
-      width: `${size}px`, height: `${size}px`, color: colors[i % colors.length],
-    });
-    field.append(heart);
-    const opacity = i % 3 === 0 ? .55 : .8;
-    const turn = -16 + Math.random() * 32;
-    const frames = reduced ? [{opacity: 0}, {opacity, offset: .28}, {opacity: 0}]
-      : [{opacity: 0, transform: `translate(-50%, 15px) scale(.55) rotate(${turn}deg)`},
-         {opacity, transform: `translate(-50%, -15px) scale(1) rotate(${turn}deg)`, offset: .26},
-         {opacity: 0, transform: `translate(-50%, -85px) scale(1.05) rotate(${turn * .65}deg)`}];
-    animations.push(heart.animate(frames, {duration: reduced ? 750 : 1500 + Math.random() * 260, delay: reduced ? 0 : Math.random() * 200, easing: 'cubic-bezier(.2,.65,.35,1)', fill: 'both'}));
-  }
-  document.body.append(field);
-  manageEffect({nodes: [field], animations, duration: reduced ? 900 : 2100});
+  manageEffect(createWordHeartsEffect());
 }
 
 function manageEffect({nodes, animations = [], duration, onFrame, onCleanup}) {
@@ -107,18 +78,29 @@ function manageEffect({nodes, animations = [], duration, onFrame, onCleanup}) {
     frame = requestAnimationFrame(tick);
   }
   if (animations.length) Promise.allSettled(animations.map(animation => animation.finished)).then(cleanup);
+  return cleanup;
 }
 
 function showMiriamGraffiti() {
   clearAcknowledgementEffect?.();
   const field = document.createElement('canvas');
-  field.className = 'acknowledgement-jellyfish';field.setAttribute('aria-hidden', 'true');field.inert = true;
+  field.className = 'acknowledgement-jellyfish';field.dataset.effect='mural';
+  field.setAttribute('aria-hidden', 'true');field.inert = true;
   document.body.append(field);
-  let renderer;
-  try {renderer = createJellyfishRenderer(field, {reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches});}
-  catch (error) {field.remove();throw error;}
-  renderer.render(0);
-  manageEffect({nodes: [field], duration: renderer.durationMs, onFrame: progress => renderer.render(progress), onCleanup: () => renderer.dispose()});
+  const controller = new AbortController();
+  let renderer, loadedAt, disposed = false;
+  // Loading is part of the same cancellable effect: switching names or leaving
+  // the page cannot let a late image decode resurrect the mural.
+  const cancel = manageEffect({nodes:[field],duration:60000,onFrame:()=>{
+    if(!renderer)return;
+    const progress=Math.min(1,(performance.now()-loadedAt)/renderer.durationMs);
+    renderer.render(progress);
+    if(progress>=1)cancel();
+  },onCleanup:()=>{disposed=true;controller.abort();renderer?.dispose();}});
+  createMuralRenderer(field,{reducedMotion:matchMedia('(prefers-reduced-motion: reduce)').matches,signal:controller.signal}).then(result=>{
+    if(disposed){result.dispose();return;}
+    renderer=result;loadedAt=performance.now();field.dataset.ready='true';renderer.render(0);
+  }).catch(error=>{if(!disposed){cancel();console.error('Mural could not be loaded.',error);}});
 }
 
 let nicholasCycle = 0;
@@ -135,45 +117,7 @@ function svgNode(tag, attributes = {}) {
 }
 function showColourWave() {
   clearAcknowledgementEffect?.();
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const targets = [...document.querySelectorAll('#gate-main, #gate-field')];
-  if (!targets.length) targets.push(document.body);
-  const animations = [], nodes = [], duration = reduced ? 1500 : 2500;
-  let displacement, noise, redOffset, greenOffset;
-  if (!reduced) {
-    const defsSVG = svgNode('svg', {width: 0, height: 0, 'aria-hidden': 'true'});
-    defsSVG.classList.add('acknowledgement-wave-defs');
-    const defs = svgNode('defs'), filter = svgNode('filter', {id: 'acknowledgement-colour-wave', x: '-10%', y: '-10%', width: '120%', height: '120%', 'color-interpolation-filters': 'sRGB'});
-    noise = svgNode('feTurbulence', {type: 'fractalNoise', baseFrequency: '.012 .026', numOctaves: 2, seed: 8, result: 'noise'});
-    displacement = svgNode('feDisplacementMap', {in: 'SourceGraphic', in2: 'noise', scale: 0, xChannelSelector: 'R', yChannelSelector: 'G', result: 'warp'});
-    filter.append(noise, displacement);
-    filter.append(svgNode('feColorMatrix', {in: 'warp', type: 'matrix', values: '1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0', result: 'red'}));
-    redOffset = svgNode('feOffset', {in: 'red', dx: 0, dy: 0, result: 'red-shift'});filter.append(redOffset);
-    filter.append(svgNode('feColorMatrix', {in: 'warp', type: 'matrix', values: '0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 0', result: 'green'}));
-    greenOffset = svgNode('feOffset', {in: 'green', dx: 0, dy: 0, result: 'green-shift'});filter.append(greenOffset);
-    filter.append(svgNode('feColorMatrix', {in: 'warp', type: 'matrix', values: '0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 0', result: 'blue'}));
-    filter.append(svgNode('feBlend', {in: 'red-shift', in2: 'green-shift', mode: 'screen', result: 'red-green'}));
-    filter.append(svgNode('feBlend', {in: 'red-green', in2: 'blue', mode: 'screen'}));
-    defs.append(filter);defsSVG.append(defs);document.body.append(defsSVG);nodes.push(defsSVG);
-  }
-  for (const target of targets) {
-    const original = getComputedStyle(target), baseFilter = original.filter === 'none' ? '' : original.filter;
-    const baseOpacity = Number(original.opacity), baseTransform = original.transform === 'none' ? '' : original.transform;
-    const filter = value => `${baseFilter} ${value}`.trim();
-    const frames = reduced
-      ? [{filter: filter('sepia(0) saturate(1)'), opacity: baseOpacity}, {filter: filter('sepia(.15) saturate(1.15)'), opacity: baseOpacity * .94}, {filter: original.filter, opacity: baseOpacity}]
-      : [{filter: filter('url("#acknowledgement-colour-wave") hue-rotate(0deg) saturate(1)'), transform: `${baseTransform} skewX(0deg)`},
-         {filter: filter('url("#acknowledgement-colour-wave") hue-rotate(110deg) saturate(1.8)'), transform: `${baseTransform} skewX(.6deg)`, offset: .34},
-         {filter: filter('url("#acknowledgement-colour-wave") hue-rotate(240deg) saturate(1.7)'), transform: `${baseTransform} skewX(-.5deg)`, offset: .68},
-         {filter: filter('url("#acknowledgement-colour-wave") hue-rotate(360deg) saturate(1)'), transform: `${baseTransform} skewX(0deg)`}];
-    animations.push(target.animate(frames, {duration, easing: 'ease-in-out'}));
-  }
-  manageEffect({nodes, animations, duration, onFrame: reduced ? null : progress => {
-    const envelope = Math.sin(Math.PI * progress);
-    displacement.setAttribute('scale', String(16 * envelope));
-    noise.setAttribute('baseFrequency', `${.012 + .003 * Math.sin(progress * Math.PI)} ${.026 + .006 * Math.sin(progress * Math.PI * 2)}`);
-    redOffset.setAttribute('dx', String(4 * envelope));greenOffset.setAttribute('dx', String(-3 * envelope));
-  }});
+  manageEffect(createPsychedelicTextEffect());
 }
 
 function katana(angle) {
@@ -195,30 +139,67 @@ function katana(angle) {
 
 function showNicholasSwords() {
   clearAcknowledgementEffect?.();
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches, duration = reduced ? 1100 : 2000;
-  const field = document.createElement('div');field.className = 'acknowledgement-swords acknowledgement-nicholas-effect';field.dataset.effect = 'ichiran';field.setAttribute('aria-hidden', 'true');field.inert = true;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const swordsEnd = reduced ? 2500 : 3800, logoStart = swordsEnd + 1000, duration = logoStart + 3900;
+  const field = document.createElement('div');
+  field.className = 'acknowledgement-swords acknowledgement-nicholas-effect';
+  field.dataset.effect = 'ichiran';field.dataset.swordsEnd = swordsEnd;field.dataset.logoStart = logoStart;
+  field.setAttribute('aria-hidden', 'true');field.inert = true;
   const svg = svgNode('svg', {viewBox: '-360 -280 720 560', focusable: 'false'}), defs = svgNode('defs');
   const gradient = svgNode('linearGradient', {id: 'acknowledgement-steel', x1: 0, y1: 0, x2: 1, y2: .15});
   [[0, '#786f60'], [.27, '#f4eedc'], [.46, '#b8b09b'], [.72, '#eee7d3'], [1, '#756956']].forEach(([offset, color]) => gradient.append(svgNode('stop', {offset, 'stop-color': color})));
   defs.append(gradient);svg.append(defs);
-  const animations = [];
-  if (!reduced) {
-    const swish = svgNode('path', {d: 'M-265 120C-230-110 92-260 260-76', fill: 'none', stroke: '#c6a56b', 'stroke-width': 1.5, 'stroke-linecap': 'round', 'stroke-dasharray': 780});svg.append(swish);
-    animations.push(swish.animate([{strokeDashoffset: 780, opacity: 0}, {strokeDashoffset: 0, opacity: .55, offset: .3}, {strokeDashoffset: 0, opacity: 0, offset: .65}, {opacity: 0}], {duration, easing: 'ease-out'}));
-  }
-  [-34, 34].forEach((angle, index) => {
-    // SVG's own rotation fixes the crossing at its user-space origin. The outer
-    // group's small translation avoids CSS transform-origin differences in SVG.
-    const motion = svgNode('g'), sword = katana(angle);motion.append(sword);svg.append(motion);
-    const frames = reduced ? [{opacity: 0}, {opacity: .85, offset: .25}, {opacity: .85, offset: .65}, {opacity: 0}]
-      : [{opacity: 0, transform: `translate(${index ? 45 : -45}px, 10px)`}, {opacity: .94, transform: 'translate(0px, 0px)', offset: .25}, {opacity: .94, transform: 'translate(0px, 0px)', offset: .72}, {opacity: 0, transform: 'translate(0px, -8px)'}];
-    animations.push(motion.animate(frames, {duration, easing: 'cubic-bezier(.2,.65,.35,1)'}));
+  // Paired poses: entry, feint, clash, recoil, reverse parry, and final disengagement.
+  // Each transform belongs to SVG user space, so rotation remains at the grip.
+  const poses = [
+    [0, -410, 125, 88, 410, 125, -88],
+    [.70, -140, 65, -12, 140, 65, 12],
+    [1.14, -68, 38, 36, 68, 38, -36],
+    [1.43, -155, 66, -26, 155, 48, 26],
+    [1.92, -48, -12, 56, 72, 66, -18],
+    [2.29, -163, 14, -20, 142, 92, 28],
+    [2.77, -80, 62, 18, 48, -16, -56],
+    [3.17, -154, 86, -38, 162, 36, 24],
+    [3.76, -57, 42, 42, 57, 42, -42],
+    [4.10, -155, 38, -34, 155, 80, 34],
+    [4.66, -45, -20, 58, 78, 65, -18],
+    [5.03, -170, 88, -28, 165, 20, 36],
+    [5.59, -78, 62, 18, 45, -20, -58],
+    [5.95, -160, 70, -35, 160, 70, 35],
+    [6.49, -60, 42, 39, 60, 42, -39],
+    [6.83, -110, 76, 16, 110, 76, -16],
+    [7.60, -400, 140, -78, 400, 140, 78],
+  ];
+  const motions = [0, 1].map(() => {const g = svgNode('g');g.append(katana(0));svg.append(g);return g;});
+  const arcs = [-1, 1].map(sign => {
+    const p=svgNode('path',{d:`M${sign*242} 87 Q${sign*193} -181 ${-sign*135} -164`,fill:'none',stroke:'#c4a46b','stroke-width':1.2,'stroke-linecap':'round'});
+    svg.insertBefore(p,motions[0]);return p;
   });
+  const sparks = svgNode('g');svg.append(sparks);
+  const rays = Array.from({length:18},(_,i)=>{const line=svgNode('path',{stroke:i%3?'#c4a46b':'#f0eadb','stroke-width':i%4?1:1.7,'stroke-linecap':'round'});sparks.append(line);return line;});
+  const hits = [1.14,1.92,2.77,3.76,4.66,5.59,6.49];
   field.append(svg);
   const disposeLogo = addEtchedLogo(field, './acknowledgement-ichiran.png', 'acknowledgement-ichiran-logo');
-  const logo = field.querySelector('.acknowledgement-logo');
-  animations.push(logo.animate([{opacity: 0}, {opacity: 1, offset: .18}, {opacity: 1, offset: .72}, {opacity: 0}], {duration, easing: 'ease-in-out'}));
-  document.body.append(field);manageEffect({nodes: [field], animations, duration, onCleanup: disposeLogo});
+  const logo = field.querySelector('.acknowledgement-logo');logo.style.opacity='0';
+  document.body.append(field);
+  const ease=u=>{u=Math.max(0,Math.min(1,u));return u*u*(3-2*u);};
+  manageEffect({nodes:[field],duration,onCleanup:disposeLogo,onFrame:progress=>{
+    const ms=progress*duration,t=ms/(reduced?1000:500);
+    svg.style.opacity=String(ease(ms/400)*(1-ease((ms-swordsEnd+500)/500)));
+    const glow=ease((ms-logoStart)/650)*(1-ease((ms-duration+700)/700));
+    logo.style.opacity=String(glow);
+    logo.style.transform=reduced?'none':`scale(${.94+.06*ease((ms-logoStart)/900)})`;
+    if(reduced){motions.forEach((g,i)=>g.setAttribute('transform',`translate(${i?60:-60} 42) rotate(${i?-39:39})`));arcs.forEach(p=>p.style.opacity='0');sparks.style.opacity='0';return;}
+    let k=0;while(k<poses.length-2&&t>poses[k+1][0])k++;
+    const a=poses[k],b=poses[k+1],u=ease((t-a[0])/(b[0]-a[0]));
+    motions.forEach((g,i)=>{const j=1+i*3;const v=[0,1,2].map(d=>a[j+d]+(b[j+d]-a[j+d])*u);g.setAttribute('transform',`translate(${v[0]} ${v[1]}) rotate(${v[2]})`);});
+    let hit=-10;for(const h of hits)if(h<=t)hit=h;
+    const age=t-hit,burst=age>=0&&age<.28?(1-age/.28)**2:0;
+    arcs.forEach((p,i)=>{p.style.opacity=String(burst*.3);p.setAttribute('transform',`rotate(${i?-12:12})`);});
+    sparks.style.opacity=String(burst);
+    rays.forEach((p,i)=>{const angle=i*2.39996+hit,dist=9+age*(100+(i%5)*24),length=4+(i%4)*5,cx=0,cy=-62;
+      p.setAttribute('d',`M${cx+Math.cos(angle)*dist} ${cy+Math.sin(angle)*dist} l${Math.cos(angle)*length} ${Math.sin(angle)*length}`);});
+  }});
 }
 
 function showJakDaxter() {
