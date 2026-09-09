@@ -10,6 +10,8 @@
  const style=document.createElement('style');style.textContent=`
  #${ROOT}-controls{position:fixed;right:max(12px,env(safe-area-inset-right));top:max(12px,env(safe-area-inset-top));z-index:2147483647;display:flex;gap:8px;pointer-events:auto;}
  #${ROOT}-controls button{appearance:none;min-height:44px;padding:10px 14px;border:1px solid #c9c0af;border-radius:8px;background:rgba(15,16,17,.88);color:#f9f5eb;font:600 14px/1.2 system-ui,sans-serif;box-shadow:0 2px 10px #0008;cursor:pointer;touch-action:manipulation;}
+ #${ROOT}-controls #${ROOT}{box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;width:44px;min-width:44px;padding:9px;}
+ #${ROOT} svg{display:block;width:24px;height:24px;flex:none;pointer-events:none;}
  #${ROOT}-controls button:focus-visible{outline:3px solid #f3db58;outline-offset:3px;}
  #${ROOT}-controls button[hidden]{display:none;}
  #${ROOT}-overlay{position:fixed;inset:0;z-index:2147483645;background:#000;overflow:hidden;}
@@ -19,12 +21,14 @@
  html.${HOST} #${ROOT}-overlay[data-loading='true']~#${ROOT}-controls{visibility:visible;}
  html.spiral-landscape-child #${ROOT}-controls{right:calc(12px / var(--spiral-fullscreen-scale,1));top:calc(12px / var(--spiral-fullscreen-scale,1));gap:calc(8px / var(--spiral-fullscreen-scale,1));}
  html.spiral-landscape-child #${ROOT}-controls button{font-size:calc(14px / var(--spiral-fullscreen-scale,1));min-height:calc(44px / var(--spiral-fullscreen-scale,1));padding:calc(10px / var(--spiral-fullscreen-scale,1)) calc(14px / var(--spiral-fullscreen-scale,1));}
+ html.spiral-landscape-child #${ROOT}-controls #${ROOT}{width:calc(44px / var(--spiral-fullscreen-scale,1));min-width:calc(44px / var(--spiral-fullscreen-scale,1));padding:calc(9px / var(--spiral-fullscreen-scale,1));}
+ html.spiral-landscape-child #${ROOT} svg{width:calc(24px / var(--spiral-fullscreen-scale,1));height:calc(24px / var(--spiral-fullscreen-scale,1));}
  html.spiral-landscape-child #open-speaker{display:none!important;}
  `;document.head.append(style);
  const nativeActive=()=>!!(document.fullscreenElement||document.webkitFullscreenElement);
  const portrait=()=>innerHeight>innerWidth;
  const rootController=()=>{try{return parent.spiralFullscreen;}catch{return null;}};
- function reflect(){if(!button)return;const active=child||mode!=='window'||nativeActive();button.textContent=active?'Exit fullscreen':'Fullscreen';button.setAttribute('aria-pressed',String(active));button.title=active?'Return to the normal presentation':'Open the presentation in landscape fullscreen';document.documentElement.dataset.spiralFullscreen=child?'landscape-frame':mode;}
+ function reflect(){if(!button)return;const active=child||mode!=='window'||nativeActive();button.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="${active?'M3 8h5V3M16 3v5h5M21 16h-5v5M8 21v-5H3':'M8 3H3v5M16 3h5v5M21 16v5h-5M3 16v5h5'}"/></svg>`;button.setAttribute('aria-label',active?'Exit fullscreen':'Enter fullscreen');button.setAttribute('aria-pressed',String(active));button.title=active?'Return to the normal presentation':'Open the presentation in landscape fullscreen';document.documentElement.dataset.spiralFullscreen=child?'landscape-frame':mode;}
  function mountControls(){toolbar=document.createElement('div');toolbar.id=ROOT+'-controls';toolbar.setAttribute('role','group');toolbar.setAttribute('aria-label','Presentation display');button=document.createElement('button');button.id=ROOT;button.type='button';button.onclick=e=>{e.stopPropagation();toggle();};toolbar.append(button);document.body.append(toolbar);reflect();
   if(child){const audio=document.createElement('button');audio.id=ROOT+'-narration';audio.type='button';audio.hidden=true;audio.onclick=e=>{e.stopPropagation();rootController()?.toggleNarration();};toolbar.prepend(audio);const update=()=>{const state=rootController()?.narrationState();audio.hidden=!state?.available;audio.textContent=state?.playing?'Pause narration':'Play narration';};update();const timer=setInterval(update,600);addEventListener('pagehide',()=>clearInterval(timer),{once:true});}
  }
