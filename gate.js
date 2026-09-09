@@ -4,6 +4,10 @@ import {ensurePresenterReady} from './presenter-ready.js';
 import {narrationReleased,showNarrationRelease} from './narration-release.js';
 
 const base=new URL('./',import.meta.url),storageKey='spiral.private:'+base.pathname;
+const recordedDeck='decks/phd-defense.recorded.spiral';
+function recordedDestination(url){if(url.searchParams.get('narration')==='1'&&url.searchParams.get('live')!=='1')url.searchParams.set('deck',recordedDeck);return url;}
+const recordedLink=document.querySelector('#with-narration');
+if(recordedLink){recordedLink.href=recordedDestination(new URL(recordedLink.href)).href;recordedLink.textContent='Recorded edition';recordedLink.setAttribute('aria-label','Watch the recorded edition with narration');}
 const status=document.querySelector('#status'),retryButton=document.querySelector('#retry-open');
 const visuals=createGateVisuals(document.querySelector('#gate-field'));
 const bytes=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0)),b64=a=>btoa(String.fromCharCode(...new Uint8Array(a)));
@@ -99,7 +103,7 @@ async function openPresentation(saved){
  await rpc({type:'unlock',key,manifest,revision:metadata.revision});
  unlocked=true;status.textContent='';document.body.classList.add('is-ready');if(new URLSearchParams(location.search).get('narration')==='locked')showNarrationRelease();
  const target=new URLSearchParams(location.search).get('return');
- if(target){const dest=new URL(target,base);if(dest.origin===base.origin&&dest.pathname.startsWith(base.pathname+'app/')){if(!dest.hash&&location.hash)dest.hash=location.hash;if(dest.searchParams.get('narration')==='1'&&!narrationReleased()){showNarrationRelease();return;}if(isPresenterDestination(dest)&&!await ensurePresenterReady({handoff:true}))return;await rpc({type:'public-session'});location.replace(dest.href);}}
+ if(target){const dest=recordedDestination(new URL(target,base));if(dest.origin===base.origin&&dest.pathname.startsWith(base.pathname+'app/')){if(!dest.hash&&location.hash)dest.hash=location.hash;if(dest.searchParams.get('narration')==='1'&&!narrationReleased()){showNarrationRelease();return;}if(isPresenterDestination(dest)&&!await ensurePresenterReady({handoff:true}))return;await rpc({type:'public-session'});location.replace(dest.href);}}
 }
 function isPresenterDestination(url){return /speaker\.html$/.test(url.pathname)||url.searchParams.get('broadcast')==='1';}
 let preparation,navigating=false;
