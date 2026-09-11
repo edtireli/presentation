@@ -143,8 +143,39 @@ async function serve(request,clientId){
   headers['Content-Length']=raw.byteLength;return new Response(request.method==='HEAD'?null:raw,{status,headers});
  }catch{return new Response('Could not load this asset. Connect and prepare offline again, or reload the saved presentation.',{status:503});}
 }
+const READER_FILES=['index.html','gate.js','gate.css','acknowledgement-reading.js','acknowledgements.json'];
+const READER='spiral-public-reading-v2:'+base.pathname;
+let readerRefresh=null;
+async function currentReader(){try{const response=await(await caches.open(READER)).match(new URL('__reader_active__',base));return response?await response.json():null;}catch{return null;}}
+async function refreshReader(){
+ if(readerRefresh)return readerRefresh;
+ readerRefresh=(async()=>{
+  const meta=await networkMetadata(),entries=READER_FILES.map(file=>meta.shell?.find(e=>e.path===file));
+  if(entries.some(e=>!e||!/^[a-f0-9]{64}$/.test(e.sha256)))throw Error('Reading page update incomplete.');
+  const generation=await sha(new TextEncoder().encode(JSON.stringify(entries))),cacheName=READER+':'+generation;
+  const cache=await caches.open(cacheName);
+  // Verify the complete reading shell before changing its active pointer.
+  await Promise.all(entries.map(async entry=>{
+   const url=new URL(entry.path,base).href;let response=await cache.match(url);
+   if(response){const data=await response.clone().arrayBuffer();if(data.byteLength===entry.bytes&&await sha(data)===entry.sha256)return;}
+   response=await fetch(url,{cache:'no-store',credentials:'omit',signal:AbortSignal.timeout(3500)});
+   if(!response.ok)throw Error('Reading page download incomplete.');
+   const data=await response.clone().arrayBuffer();if(data.byteLength!==entry.bytes||await sha(data)!==entry.sha256)throw Error('Reading page version mismatch.');
+   await cache.put(url,response);
+  }));
+  const record={generation,cacheName};await(await caches.open(READER)).put(new URL('__reader_active__',base),new Response(JSON.stringify(record)));
+  return record;
+ })().finally(()=>{readerRefresh=null;});return readerRefresh;
+}
 async function shellResponse(request){
- const url=new URL(request.url),active=await readControl('active');const relative=url.pathname.slice(base.pathname.length),file=(!relative||relative==='index.html')?'index.html':relative;
+ const url=new URL(request.url);const relative=url.pathname.slice(base.pathname.length),file=(!relative||relative==='index.html')?'index.html':relative;
+ // Update the public reader as one complete shell. An interrupted update keeps
+ // the previous reader; presentation assets and metadata retain their pinning.
+ if(READER_FILES.includes(file)){
+  let reader=await currentReader();if(file==='index.html'){try{reader=await refreshReader();}catch{}}
+  if(reader){try{const response=await(await caches.open(reader.cacheName)).match(new URL(file,base));if(response)return request.method==='HEAD'?new Response(null,{status:200,headers:response.headers}):response;}catch{}}
+ }
+ const active=await readControl('active');
  if(file==='access.json'){
   // Return the same committed revision as the cached shell and app. The
   // offline-begin action fetches fresh metadata explicitly for safe updates.

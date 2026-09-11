@@ -1,5 +1,4 @@
 import {createGateVisuals,fileComplaintPaper} from './gate-visuals.js';
-import {renderAcknowledgementParagraph} from './acknowledgement-names.js';
 import {ensurePresenterReady} from './presenter-ready.js';
 import {narrationReleased,showNarrationRelease} from './narration-release.js';
 
@@ -11,8 +10,8 @@ if(recordedLink){recordedLink.href=recordedDestination(new URL(recordedLink.href
 const status=document.querySelector('#status'),retryButton=document.querySelector('#retry-open');
 const visuals=createGateVisuals(document.querySelector('#gate-field'));
 const bytes=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0)),b64=a=>btoa(String.fromCharCode(...new Uint8Array(a)));
-let unlocked=false,ackData=null,serviceConfig=null,pendingConfig=null,ackTimer=0,ackLoadId=0;
-const ack=document.querySelector('#acknowledgements'),landing=document.querySelector('#landing'),complaint=document.querySelector('#complaint-dialog');
+let unlocked=false,serviceConfig=null,pendingConfig=null;
+const ack=document.querySelector('#acknowledgements'),complaint=document.querySelector('#complaint-dialog');
 const complaintForm=document.querySelector('#complaint-form'),messageInput=document.querySelector('#complaint-message');
 const complaintStatus=document.querySelector('#complaint-status'),sendButton=document.querySelector('#send-complaint');
 const paper=document.querySelector('#complaint-paper'),done=document.querySelector('#complaint-done');
@@ -36,7 +35,7 @@ function waitForControl(reg,deadline){
 function start(){
  if(startup)return startup;
  startup=(async()=>{
-  if(!('serviceWorker'in navigator)||!crypto.subtle)throw Error('Please use an up-to-date Chrome, Edge, Safari, or Firefox browser.');
+  if(!navigator.serviceWorker||!crypto.subtle)throw Error('Please use an up-to-date Chrome, Edge, Safari, or Firefox browser.');
   const deadline=Date.now()+HANDOFF_MS;
   const existing=await bounded(navigator.serviceWorker.getRegistration(base.href),deadline);
   // A saved offline talk must not wait for a network update that cannot happen.
@@ -99,7 +98,8 @@ async function openPresentation(saved){
  }
  if(manifest.version!==1||!manifest.entries?.['index.html'])throw Error('Invalid presentation package.');
  const session={revision:metadata.revision,key:b64(raw),manifest};
- sessionStorage.setItem(storageKey,JSON.stringify(session));
+ // Reading and presenting must not fail just because browser storage is restricted.
+ try{sessionStorage.setItem(storageKey,JSON.stringify(session));}catch{}
  await rpc({type:'unlock',key,manifest,revision:metadata.revision});
  unlocked=true;status.textContent='';document.body.classList.add('is-ready');if(new URLSearchParams(location.search).get('narration')==='locked')showNarrationRelease();
  const target=new URLSearchParams(location.search).get('return');
@@ -127,57 +127,8 @@ document.querySelector('#close-complaint').onclick=()=>complaint.close();
 done.onclick=()=>complaint.close();
 complaint.addEventListener('close',()=>{for(const animation of paper.getAnimations())animation.cancel();});
 
-function leaveAcknowledgements(){
- if(ack.hidden)return;
- clearTimeout(ackTimer);ackTimer=0;ackLoadId++;
- if(complaint.open)complaint.close();
- document.querySelector('#complaint-offer').hidden=true;
- ack.hidden=true;landing.hidden=false;document.body.classList.remove('is-reading-ack');
- scrollTo({top:0,behavior:'instant'});
- document.querySelector('#read-acknowledgements').focus({preventScroll:true});
-}
-async function enterAcknowledgements(){
- if(!ack.hidden)return;
- const loading=document.querySelector('#ack-status'),content=document.querySelector('#ack-text'),offer=document.querySelector('#complaint-offer');
- clearTimeout(ackTimer);offer.hidden=true;loading.hidden=!!ackData;loading.textContent='Loading acknowledgements…';
- const loadId=++ackLoadId;
- landing.hidden=true;ack.hidden=false;document.body.classList.add('is-reading-ack');
- scrollTo({top:0,behavior:'instant'});document.querySelector('#ack-title').focus({preventScroll:true});
- ackTimer=setTimeout(()=>{if(!ack.hidden)offer.hidden=false;},5000);
- try{
-  if(!await preparation)throw Error(status.textContent||'The acknowledgements could not be prepared. Go back and try again.');
-  if(ack.hidden||loadId!==ackLoadId)return;
-  if(!ackData){const response=await fetch(new URL('app/acknowledgements.json',base),{cache:'no-store',signal:AbortSignal.timeout(15000)});if(!response.ok)throw Error('Acknowledgements could not be loaded. Go back and try again.');const data=await response.json();if(!Array.isArray(data.paragraphs)||!data.paragraphs.length||!data.paragraphs.every(p=>typeof p==='string'))throw Error('Acknowledgements are unavailable.');if(!unlocked||loadId!==ackLoadId)return;ackData=data;}
-  if(ack.hidden||loadId!==ackLoadId)return;
-  document.querySelector('#ack-title').textContent=ackData.title||'Acknowledgements';
-  content.replaceChildren(...ackData.paragraphs.map(renderAcknowledgementParagraph));loading.hidden=true;
- }catch(error){if(!ack.hidden&&loadId===ackLoadId){loading.hidden=false;loading.textContent=error.message;}}
-}
-function syncReadingRoute(){
- if(location.hash==='#acknowledgements')enterAcknowledgements();else leaveAcknowledgements();
-}
-document.querySelector('#read-acknowledgements').addEventListener('click',event=>{
- if(event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
- event.preventDefault();
- if(location.hash!=='#acknowledgements'){
-  const url=new URL(location.href);url.hash='acknowledgements';
-  history.pushState({...history.state,spiralAcknowledgementsEntry:true},'',url);
- }
- syncReadingRoute();
-});
-function backFromAcknowledgements(event){
- event?.preventDefault();
- if(history.state?.spiralAcknowledgementsEntry){history.back();return;}
- // A direct #acknowledgements link has no in-page entry to pop. Stay on this site.
- const url=new URL(location.href);url.hash='';history.replaceState(history.state,'',url);syncReadingRoute();
-}
-document.querySelector('#close-ack').onclick=backFromAcknowledgements;
-document.querySelector('[data-ack-back]').onclick=backFromAcknowledgements;
-addEventListener('popstate',syncReadingRoute);addEventListener('hashchange',syncReadingRoute);
-addEventListener('keydown',event=>{if(event.key==='Escape'&&!ack.hidden&&!complaint.open)backFromAcknowledgements(event);});
-
 document.querySelector('#open-complaint').onclick=()=>{
- if(!unlocked||ack.hidden)return;
+ if(ack.hidden)return;
  if(complaint.classList.contains('is-filed')){complaintForm.reset();submission=null;resetPaper();}
  showDialog(complaint,messageInput);
 };
@@ -197,7 +148,7 @@ async function privateServiceConfig(){
  return pendingConfig;
 }
 complaintForm.addEventListener('submit',async event=>{
- event.preventDefault();if(sending||!unlocked)return;
+ event.preventDefault();if(sending)return;
  const message=messageInput.value.trim();if(!message){messageInput.setCustomValidity('Write a complaint first.');messageInput.reportValidity();return;}messageInput.setCustomValidity('');
  if(message.length>3000){complaintStatus.textContent='Please keep your complaint to 3,000 characters.';return;}
  if(!submission||submission.message!==message)submission={message,submissionId:crypto.randomUUID()};
@@ -218,6 +169,5 @@ complaintForm.addEventListener('submit',async event=>{
 });
 messageInput.addEventListener('input',()=>messageInput.setCustomValidity(''));
 
-addEventListener('pagehide',()=>{clearTimeout(ackTimer);ackTimer=0;serviceConfig=null;});
+addEventListener('pagehide',()=>{serviceConfig=null;});
 prepare();
-syncReadingRoute();

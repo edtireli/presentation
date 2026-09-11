@@ -48,3 +48,10 @@ body.is-reading-ack #gate-field{opacity:.32}
 .narration-release-actions .narration-release-watch{background:#efdc60;color:#18170b}
 .narration-release-actions .narration-release-watch:disabled{cursor:default;opacity:.4}
 @media(max-width:480px){.narration-release-dialog{padding:24px 20px}.narration-release-dialog h2{font-size:29px}.narration-release-description{font-size:14px;margin-bottom:26px}.narration-countdown{gap:5px}.narration-countdown-value{font-size:40px}.narration-countdown-label{font-size:10px}.narration-release-actions button{font-size:15px;padding:10px 14px}}
+
+/* Keep the text accessible through its ordinary anchor even without JavaScript. */
+html:not([data-ack-route]) #acknowledgements:target{display:block!important}
+html:not([data-ack-route]) body:has(#acknowledgements:target){align-items:start;padding-top:clamp(28px,5vh,64px);padding-bottom:64px}
+html:not([data-ack-route]) body:has(#acknowledgements:target) #landing{display:none}
+html:not([data-ack-route]) body:has(#acknowledgements:target) #gate-main{width:min(100%,850px)}
+html:not([data-ack-route]) body:has(#acknowledgements:target) #gate-field{opacity:.32}
