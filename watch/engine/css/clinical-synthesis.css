@@ -1,0 +1,95 @@
+.clinical-synthesis{--cs-volume:#a6c9ca;--cs-leakage:#e4ad88;--cs-oxygen:#b3c5e1;--cs-muted:#e6dbca;position:relative;box-sizing:border-box;width:100%;height:81vh;max-height:900px;min-height:480px;padding:2% 5%;display:flex;flex-direction:column;overflow:hidden;background:transparent;color:#e7dfd2;text-align:left;container-type:inline-size}
+.clinical-synthesis *{font-family:Georgia,'Times New Roman',serif!important}
+.cs-header{flex:none;margin:0 0 1.5%}
+.cs-section{font-size:clamp(26px,3.1cqw,44px)!important;line-height:1.15!important;font-weight:400!important;color:#e7dfd2!important;letter-spacing:-.02em!important;margin:0!important}
+.cs-body{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center}
+.cs-copy{padding:2% 0;max-width:1100px}
+.cs-quote{margin:0;padding:0;border:0;font-size:clamp(24px,2.75cqw,38px);line-height:1.5;letter-spacing:0;color:#ded6c9}
+.cs-quote p{font:inherit;color:inherit!important;margin:0 0 .85em!important;line-height:inherit}
+.cs-quote p:last-child{margin-bottom:0!important}
+.cs-statement{text-shadow:0 2px 4px #000,0 0 14px #000;transform:translateZ(0)}
+.cs-statement[data-visible=false]{visibility:hidden;opacity:0}
+.cs-bullets{margin:0;padding-left:1.1em;font:inherit;line-height:1.55}
+.cs-bullets li{font:inherit;color:inherit;line-height:inherit;margin:0 0 1.1em;padding-left:.25em}
+.cs-bullets li:last-child{margin-bottom:0}
+.cs-bullets li::marker{font-size:.56em;color:#d1c3a8}
+.cs-copy[data-words=long] .cs-quote{font-size:clamp(22px,2.45cqw,34px);line-height:1.42}
+.cs-highlight{font:inherit;font-weight:600;background:none;text-decoration:none}
+.cs-volume{color:var(--cs-volume)}.cs-leakage{color:var(--cs-leakage)}.cs-oxygen{color:var(--cs-oxygen)}.cs-muted{color:var(--cs-muted)}
+.cs-marker{font-weight:500;color:#18170b;background:linear-gradient(178deg,transparent 0 5%,#efdc60 8%,#f7e979 52%,#e9d453 91%,transparent 95%);padding:.05em .14em;border-radius:.12em .07em .15em .05em;box-decoration-break:clone;-webkit-box-decoration-break:clone;text-shadow:none;filter:drop-shadow(0 2px 5px #000)}
+.cs-branches[hidden]{display:none}
+.cs-branches{position:relative;display:flex;flex:none;margin:25px 0 0;padding-top:17px;gap:3%;min-height:37px}
+.cs-branches::before{content:'';position:absolute;left:16%;right:16%;top:0;border-top:1px solid #a4936e7a}
+.cs-branches::after{content:'';position:absolute;left:50%;top:-18px;height:18px;border-left:1px solid #a4936e7a}
+.cs-branch{position:relative;flex:1;text-align:center;opacity:.32;transition:opacity .43s ease-out;color:#e6dcca;font-size:clamp(17px,1.85cqw,26px);line-height:1.3}
+.cs-branch::before{content:'';position:absolute;left:50%;top:-17px;height:12px;border-left:1px solid #a4936e7a}
+.cs-branch[data-active=true]{opacity:1}
+.cs-branch[data-active=true] .cs-branch-name{color:#e6dcca}
+.cs-source{margin-top:1.2em;font-size:clamp(12px,1.1cqw,16px);line-height:1.3;color:#9b8b77}
+.cs-evidence{flex:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.4em 5%;padding:2.2% 0 0;margin-top:2%;border-top:1px solid #b89a762d}
+.cs-evidence[hidden]{display:none}
+.cs-evidence-item{flex:1;min-width:0;display:flex;flex-direction:column;gap:.3em}
+.cs-evidence-author{font-size:clamp(18px,1.8cqw,25px);font-weight:500;color:#d7be9f;text-decoration:none;line-height:1.5}.cs-evidence-author:hover{text-decoration:underline}
+.cs-evidence-population{font-size:clamp(13px,1.13cqw,16px);line-height:1.35;color:#a89985}
+.cs-evidence-finding{font-size:clamp(17px,1.55cqw,22px);line-height:1.4;color:#c9bead}
+.cs-evidence-extra{font-size:clamp(11px,1cqw,14px);color:#bfb3a3;text-underline-offset:.2em}
+.cs-evidence-finding .cs-highlight{font-weight:500;background:none;color:#f5df78;padding:0;filter:none}
+.cs-view[hidden]{display:none}.cs-view{position:relative;flex:1;min-height:0;overflow:hidden}.cs-view canvas{display:block;width:100%;height:100%}
+.clinical-synthesis[data-capillary-layout=true] .cs-copy{flex:none;max-width:none;padding:0 0 1%}
+.clinical-synthesis[data-capillary-layout=true] .cs-quote{font-size:clamp(18px,1.8cqw,26px);line-height:1.35}
+.clinical-synthesis[data-capillary-layout=true] .cs-source{margin-top:.5em;font-size:clamp(10px,.9cqw,13px)}
+.capillary-comparison-labels{position:absolute;inset:0;pointer-events:none}.capillary-comparison-labels[hidden]{display:none}
+.capillary-side-title{position:absolute;top:1%;width:47%;text-align:center;color:#ebe1d0;font-size:clamp(18px,2cqw,28px);line-height:1.2}
+.capillary-side-caption{position:absolute;bottom:1%;width:47%;text-align:center;color:#baa590;font-size:clamp(12px,1.2cqw,17px);line-height:1.3}
+.capillary-reference{left:1%}.capillary-hypothesis{right:1%}.capillary-side-title.capillary-hypothesis{color:#e6b08b}
+.capillary-anatomy-source{position:absolute;top:13%;width:100%;text-align:center;color:#9c8b74;font-size:clamp(9px,.82cqw,12px);line-height:1.3}
+.slide:has(.clinical-synthesis) .sources{display:none}
+@media(max-width:900px){.clinical-synthesis{padding:3% 5%}.cs-quote{font-size:clamp(21px,3vw,27px)}.cs-copy[data-words=long] .cs-quote{font-size:clamp(20px,2.7vw,24px)}.cs-evidence{gap:4%}.cs-evidence-finding{font-size:14px}}
+@media(prefers-reduced-motion:reduce){.cs-branch{transition:none}}
+
+/* One continuous stroke per phrase, with matching edges across all its words.
+   Inline fragments keep long phrases wrappable without separate word patches. */
+.cs-typed-word{display:inline-block}
+.cs-typed-phrase{display:inline;font:inherit;color:inherit;background-color:transparent;background-image:linear-gradient(178deg,transparent 0 3%,#efdc60 7%,#f7e979 52%,#e9d453 92%,transparent 98%);background-repeat:no-repeat;background-position:left center;background-size:0% 100%;padding:.03em .10em;margin:0 -.10em;box-decoration-break:clone;-webkit-box-decoration-break:clone;transition:background-size 160ms ease-out,color 0s 160ms,text-shadow 0s 160ms}
+.cs-phrase-marked{background-size:100% 100%;color:#18170b;text-shadow:none}
+.clinical-synthesis[data-cs-evidence=true]:not([data-capillary-layout=true]) .cs-body{flex:0 0 auto;justify-content:flex-start}
+.clinical-synthesis[data-cs-evidence=true]:not([data-capillary-layout=true]) .cs-copy{padding:2.2% 0 .5%}
+.clinical-synthesis[data-cs-evidence=true]:not([data-capillary-layout=true]) .cs-quote{font-size:clamp(23px,2.4cqw,34px);line-height:1.43}
+.clinical-synthesis[data-cs-empty=true] .cs-branches{visibility:hidden}
+
+.cs-evidence-caveat{font-size:clamp(12px,1.03cqw,15px);line-height:1.35;color:#a3947d}
+
+.clinical-synthesis[data-cs-instant=true] .cs-typed-phrase{transition:none}
+@media(prefers-reduced-motion:reduce){.cs-typed-phrase{transition:none}}
+
+/* Matched discussion pages: fixed topic slots keep each explanation beside its
+   label while subsequent clicks add rows without moving the existing text. */
+.clinical-synthesis[data-cs-topics=true] .cs-body{flex:1!important;justify-content:center!important}
+.clinical-synthesis[data-cs-topics=true] .cs-copy{max-width:none;width:100%;padding:1.4% 0!important}
+.clinical-synthesis[data-cs-topics=true] .cs-quote{display:grid;gap:1.05em;font-size:clamp(21px,2.05cqw,30px)!important;line-height:1.42!important}
+.cs-topic-row{display:grid;grid-template-columns:25% minmax(0,1fr);gap:4%;align-items:start}
+.cs-topic-row[data-variants=true]{grid-template-columns:minmax(0,1fr);gap:0}
+.cs-topic-variant{grid-area:1/1;display:grid;grid-template-columns:25% minmax(0,1fr);gap:4%;align-items:start}
+.clinical-synthesis .cs-topic-label{font-size:inherit!important;font-weight:400!important;line-height:1.48!important;letter-spacing:0!important;margin:0!important;color:inherit!important;text-align:left!important}
+.cs-topic-explanation{margin:0!important}
+.clinical-synthesis[data-cs-topics=true] .cs-source{margin-top:1.1em}
+.clinical-synthesis[data-cs-topics=true] .cs-evidence{grid-template-columns:repeat(3,minmax(0,1fr));gap:3.5%;padding-top:1.5%;margin-top:1.5%;min-height:7.7em}
+.clinical-synthesis[data-cs-topics=true] .cs-evidence[data-columns="2"]{grid-template-columns:repeat(2,minmax(0,1fr))}
+.clinical-synthesis[data-cs-topics=true] .cs-evidence-author{font-size:clamp(18px,1.6cqw,23px)}
+.clinical-synthesis[data-cs-topics=true] .cs-evidence-finding{font-size:clamp(16px,1.42cqw,20px);line-height:1.35}
+.cs-evidence-item[data-visible=false]{visibility:hidden}
+.clinical-synthesis[data-cs-dim-previous="true"] .cs-statement{transition:opacity .45s ease,filter .45s ease}
+.clinical-synthesis[data-cs-dim-previous="true"] .cs-statement[data-visible="true"][data-current="false"]{opacity:.4;filter:grayscale(1)}
+.clinical-synthesis[data-cs-copy="conclusion-findings"] .cs-quote{font-size:clamp(20px,2.2cqw,31px)!important;line-height:1.4}
+.clinical-synthesis[data-cs-copy="conclusion-findings"] .cs-bullets{line-height:1.4}
+.clinical-synthesis[data-cs-copy="conclusion-findings"] .cs-bullets li{margin-bottom:.65em}
+.clinical-synthesis[data-cs-copy="further-study"] .cs-quote{font-size:clamp(19px,1.94cqw,28px)!important;line-height:1.32!important;gap:.8em}
+.clinical-synthesis[data-cs-copy="further-study"] .cs-topic-label{line-height:1.32!important}
+.clinical-synthesis[data-cs-copy="further-study"] .cs-evidence{min-height:0;border-top:0;padding-top:.5%;margin-top:.5%}
+@media(prefers-reduced-motion:reduce){.clinical-synthesis[data-cs-dim-previous="true"] .cs-statement{transition:none}}
+@media(max-width:1050px){
+  .clinical-synthesis[data-cs-topics=true] .cs-quote{font-size:clamp(19px,2.05cqw,25px)!important;gap:.9em}
+  .clinical-synthesis[data-cs-topics=true] .cs-evidence{gap:2.5%}
+  .clinical-synthesis[data-cs-topics=true] .cs-evidence-finding{font-size:15px}
+  .clinical-synthesis[data-cs-topics=true] .cs-evidence-population,.clinical-synthesis[data-cs-topics=true] .cs-evidence-caveat{font-size:12px}
+}

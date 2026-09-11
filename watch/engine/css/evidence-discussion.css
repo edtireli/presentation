@@ -1,0 +1,58 @@
+/* Reserve the same upper map and lower reading regions at every click. */
+.evidence-network[data-discussion-map="1"] .evidence-network-map{inset:6% 0 40%!important;overflow:hidden}
+.evidence-network[data-discussion-map="1"] .evidence-theme-labels{opacity:var(--discussion-map-dim,1);transition:opacity .45s ease}
+.evidence-network[data-discussion-map="1"] .evidence-selected-paper-label{font-size:28px}
+.evidence-network[data-discussion-map="1"] .evidence-selected-paper-label :is(.evidence-selected-paper-method,.evidence-selected-paper-qualification){display:none}
+.evidence-network[data-discussion-map="1"] .evidence-satellite-label{font-size:28px}
+.evidence-network[data-discussion-map="1"] .evidence-satellite-kind{font-size:20px}
+.evidence-reference-halo{fill:none;stroke:currentColor;stroke-width:1.7;filter:drop-shadow(0 0 5px currentColor);opacity:.8;animation:reference-halo-in .65s ease-out both}
+@keyframes reference-halo-in{from{opacity:0;stroke-width:0}to{opacity:.8;stroke-width:1.7}}
+.evidence-network[data-discussion-visible="1"] .evidence-speaking-prompt{opacity:0!important;pointer-events:none}
+.evidence-network[data-discussion-map="1"] .evidence-speaking-prompt{top:62%;bottom:4%;left:7%;right:7%;width:auto;padding:0;border:0;display:block;container-type:inline-size}
+.evidence-network[data-discussion-map="1"] .evidence-group-label{font:400 clamp(22px,2.3cqw,32px)/1.2 Georgia,'Times New Roman',serif;margin:0 0 .55em}
+.evidence-network[data-discussion-map="1"] .evidence-speaking-line{font:400 clamp(18px,1.95cqw,28px)/1.32 Georgia,'Times New Roman',serif!important;color:#e7dfd2;margin:0 0 .4em!important;text-shadow:0 2px 4px #000}
+.evidence-network[data-discussion-map="1"] .evidence-selection-count{opacity:.85}
+.evidence-discussion{position:absolute;z-index:5;inset:62% 7% 4%;color:#e7dfd2;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .36s ease,visibility .36s;container-type:inline-size;text-align:left}
+.evidence-network[data-discussion-visible="1"] .evidence-discussion{opacity:1;visibility:visible}
+.evidence-discussion .ed-title{font:400 clamp(22px,2.3cqw,32px)/1.2 Georgia,'Times New Roman',serif!important;margin:0 0 .35em!important;letter-spacing:-.02em;color:#e7dfd2!important;text-shadow:0 2px 4px #000,0 0 14px #000}
+.evidence-discussion .ed-title .evidence-group-highlight{text-shadow:none}
+.evidence-discussion .ed-copy{font:400 clamp(18px,1.95cqw,28px)/1.32 Georgia,'Times New Roman',serif!important}
+.evidence-discussion .cs-statement{font:inherit!important;line-height:inherit!important;letter-spacing:0!important;color:inherit;margin:0 0 .32em!important;text-shadow:0 2px 4px #000,0 0 14px #000}
+.evidence-discussion .cs-statement:last-child{margin-bottom:0!important}
+.evidence-discussion .ed-citations{display:flex;gap:5%;margin-top:.8em;color:#cbbfae}
+.evidence-discussion .ed-citations[hidden]{display:none}
+.evidence-discussion .ed-citation{flex:1;min-width:0;max-width:100%;font:400 clamp(14px,1.28cqw,18px)/1.3 Georgia,'Times New Roman',serif;text-shadow:0 2px 4px #000,0 0 14px #000}
+.evidence-discussion .ed-citation a,.evidence-discussion .ed-citation strong{color:var(--reference-color,#e6c894);font:inherit;text-decoration:none;pointer-events:auto}
+.evidence-discussion .ed-citation a:hover{text-decoration:underline}
+.ed-reference-arrival{animation:reference-description-in .55s ease-out both;animation-delay:var(--reference-delay,120ms)}
+@keyframes reference-description-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.evidence-discussion .ed-population{font:400 .85em/1.3 Georgia,serif!important;color:#b2a18b!important;margin:.2em 0!important}
+.evidence-discussion .ed-finding{font:inherit!important;color:inherit!important;margin:.2em 0!important}
+@media(max-height:620px){
+  .evidence-network[data-discussion-map="1"] .evidence-network-map{inset:6% 0 44%!important}
+  .evidence-network[data-discussion-map="1"] .evidence-speaking-prompt,.evidence-discussion{top:58%;bottom:3%}
+  .evidence-discussion .ed-title{font-size:clamp(18px,2.3cqw,25px)!important;margin-bottom:.25em!important}
+  .evidence-discussion .ed-copy{font-size:clamp(16px,1.85cqw,21px)!important}
+  .evidence-discussion .ed-citation{font-size:clamp(12px,1.25cqw,15px)}
+  .evidence-discussion .ed-citations{margin-top:.5em}
+}
+@media(prefers-reduced-motion:reduce){.evidence-discussion,.evidence-network[data-discussion-map="1"] .evidence-theme-labels,.evidence-network[data-discussion-map="1"] .evidence-selected-paper-labels{transition:none}.ed-reference-arrival,.evidence-reference-halo{animation:none}}
+
+/* The Chapter 4 excerpts retain complete explanatory sentences. Give those
+   sentences a fixed reading area without resizing the map between clicks. */
+.evidence-network[data-discussion-copy="thesis"] .evidence-network-map{inset:6% 0 42%!important}
+.evidence-network[data-discussion-copy="thesis"] .evidence-discussion{top:60%;bottom:3%}
+.evidence-network[data-discussion-copy="thesis"] .ed-copy{font-size:clamp(15px,1.58cqw,23px)!important;line-height:1.3!important}
+.evidence-network[data-discussion-copy="thesis"] .ed-citations{margin-top:.65em}
+.evidence-discussion .ed-topic-row{display:grid;grid-template-columns:minmax(0,28%) minmax(0,1fr);column-gap:4%;align-items:start;margin-bottom:.36em!important}
+.evidence-discussion .ed-topic-row>.cs-statement{margin:0!important}
+.evidence-discussion .ed-topic-label{font-weight:400}
+.evidence-discussion .ed-topic-explanation{min-width:0}
+.evidence-discussion .ed-topic-heading{min-width:0}
+.evidence-discussion .ed-topic-context{display:block;margin-top:.22em;font:400 clamp(10px,1.06cqw,15px)/1.16 Georgia,'Times New Roman',serif;color:#b6aa99;opacity:0;transition:opacity .28s ease;text-shadow:0 1px 3px #000}
+.evidence-discussion .ed-topic-context>span{display:block}
+.evidence-discussion .ed-topic-heading:has(.cs-phrase-marked) .ed-topic-context{opacity:1}
+.evidence-network[data-discussion-copy="thesis"] .ed-topic-row{transition:opacity .45s ease,filter .45s ease}
+.evidence-network[data-discussion-copy="thesis"] .ed-topic-row[data-current="false"]{opacity:.4;filter:grayscale(1)}
+@media(prefers-reduced-motion:reduce){.evidence-discussion .ed-topic-context{transition:none}}
+@media(prefers-reduced-motion:reduce){.evidence-network[data-discussion-copy="thesis"] .ed-topic-row{transition:none}}

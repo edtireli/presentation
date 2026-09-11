@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600" viewBox="0 0 1200 600" role="img" aria-labelledby="title desc">
+  <title id="title">Acute sport-related concussion calibrated MRI results</title>
+  <desc id="desc">Two bar charts compare athlete controls with 15 athletes scanned one to seventeen days after concussion. The unadjusted cerebral blood flow difference becomes nonsignificant after adjustment for baseline end-tidal carbon dioxide. Model-derived cerebral metabolic rate of oxygen is lower in the CBF-selected region.</desc>
+  <g font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" fill="#f2f3f5">
+    <text x="78" y="62" font-size="24" font-weight="650">resting CBF</text>
+    <text x="78" y="91" font-size="16" fill="#aeb4be">mL / 100 g / min · CBF-selected ROI</text>
+    <line x1="88" y1="422" x2="520" y2="422" stroke="#777b83" stroke-width="2"/>
+    <line x1="88" y1="126" x2="88" y2="422" stroke="#777b83" stroke-width="2"/>
+    <rect x="170" y="169" width="112" height="253" rx="6" fill="#76a9b4"/>
+    <rect x="344" y="217" width="112" height="205" rx="6" fill="#d97757"/>
+    <line x1="226" y1="126" x2="226" y2="212" stroke="#e7e9ed" stroke-width="3"/>
+    <line x1="211" y1="126" x2="241" y2="126" stroke="#e7e9ed" stroke-width="3"/>
+    <line x1="211" y1="212" x2="241" y2="212" stroke="#e7e9ed" stroke-width="3"/>
+    <line x1="400" y1="171" x2="400" y2="263" stroke="#e7e9ed" stroke-width="3"/>
+    <line x1="385" y1="171" x2="415" y2="171" stroke="#e7e9ed" stroke-width="3"/>
+    <line x1="385" y1="263" x2="415" y2="263" stroke="#e7e9ed" stroke-width="3"/>
+    <text x="226" y="158" font-size="28" text-anchor="middle" font-weight="700">94</text>
+    <text x="400" y="206" font-size="28" text-anchor="middle" font-weight="700">76</text>
+    <text x="226" y="455" font-size="18" text-anchor="middle">controls</text>
+    <text x="400" y="455" font-size="18" text-anchor="middle">SRC</text>
+    <text x="304" y="506" font-size="20" text-anchor="middle">p = .001 unadjusted</text>
+    <text x="304" y="542" font-size="23" text-anchor="middle" font-weight="700" fill="#eba680">p = .134 after PETCO₂ adjustment</text>
+
+    <line x1="600" y1="90" x2="600" y2="548" stroke="#555960" stroke-width="2"/>
+
+    <text x="674" y="62" font-size="24" font-weight="650">model-derived CMRO₂</text>
+    <text x="674" y="91" font-size="16" fill="#aeb4be">μmol / 100 g / min · same selected ROI</text>
+    <line x1="684" y1="422" x2="1116" y2="422" stroke="#777b83" stroke-width="2"/>
+    <line x1="684" y1="126" x2="684" y2="422" stroke="#777b83" stroke-width="2"/>
+    <rect x="766" y="179" width="112" height="243" rx="6" fill="#76a9b4"/>
+    <rect x="940" y="241" width="112" height="181" rx="6" fill="#d97757"/>
+    <line x1="822" y1="103" x2="822" y2="255" stroke="#e7e9ed" stroke-width="3"/>
+    <line x1="807" y1="103" x2="837" y2="103" stroke="#e7e9ed" stroke-width="3"/>
+    <line x1="807" y1="255" x2="837" y2="255" stroke="#e7e9ed" stroke-width="3"/>
+    <line x1="996" y1="199" x2="996" y2="283" stroke="#e7e9ed" stroke-width="3"/>
+    <line x1="981" y1="199" x2="1011" y2="199" stroke="#e7e9ed" stroke-width="3"/>
+    <line x1="981" y1="283" x2="1011" y2="283" stroke="#e7e9ed" stroke-width="3"/>
+    <text x="822" y="168" font-size="28" text-anchor="middle" font-weight="700">222</text>
+    <text x="996" y="230" font-size="28" text-anchor="middle" font-weight="700">165</text>
+    <text x="822" y="455" font-size="18" text-anchor="middle">controls · n=27</text>
+    <text x="996" y="455" font-size="18" text-anchor="middle">SRC · n=15</text>
+    <text x="908" y="506" font-size="23" text-anchor="middle" font-weight="700">p = .006</text>
+    <text x="908" y="542" font-size="18" text-anchor="middle" fill="#aeb4be">OEF: .31 vs .30 · p = .800</text>
+  </g>
+</svg>

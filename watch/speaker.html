@@ -1,0 +1,10 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><title>Opening presenter access</title></head>
+<body><p><a href="../">Open presenter access</a></p><script>
+const gate = new URL('../', location.href);
+const presenter = new URL('../app/speaker.html', location.href);
+presenter.search = location.search;
+presenter.hash = location.hash;
+gate.searchParams.set('return', presenter.pathname + presenter.search + presenter.hash);
+location.replace(gate.href);
+</script></body></html>

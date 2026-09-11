@@ -3,7 +3,7 @@
 (()=>{
  'use strict';
  const params=new URLSearchParams(location.search);
- if(!/\/app\/(?:index\.html)?$/.test(location.pathname)||params.get('presenterPreview')==='1')return;
+ if(!/\/(?:app|watch)\/(?:index\.html)?$/.test(location.pathname)||params.get('presenterPreview')==='1')return;
  const child=params.get('spiralLandscape')==='1'&&parent!==window;
  const ROOT='spiral-fullscreen',HOST='spiral-landscape-host',FRAME_W=1280,FRAME_H=720;
  let button,toolbar,overlay,frame,mode='window',busy=false,unlisten=()=>{},layoutFrame=0;
@@ -56,5 +56,5 @@
  document.addEventListener('fullscreenchange',()=>{if(!nativeActive()&&mode==='native'){mode='window';reflect();}else reflect();});
  addEventListener('keydown',e=>{if(e.ctrlKey||e.metaKey||e.altKey||e.target.closest?.('input,textarea,select,[contenteditable="true"]'))return;if((e.key==='Escape'&&(child||mode==='landscape'))||e.key.toLowerCase()==='f'){e.preventDefault();e.stopImmediatePropagation();if(e.key==='Escape')exit();else toggle();}},true);
  if(child)document.documentElement.classList.add('spiral-landscape-child');
- const start=()=>{if(window.deck&&window.spiralPresenter){mountControls();return;}requestAnimationFrame(start);};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+ const start=()=>{if(window.deck){mountControls();return;}requestAnimationFrame(start);};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();

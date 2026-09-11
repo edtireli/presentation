@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600" viewBox="0 0 1200 600" role="img" aria-labelledby="title desc">
+  <title id="title">Audit of the Temme 2013 hypoxia challenge</title>
+  <desc id="desc">One of eight cognitive tasks showed an uncorrected nominal group difference during pooled hypoxia. Seven were null. No cerebral blood flow, oxygen extraction, or oxygen metabolism was measured.</desc>
+  <g font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" fill="#f2f3f5">
+    <text x="600" y="84" text-anchor="middle" font-size="25" font-weight="650">8 cognitive tasks under pooled hypoxia</text>
+    <g transform="translate(180 190)">
+      <circle cx="0" cy="0" r="30" fill="#d97757"/>
+      <circle cx="120" cy="0" r="30" fill="#6e7279"/>
+      <circle cx="240" cy="0" r="30" fill="#6e7279"/>
+      <circle cx="360" cy="0" r="30" fill="#6e7279"/>
+      <circle cx="480" cy="0" r="30" fill="#6e7279"/>
+      <circle cx="600" cy="0" r="30" fill="#6e7279"/>
+      <circle cx="720" cy="0" r="30" fill="#6e7279"/>
+      <circle cx="840" cy="0" r="30" fill="#6e7279"/>
+      <text x="0" y="8" text-anchor="middle" font-size="23" font-weight="700" fill="#ffffff">1</text>
+    </g>
+    <text x="180" y="278" text-anchor="middle" font-size="23" font-weight="700" fill="#eba680">1 nominal result</text>
+    <text x="180" y="311" text-anchor="middle" font-size="18" fill="#aeb4be">p = .018 · uncorrected</text>
+    <text x="780" y="278" text-anchor="middle" font-size="23" font-weight="700">7 null tasks</text>
+    <text x="600" y="384" text-anchor="middle" font-size="20" fill="#aeb4be">36 remote mTBI histories · 36 controls · fixed ascending challenge order</text>
+    <line x1="190" y1="438" x2="1010" y2="438" stroke="#555960" stroke-width="2"/>
+    <text x="600" y="505" text-anchor="middle" font-size="30" font-weight="700">no CBF · no OEF · no CMRO₂</text>
+    <text x="600" y="546" text-anchor="middle" font-size="18" fill="#aeb4be">cognition was measured; cerebral oxygen physiology was not</text>
+  </g>
+</svg>

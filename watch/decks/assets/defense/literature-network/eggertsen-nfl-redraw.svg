@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="620" viewBox="0 0 1100 620" role="img" aria-labelledby="title desc">
+  <title id="title">Redrawn chronic PPCS serum neurofilament light result</title>
+  <desc id="desc">Serum NfL was 4.8 picograms per millilitre in 86 young adults with persistent post-concussion symptoms and 4.4 in 88 blood-donor controls, p equals point 22. Eight of 86 patients initially exceeded the clinical upper range; that small subgroup drove a modest paired decline.</desc>
+  <style>
+    .axis{stroke:#9aa0aa;stroke-width:2}.grid{stroke:#5e6570;stroke-width:1;opacity:.35}
+    .sans{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;fill:#f2f3f5}
+    .mono{font-family:ui-monospace,"SF Mono",Menlo,monospace;fill:#aeb4be}
+    .big{font-size:66px;font-weight:680}.mid{font-size:27px;font-weight:600}.med{font-size:23px;font-weight:600}.small{font-size:20px}
+  </style>
+  <g transform="translate(74 45)">
+    <text class="mono small" x="0" y="0">SERUM NfL · MEDIAN 3.9 MONTHS</text>
+    <line class="axis" x1="78" y1="62" x2="78" y2="446"/>
+    <line class="axis" x1="78" y1="446" x2="490" y2="446"/>
+    <g class="mono small" text-anchor="end">
+      <text x="62" y="452">0</text><text x="62" y="356">2</text><text x="62" y="260">4</text>
+      <text x="62" y="164">6</text><text x="62" y="68">8</text>
+    </g>
+    <g class="grid"><line x1="78" y1="350" x2="490" y2="350"/><line x1="78" y1="254" x2="490" y2="254"/><line x1="78" y1="158" x2="490" y2="158"/></g>
+    <text class="mono small" transform="translate(16 332) rotate(-90)">NfL (pg/mL)</text>
+    <line x1="207" y1="215.6" x2="365" y2="234.8" stroke="#8b919b" stroke-width="3" stroke-dasharray="7 8" opacity=".72"/>
+    <circle cx="207" cy="215.6" r="23" fill="#f0805a" stroke="#ffe1d5" stroke-width="3"/>
+    <circle cx="365" cy="234.8" r="23" fill="#78a8ff" stroke="#dbe7ff" stroke-width="3"/>
+    <text class="sans mid" x="207" y="183" text-anchor="middle">4.8</text>
+    <text class="sans mid" x="365" y="202" text-anchor="middle">4.4</text>
+    <text class="mono small" x="182" y="482" text-anchor="middle">PPCS</text>
+    <text class="mono small" x="182" y="510" text-anchor="middle">n=86</text>
+    <text class="mono small" x="392" y="482" text-anchor="middle">DONORS</text>
+    <text class="mono small" x="392" y="510" text-anchor="middle">n=88</text>
+    <text class="sans mid" x="286" y="548" text-anchor="middle">p = .22</text>
+  </g>
+  <g transform="translate(640 45)">
+    <text class="mono small" x="0" y="0">THE SMALL HIGH-NfL SUBGROUP</text>
+    <text class="sans big" x="0" y="128">8 / 86</text>
+    <text class="sans mid" x="0" y="171">above the clinical upper range</text>
+    <line x1="56" y1="223" x2="56" y2="365" stroke="#f0805a" stroke-width="5"/>
+    <path d="M38 344 L56 373 L74 344" fill="none" stroke="#f0805a" stroke-width="5" stroke-linejoin="round"/>
+    <text class="mono small" x="96" y="254">median 3.9 months</text>
+    <text class="mono small" x="96" y="365">median 11.4 months</text>
+    <text class="sans med" x="0" y="438">modest decline in the high-NfL subgroup</text>
+    <text class="mono small" x="0" y="478">paired follow-up n=54</text>
+  </g>
+</svg>

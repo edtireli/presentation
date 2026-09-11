@@ -1,0 +1,3383 @@
+{
+  "schema": "spiral-narration/v2",
+  "revision": "voice-natural-literature-source-revision-2026-09-09",
+  "label": "Your documentary narration",
+  "description": "Natural narration with the clinical literature passages updated from source review. Unchanged speech and visual timing are preserved.",
+  "deck": "decks/phd-defense.spiral",
+  "audioBaseUrl": "./",
+  "stateCount": 174,
+  "states": {
+    "phd-defence-10-september-2026/0": {
+      "say": "Over the past three years, I've studied why symptoms can persist after concussion when routine imaging offers little explanation. One way to understand a system is to perturb it: make a controlled change and watch what follows. We used two different probes. A magnetic contrast agent changes the MRI signal, allowing us to follow its passage through the brain. In a separate experiment, we lower the oxygen people breathe and measure the physiological response. Together, these approaches examine blood-tissue exchange and oxygen use.",
+      "silent": false,
+      "slideNumber": 1,
+      "step": 0,
+      "title": "phd-defence-10-september-2026",
+      "phase": "Prelude",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "the-work-in-one-view/0": {
+      "say": "",
+      "silent": true,
+      "slideNumber": 2,
+      "step": 0,
+      "title": "the-work-in-one-view",
+      "phase": "Prelude",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "durationSeconds": 1.4,
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "the-work-in-one-view/1": {
+      "say": "",
+      "silent": true,
+      "slideNumber": 2,
+      "step": 1,
+      "title": "the-work-in-one-view",
+      "phase": "Prelude",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "durationSeconds": 1.4,
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "the-work-in-one-view/2": {
+      "say": "",
+      "silent": true,
+      "slideNumber": 2,
+      "step": 2,
+      "title": "the-work-in-one-view",
+      "phase": "Prelude",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "durationSeconds": 1.4,
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "prelude/0": {
+      "say": "Before the measurements, let me start with the person who brings this question to us.",
+      "silent": false,
+      "slideNumber": 3,
+      "step": 0,
+      "title": "Prelude",
+      "phase": "Prelude",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "acute-to-persistent-symptoms/0": {
+      "say": "Imagine you're out for a jog. You turn a corner, lose your footing, and fall.",
+      "silent": false,
+      "slideNumber": 4,
+      "step": 0,
+      "title": "acute-to-persistent-symptoms",
+      "phase": "Prelude",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "acute-to-persistent-symptoms/1": {
+      "say": "The impact can disrupt brain function and cause a concussion. You don't have to lose consciousness, and a routine scan may show no visible injury.",
+      "silent": false,
+      "slideNumber": 4,
+      "step": 1,
+      "title": "acute-to-persistent-symptoms",
+      "phase": "Prelude",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "acute-to-persistent-symptoms/2": {
+      "say": "You might experience headache, dizziness, nausea, problems with vision, or difficulty remembering what happened. Different people experience different combinations, and the symptoms can evolve after the injury.",
+      "silent": false,
+      "slideNumber": 4,
+      "step": 2,
+      "title": "acute-to-persistent-symptoms",
+      "phase": "Prelude",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "acute-to-persistent-symptoms/3": {
+      "say": "Many people improve over the following days and weeks. Others continue to struggle. Headache may persist, while fatigue, poor concentration, disturbed sleep or changes in mood become more noticeable. For the adults we studied, this had often continued for years. These symptoms affect everyday life, but they don't tell us which biological process is responsible. That is the problem behind the thesis.",
+      "silent": false,
+      "slideNumber": 4,
+      "step": 3,
+      "title": "acute-to-persistent-symptoms",
+      "phase": "Prelude",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "concussion-evidence-landscape/0": {
+      "say": "This map brings together thousands of papers from a broad PubMed search of concussion and mild traumatic brain injury. The colours organise the literature by topic. The highlights follow study populations and measurements, using the publication records and abstracts, with the key studies checked in detail. Where does our work sit?",
+      "silent": false,
+      "slideNumber": 5,
+      "step": 0,
+      "title": "The literature",
+      "phase": "Prelude",
+      "source": "Spiral broad PubMed corpus expansion; topic and population screening from publication records and abstracts, with key studies reviewed in detail, not a systematic review",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "concussion-evidence-landscape/1": {
+      "say": "Animal experiments test mechanisms directly in cells and vessels. Their interpretation depends on the species, injury model and time since injury.",
+      "silent": false,
+      "slideNumber": 5,
+      "step": 1,
+      "title": "The literature",
+      "phase": "Prelude",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "concussion-evidence-landscape/2": {
+      "say": "Then there is the human literature, across ages, populations and time points.",
+      "silent": false,
+      "slideNumber": 5,
+      "step": 2,
+      "title": "The literature",
+      "phase": "Prelude",
+      "source": "Approved literature flow in qa/literature-flow-refinements-2026-09-08/slide-patch.json; population flags and narrative study annotations, not a fully reviewed literature census",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "concussion-evidence-landscape/3": {
+      "say": "Athletes are an important part of this literature. Injury mechanisms and recovery steps may differ between them and civilians.",
+      "silent": false,
+      "slideNumber": 5,
+      "step": 3,
+      "title": "The literature",
+      "phase": "Prelude",
+      "source": "Approved literature flow in qa/literature-flow-refinements-2026-09-08/slide-patch.json; population flags and narrative study annotations, not a fully reviewed literature census",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "concussion-evidence-landscape/4": {
+      "say": "There is also a substantial literature on children and adolescents. Brain development and recovery may differ.",
+      "silent": false,
+      "slideNumber": 5,
+      "step": 4,
+      "title": "The literature",
+      "phase": "Prelude",
+      "source": "Approved literature flow in qa/literature-flow-refinements-2026-09-08/slide-patch.json; population flags and narrative study annotations, not a fully reviewed literature census",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "concussion-evidence-landscape/5": {
+      "say": "Return to the full human literature before narrowing to adult clinical P C S and P P C S.",
+      "silent": false,
+      "slideNumber": 5,
+      "step": 5,
+      "title": "The literature",
+      "phase": "Prelude",
+      "source": "Source-reviewed clinical literature and physiology method distinctions, qa/ppcs-final-source-audit-2026-09-09; clinical cohorts are primarily civilian, protocols remain planned measurements.",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "concussion-evidence-landscape/6": {
+      "say": "Now focus on adults with persistent symptoms or a clinical P C S diagnosis, primarily recruited in civilian clinical and community settings.",
+      "silent": false,
+      "slideNumber": 5,
+      "step": 6,
+      "title": "The literature",
+      "phase": "Prelude",
+      "source": "Source-reviewed clinical literature and physiology method distinctions, qa/ppcs-final-source-audit-2026-09-09; clinical cohorts are primarily civilian, protocols remain planned measurements.",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "concussion-evidence-landscape/7": {
+      "say": "Within the same population, look at cerebral metabolism and blood flow: glucose uptake, regional metabolites, oxygenation and haemodynamics.",
+      "silent": false,
+      "slideNumber": 5,
+      "step": 7,
+      "title": "The literature",
+      "phase": "Prelude",
+      "source": "Source-reviewed clinical literature and physiology method distinctions, qa/ppcs-final-source-audit-2026-09-09; clinical cohorts are primarily civilian, protocols remain planned measurements.",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "concussion-evidence-landscape/8": {
+      "say": "These publications examine oxygen metabolism and blood flow through measurements of oxygenation, perfusion, vascular responses or oxygen consumption. They measure different parts of this physiology. Protocols describe planned measurements.",
+      "silent": false,
+      "slideNumber": 5,
+      "step": 8,
+      "title": "The literature",
+      "phase": "Prelude",
+      "source": "Source-reviewed clinical literature and physiology method distinctions, qa/ppcs-final-source-audit-2026-09-09; clinical cohorts are primarily civilian, protocols remain planned measurements.",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "concussion-evidence-landscape/9": {
+      "say": "Study Three adds global oxygen consumption and blood flow in adults with persistent symptoms, at rest and during controlled hypoxia.",
+      "silent": false,
+      "slideNumber": 5,
+      "step": 9,
+      "title": "The literature",
+      "phase": "Prelude",
+      "source": "Population-contained primary-source audit: qa/adult-civilian-ppcs-recheck-2026-09-08, including oxygen-evidence-gaps.json; probable eligibility, protocols and completed studies remain distinct",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "concussion-evidence-landscape/10": {
+      "say": "Keep Study Three in view and return to the same adult clinical P C S and P P C S population.",
+      "silent": false,
+      "slideNumber": 5,
+      "step": 10,
+      "title": "The literature",
+      "phase": "Prelude",
+      "source": "Source-reviewed clinical literature and physiology method distinctions, qa/ppcs-final-source-audit-2026-09-09; clinical cohorts are primarily civilian, protocols remain planned measurements.",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "concussion-evidence-landscape/11": {
+      "say": "Now filter this same population for dynamic contrast-enhanced M R I: studies of contrast-tracer transfer and blood volume.",
+      "silent": false,
+      "slideNumber": 5,
+      "step": 11,
+      "title": "The literature",
+      "phase": "Prelude",
+      "source": "Population-contained primary-source audit: qa/adult-civilian-ppcs-recheck-2026-09-08, including oxygen-evidence-gaps.json; probable eligibility, protocols and completed studies remain distinct",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "concussion-evidence-landscape/12": {
+      "say": "Study Two adds regional tracer transfer and blood volume in adults with persistent symptoms, alongside Study Three’s measurements of global oxygen use.",
+      "silent": false,
+      "slideNumber": 5,
+      "step": 12,
+      "title": "The literature",
+      "phase": "Prelude",
+      "source": "Population-contained primary-source audit: qa/adult-civilian-ppcs-recheck-2026-09-08, including oxygen-evidence-gaps.json; probable eligibility, protocols and completed studies remain distinct",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "concussion-evidence-landscape/13": {
+      "say": "Finally, Study One provides p-Brain, the analysis framework for Study Two. Together, these are the three studies in this thesis.",
+      "silent": false,
+      "slideNumber": 5,
+      "step": 13,
+      "title": "The literature",
+      "phase": "Prelude",
+      "source": "Population-contained primary-source audit: qa/adult-civilian-ppcs-recheck-2026-09-08, including oxygen-evidence-gaps.json; probable eligibility, protocols and completed studies remain distinct",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-i/0": {
+      "say": "Study One is p-Brain: the framework that takes us from a dynamic MRI acquisition to quantitative tissue maps.",
+      "silent": false,
+      "slideNumber": 6,
+      "step": 0,
+      "title": "Study I",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-i-bolus-to-voxel/0": {
+      "say": "Let's return to our runner. MRI reconstructs the brain from signals produced by hydrogen nuclei, largely in water and fat. Radiofrequency pulses excite the nuclei, and magnetic-field gradients encode where the signals come from. The contrast agent changes how nearby water responds to MRI, so repeated images let us follow its passage.",
+      "silent": false,
+      "slideNumber": 7,
+      "step": 0,
+      "title": "p-Brain",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-i-bolus-to-voxel/1": {
+      "say": "",
+      "silent": true,
+      "slideNumber": 7,
+      "step": 1,
+      "title": "p-Brain",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "durationSeconds": 1.4,
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-i-bolus-to-voxel/2": {
+      "say": "",
+      "silent": true,
+      "slideNumber": 7,
+      "step": 2,
+      "title": "p-Brain",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "durationSeconds": 1.4,
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-i-bolus-to-voxel/3": {
+      "say": "The contrast agent is gadobutrol, a gadolinium chelate. It changes the relaxation of nearby water protons, producing enhancement in our T one-weighted acquisition. We inject it through a vein in the arm; it passes through the heart and lungs before reaching the brain's arteries.",
+      "silent": false,
+      "slideNumber": 7,
+      "step": 3,
+      "title": "p-Brain",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-i-bolus-to-voxel/4": {
+      "say": "Watch the first passage as the bolus reaches the brain.",
+      "silent": false,
+      "slideNumber": 7,
+      "step": 4,
+      "title": "p-Brain",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-i-bolus-to-voxel/5": {
+      "say": "The blood passes from arteries into smaller vessels, through the vascular bed, and out through the veins. Most contrast follows that route. A small amount crossing into tissue would behave differently, which gives us something to measure.",
+      "silent": false,
+      "slideNumber": 7,
+      "step": 5,
+      "title": "p-Brain",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-i-bolus-to-voxel/6": {
+      "say": "This is a real dynamic acquisition from a participant I scanned. The signal brightens as contrast arrives. We used two boluses, so there are two main passages. At every location, we record how the signal changes over time.",
+      "silent": false,
+      "slideNumber": 7,
+      "step": 6,
+      "title": "p-Brain",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-i-bolus-to-voxel/7": {
+      "say": "Each three-dimensional image is divided into voxels, the volume equivalent of pixels. A voxel contributes one signal value at each time point, combining everything within that small volume.",
+      "silent": false,
+      "slideNumber": 7,
+      "step": 7,
+      "title": "p-Brain",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-i-bolus-to-voxel/8": {
+      "say": "Let's select a voxel in the cortex and look at what lies inside it.",
+      "silent": false,
+      "slideNumber": 7,
+      "step": 8,
+      "title": "p-Brain",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-i-bolus-to-voxel/9": {
+      "say": "This anatomy comes from the H zero one reconstruction of human cortex. A surgical specimen was preserved, imaged by serial electron microscopy, and reconstructed in three dimensions. The anatomy is real; the physiological processes I animate on it are illustrations.",
+      "silent": false,
+      "slideNumber": 7,
+      "step": 9,
+      "title": "p-Brain",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-i-bolus-to-voxel/10": {
+      "say": "Both excitatory and inhibitory neurons fire electrical impulses. Sodium and potassium flowing through channels generate the electrical wave along the axon. At most synapses, calcium entry triggers chemical messenger release. These messengers can make the next neuron more or less likely to fire. Maintaining the ion gradients needed for this signalling costs energy.",
+      "silent": false,
+      "slideNumber": 7,
+      "step": 10,
+      "title": "p-Brain",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-i-bolus-to-voxel/11": {
+      "say": "Blood supplies the oxygen and glucose that support this energy demand. Signals between neurons, glia and vascular cells help adjust local blood flow as activity changes. This link between neural activity and blood supply is called neurovascular coupling.",
+      "silent": false,
+      "slideNumber": 7,
+      "step": 11,
+      "title": "p-Brain",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-i-bolus-to-voxel/12": {
+      "say": "Vessel-associated cells support and regulate the circulation. Pericytes contribute, although this particular reconstructed segment is not independently identified as one. Their effects on calibre depend on their position and type.",
+      "silent": false,
+      "slideNumber": 7,
+      "step": 12,
+      "title": "p-Brain",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-i-bolus-to-voxel/13": {
+      "say": "Microglia survey tissue with fine processes, respond to injury and clear damaged material. They can support repair or contribute to injury, depending on the response and its duration.",
+      "silent": false,
+      "slideNumber": 7,
+      "step": 13,
+      "title": "p-Brain",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-i-bolus-to-voxel/14": {
+      "say": "Oligodendrocytes form myelin, helping signals travel efficiently along axons while also supporting them metabolically.",
+      "silent": false,
+      "slideNumber": 7,
+      "step": 14,
+      "title": "p-Brain",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-i-bolus-to-voxel/15": {
+      "say": "Astrocytes keep the environment around neurons stable, clearing neurotransmitters and regulating potassium. They also use calcium signals within the cell, which can contribute to blood-flow regulation. Their endfeet contact vessels and help maintain the specialised endothelial lining that forms the blood-brain barrier.",
+      "silent": false,
+      "slideNumber": 7,
+      "step": 15,
+      "title": "p-Brain",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-i-bolus-to-voxel/16": {
+      "say": "Here we illustrate contrast passing through a vessel, with a small amount crossing into the surrounding space. An intact blood-brain barrier strongly restricts this agent. The animation shows what escape and diffusion could look like; it does not measure leakage in this specimen.",
+      "silent": false,
+      "slideNumber": 7,
+      "step": 16,
+      "title": "p-Brain",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-i-bolus-to-voxel/17": {
+      "say": "The escaped tracer occupies the space between cells. Some can remain while vascular contrast washes out, and a second bolus adds another contribution. Accumulation depends on delivery, transfer and return, rather than on one property of the vessel alone.",
+      "silent": false,
+      "slideNumber": 7,
+      "step": 17,
+      "title": "p-Brain",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-i-bolus-to-voxel/18": {
+      "say": "At the scanner's scale, all of this is combined within a voxel. We cannot watch individual molecules cross a capillary. We infer their behaviour from the changing signal.",
+      "silent": false,
+      "slideNumber": 7,
+      "step": 18,
+      "title": "p-Brain",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-i-bolus-to-voxel/19": {
+      "say": "We first convert that signal to an estimated concentration, using the acquisition settings and baseline relaxation measurements. This gives the tissue concentration curve, C T. Its peaks and later values contain vascular and possible extravascular contributions. A late tail alone is not proof of leakage.",
+      "silent": false,
+      "slideNumber": 7,
+      "step": 19,
+      "title": "p-Brain",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-i-bolus-to-voxel/20": {
+      "say": "A voxel in a supplying artery gives us an input curve, C A. Comparing the input with the tissue response lets us ask what happened during passage through the tissue. I'll use simplified curves to explain the model, then return to the measurements.",
+      "silent": false,
+      "slideNumber": 7,
+      "step": 20,
+      "title": "p-Brain",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "input-to-tissue-patlak/0": {
+      "say": "Imagine the input passed through unchanged. The tissue curve would be identical. We can build the actual response one contribution at a time.",
+      "silent": false,
+      "slideNumber": 8,
+      "step": 0,
+      "title": "input-to-tissue-patlak",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "input-to-tissue-patlak/1": {
+      "say": "Blood follows paths with different transit times, delaying and broadening the response. The branching diagram illustrates this distribution of passage times.",
+      "silent": false,
+      "slideNumber": 8,
+      "step": 1,
+      "title": "input-to-tissue-patlak",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "input-to-tissue-patlak/2": {
+      "say": "A convolution describes this mixing: delayed copies of the input, added with different weights. This transit kernel builds intuition; it is not fitted in our Patlak analysis. There is also a volume effect. Only a small fraction of a tissue voxel is blood. Averaging its tracer concentration over the whole voxel reduces the height of the curve.",
+      "silent": false,
+      "slideNumber": 8,
+      "step": 2,
+      "title": "input-to-tissue-patlak",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "input-to-tissue-patlak/3": {
+      "say": "If some tracer crosses into tissue and remains during the measurement, successive arrivals add to what is already there. This produces a slower accumulating contribution alongside the vascular passage.",
+      "silent": false,
+      "slideNumber": 8,
+      "step": 3,
+      "title": "input-to-tissue-patlak",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "input-to-tissue-patlak/4": {
+      "say": "The yellow component follows the current input concentration, scaled by epsilon one. The orange tissue curve already contains this contribution.",
+      "silent": false,
+      "slideNumber": 8,
+      "step": 4,
+      "title": "input-to-tissue-patlak",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "input-to-tissue-patlak/5": {
+      "say": "The purple component depends on accumulated input, scaled by epsilon two. Yellow and purple give the orange curve. We want to estimate these two unknown coefficients.",
+      "silent": false,
+      "slideNumber": 8,
+      "step": 5,
+      "title": "input-to-tissue-patlak",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "input-to-tissue-patlak/6": {
+      "say": "Divide every term by the input concentration at that time.",
+      "silent": false,
+      "slideNumber": 8,
+      "step": 6,
+      "title": "input-to-tissue-patlak",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "input-to-tissue-patlak/7": {
+      "say": "In the first term the input cancels. The other term becomes accumulated input divided by current input, multiplied by epsilon two. Keep the original expression in view. On the left is the tissue concentration divided by the current input. On the right, the integral is also divided by the current input. We can give these two ratios simpler names.",
+      "silent": false,
+      "slideNumber": 8,
+      "step": 7,
+      "title": "input-to-tissue-patlak",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "input-to-tissue-patlak/9": {
+      "say": "Each measurement becomes a point in these coordinates. Early points can curve away from a line because transit and mixing remain important.",
+      "silent": false,
+      "slideNumber": 8,
+      "step": 9,
+      "title": "input-to-tissue-patlak",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "input-to-tissue-patlak/10": {
+      "say": "We fit an appropriate late window, where the rapidly exchanging contribution has a stable relationship with the input. Patlak also assumes negligible return of accumulated tracer during that window. A straight-looking fit does not remove the need to check those assumptions.",
+      "silent": false,
+      "slideNumber": 8,
+      "step": 10,
+      "title": "input-to-tissue-patlak",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "input-to-tissue-patlak/11": {
+      "say": "The slope is epsilon two. A steeper slope indicates more accumulation relative to the delivered tracer. That converts the slowly changing part of the tissue curve into a parameter.",
+      "silent": false,
+      "slideNumber": 8,
+      "step": 11,
+      "title": "input-to-tissue-patlak",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "input-to-tissue-patlak/12": {
+      "say": "The intercept is epsilon one, found by extending the fitted line to the vertical axis. It estimates the size of the rapidly reversible contribution under the model's concentration convention.",
+      "silent": false,
+      "slideNumber": 8,
+      "step": 12,
+      "title": "input-to-tissue-patlak",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "input-to-tissue-patlak/13": {
+      "say": "For our analysis, the slope gives K eye, the net influx constant, and the intercept gives V B, the apparent vascular volume. Higher K eye is consistent with greater tracer transfer, but is not a direct measurement of one vessel wall's permeability. In the production analysis we used a sinus-derived effective input, shifted to carotid arrival, with consistent blood and concentration conventions.",
+      "silent": false,
+      "slideNumber": 8,
+      "step": 13,
+      "title": "input-to-tissue-patlak",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "one-voxel-gives-one-fit-what-if-we-repeat-it-everywhere/0": {
+      "say": "We now have two numbers for one voxel. K eye describes net tracer influx, and V B describes the vascular contribution accessible to the tracer.",
+      "silent": false,
+      "slideNumber": 9,
+      "step": 0,
+      "title": "Voxelwise inference",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "one-voxel-gives-one-fit-what-if-we-repeat-it-everywhere/1": {
+      "say": "Repeat the calculation across the brain using the selected input function, and every usable tissue voxel receives its own fitted values.",
+      "silent": false,
+      "slideNumber": 9,
+      "step": 1,
+      "title": "Voxelwise inference",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "one-acquisition-two-patlak-maps/0": {
+      "say": "Those values become images again. Each voxel now represents a model parameter, rather than the original MR brightness.",
+      "silent": false,
+      "slideNumber": 10,
+      "step": 0,
+      "title": "one-acquisition-two-patlak-maps",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "one-acquisition-two-patlak-maps/1": {
+      "say": "This is the K eye map, showing the estimated spatial variation in tracer influx.",
+      "silent": false,
+      "slideNumber": 10,
+      "step": 1,
+      "title": "one-acquisition-two-patlak-maps",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "one-acquisition-two-patlak-maps/2": {
+      "say": "And this is V B. The same acquisition gives a different view of the tissue. Other models, including deconvolution, can extract information about flow and transit time from the concentration curves.",
+      "silent": false,
+      "slideNumber": 10,
+      "step": 2,
+      "title": "one-acquisition-two-patlak-maps",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "slide-16/0": {
+      "say": "This is why I developed p-Brain. I began by writing code to understand the maths, and it grew into an open-source framework for the analysis. The aim is to make the workflow easier to run, inspect and extend. The code is available on GitHub, alongside the documentation.",
+      "silent": false,
+      "slideNumber": 11,
+      "step": 0,
+      "title": "slide-16",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "slide-16/1": {
+      "say": "The base package installs with one command: pip install p-brain. This demonstration shows the setup. Additional model weights and tools depend on the workflow you select.",
+      "silent": false,
+      "slideNumber": 11,
+      "step": 1,
+      "title": "slide-16",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "slide-16/2": {
+      "say": "Once it is installed, the important question is how to adapt it to your own study.",
+      "silent": false,
+      "slideNumber": 11,
+      "step": 2,
+      "title": "slide-16",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "pbrain-modular-framework/0": {
+      "say": "Think of the pipeline as a set of pieces, each responsible for one analysis step.",
+      "silent": false,
+      "slideNumber": 12,
+      "step": 0,
+      "title": "p-Brain · a modular framework",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "pbrain-modular-framework/1": {
+      "say": "They load the images, fit the baseline relaxation parameters, convert signal to concentration, obtain an input function, identify tissue regions and fit the kinetic model. The interfaces connect those steps into a reproducible workflow.",
+      "silent": false,
+      "slideNumber": 12,
+      "step": 1,
+      "title": "p-Brain · a modular framework",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "pbrain-modular-framework/2": {
+      "say": "If your study needs a different method, replace the relevant piece. Your conversion, your tissue regions, or your kinetic model can use the same surrounding workflow. You don't have to rebuild the analysis from the beginning.",
+      "silent": false,
+      "slideNumber": 12,
+      "step": 2,
+      "title": "p-Brain · a modular framework",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "pbrain-modular-framework/3": {
+      "say": "You can also add capabilities alongside the existing modules. The framework can expand with the research question, rather than requiring every study to use the same fixed pipeline.",
+      "silent": false,
+      "slideNumber": 12,
+      "step": 3,
+      "title": "p-Brain · a modular framework",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "pbrain-modular-framework/4": {
+      "say": "Here is one automated input-function module. I trained a convolutional neural network on manually labelled vascular images to identify the regions used for curve extraction. It fits the same interface as the manual and alternative providers.",
+      "silent": false,
+      "slideNumber": 12,
+      "step": 4,
+      "title": "p-Brain · a modular framework",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "pbrain-modular-framework/5": {
+      "say": "This example shows the localised vessel and the curve extracted from it. The weights are available with the project. Performance still depends on the acquisition and population; a successful example does not establish universal robustness.",
+      "silent": false,
+      "slideNumber": 12,
+      "step": 5,
+      "title": "p-Brain · a modular framework",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "pbrain-modular-framework/6": {
+      "say": "The automated piece remains part of the framework, while another study can choose a different input method.",
+      "silent": false,
+      "slideNumber": 12,
+      "step": 6,
+      "title": "p-Brain · a modular framework",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "pbrain-modular-framework/7": {
+      "say": "For example, a study could use cluster analysis to group similar observations when choosing its input function. This illustrates another implementation using the same interface.",
+      "silent": false,
+      "slideNumber": 12,
+      "step": 7,
+      "title": "p-Brain · a modular framework",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "pbrain-input-workflow/0": {
+      "say": "Before analysis, researchers face another problem: different filenames, formats and folder layouts. Someone has to identify which series contains the dynamic images, anatomy and relaxation measurements.",
+      "silent": false,
+      "slideNumber": 13,
+      "step": 0,
+      "title": "p-Brain · from files to analysis",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "pbrain-input-workflow/1": {
+      "say": "Manual setup starts with the input roles and the methods needed for the study. These steps form the path from loading the images to analysis.",
+      "silent": false,
+      "slideNumber": 13,
+      "step": 1,
+      "title": "p-Brain · from files to analysis",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "pbrain-input-workflow/2": {
+      "say": "We first connect each file to its role: the dynamic images, anatomy, relaxation measurements and metadata. This loads the inputs. The method choices come next.",
+      "silent": false,
+      "slideNumber": 13,
+      "step": 2,
+      "title": "p-Brain · from files to analysis",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "pbrain-input-workflow/3": {
+      "say": "Then choose the baseline T one and M zero fit, the signal-to-concentration conversion and the kinetic model. These choices depend on the acquisition and research question. Once configured, the analysis can run.",
+      "silent": false,
+      "slideNumber": 13,
+      "step": 3,
+      "title": "p-Brain · from files to analysis",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "pbrain-input-workflow/4": {
+      "say": "There is an optional local language-model assistant. It reads filenames and acquisition metadata to propose the input mapping. It helps with setup; it does not choose a scientific kinetic model or compute the quantitative results.",
+      "silent": false,
+      "slideNumber": 13,
+      "step": 4,
+      "title": "p-Brain · from files to analysis",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "pbrain-input-workflow/5": {
+      "say": "The assistant proposes which files belong to which roles. You inspect the mapping and correct it if necessary. The confirmation step is important: a plausible suggestion must still correspond to the data you intended to analyse.",
+      "silent": false,
+      "slideNumber": 13,
+      "step": 5,
+      "title": "p-Brain · from files to analysis",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "pbrain-input-workflow/6": {
+      "say": "After confirmation, the approved inputs feed the configured methods. The analysis modules compute the results, and the configuration is recorded. The trained vascular network and this language-model assistant have different jobs.",
+      "silent": false,
+      "slideNumber": 13,
+      "step": 6,
+      "title": "p-Brain · from files to analysis",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "pbrain-paper-patient-study/0": {
+      "say": "How might someone else use this? Imagine a paper analysing a group of patients with p-Brain.",
+      "silent": false,
+      "slideNumber": 14,
+      "step": 0,
+      "title": "p-Brain · a patient-study paper",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "pbrain-paper-patient-study/1": {
+      "say": "The authors describe a custom input function and tissue regions chosen for their clinical question.",
+      "silent": false,
+      "slideNumber": 14,
+      "step": 1,
+      "title": "p-Brain · a patient-study paper",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "pbrain-paper-patient-study/2": {
+      "say": "Those choices become reusable modules, shared alongside the configuration and software version.",
+      "silent": false,
+      "slideNumber": 14,
+      "step": 2,
+      "title": "p-Brain · a patient-study paper",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "pbrain-paper-patient-study/3": {
+      "say": "Another group can inspect the implementation and apply it to suitable data. Sharing the actual method makes the paper easier to reproduce and extend, while keeping the rest of the workflow consistent.",
+      "silent": false,
+      "slideNumber": 14,
+      "step": 3,
+      "title": "p-Brain · a patient-study paper",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "pbrain-paper-to-module/0": {
+      "say": "The contribution could instead be a new kinetic model.",
+      "silent": false,
+      "slideNumber": 15,
+      "step": 0,
+      "title": "p-Brain · share the method",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "pbrain-paper-to-module/1": {
+      "say": "The authors explain the model in their paper and describe how they used it within p-Brain.",
+      "silent": false,
+      "slideNumber": 15,
+      "step": 1,
+      "title": "p-Brain · share the method",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "pbrain-paper-to-module/2": {
+      "say": "They package the implementation as a module with defined inputs and outputs.",
+      "silent": false,
+      "slideNumber": 15,
+      "step": 2,
+      "title": "p-Brain · share the method",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "pbrain-paper-to-module/3": {
+      "say": "Other researchers can then use the model without reconstructing it from a methods paragraph. This is the kind of practical reuse I hope the framework supports.",
+      "silent": false,
+      "slideNumber": 15,
+      "step": 3,
+      "title": "p-Brain · share the method",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "pbrain-publication/0": {
+      "say": "That work led to this publication in Magnetic Resonance in Medicine. We checked the estimators on identical inputs, and compared the workflows across twelve healthy controls. Agreement was strong. The workflow comparison used a shared input function, so it does not independently validate every input-selection decision. It establishes agreement with the reference within the tested setting, while broader generalisation remains to be established.",
+      "silent": false,
+      "slideNumber": 16,
+      "step": 0,
+      "title": "pbrain-publication",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "voxelwise-p-brain-outputs/0": {
+      "say": "These are actual outputs. The first three rows show flow, blood volume and transit time from deconvolution. The bottom two show K eye and V B from Patlak. Beside them are anatomical summaries. Segmentation lets us compare corresponding regions across people whose brains have different shapes. For Study Two, we used seven broad tissue compartments and eighty-five parcels.",
+      "silent": false,
+      "slideNumber": 17,
+      "step": 0,
+      "title": "voxelwise-p-brain-outputs",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-ii/0": {
+      "say": "Study Two applies that analysis to adults with persistent post-concussion symptoms, asking about tracer transfer and the vascular space accessible to contrast.",
+      "silent": false,
+      "slideNumber": 18,
+      "step": 0,
+      "title": "Study II",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "repcon-trial-design/0": {
+      "say": "The patients came from REPCon, a larger randomised rehabilitation trial. Seventy adults were enrolled. My colleagues and I carried out the MRI examinations within a programme of clinical assessment, questionnaires and exercise testing.",
+      "silent": false,
+      "slideNumber": 19,
+      "step": 0,
+      "title": "REPCon cohort · trial design",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "repcon-trial-design/1": {
+      "say": "We recruited adults with documented mild traumatic brain injury and symptoms lasting more than four weeks. Participants also needed to be proficient in Danish.",
+      "silent": false,
+      "slideNumber": 19,
+      "step": 1,
+      "title": "REPCon cohort · trial design",
+      "phase": "Study II",
+      "source": "User-supplied REPCon eligibility table, reproduced in engine/js/repcon-eligibility.js; short spoken introduction with full criteria visible",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "repcon-trial-design/2": {
+      "say": "We excluded more severe injuries, relevant medical and MRI contraindications, and professional or elite athletes. Participants had to be available for twelve consecutive weeks.",
+      "silent": false,
+      "slideNumber": 19,
+      "step": 2,
+      "title": "REPCon cohort · trial design",
+      "phase": "Study II",
+      "source": "User-supplied REPCon eligibility table, reproduced in engine/js/repcon-eligibility.js; short spoken introduction with full criteria visible",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "repcon-trial-design/3": {
+      "say": "Participants were scheduled for baseline measurements, including separate contrast and hypoxia MRI sessions.",
+      "silent": false,
+      "slideNumber": 19,
+      "step": 3,
+      "title": "REPCon cohort · trial design",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "repcon-trial-design/4": {
+      "say": "The Buffalo Concussion Bike Test increases workload while monitoring heart rate, symptoms and exertion. It provides information about exercise tolerance and helps guide an individual exercise prescription.",
+      "silent": false,
+      "slideNumber": 19,
+      "step": 4,
+      "title": "REPCon cohort · trial design",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "repcon-trial-design/5": {
+      "say": "The wider trial randomly assigns participants to two groups.",
+      "silent": false,
+      "slideNumber": 19,
+      "step": 5,
+      "title": "REPCon cohort · trial design",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "repcon-trial-design/6": {
+      "say": "Both groups contain people with persistent symptoms. The trial's comparison arm is therefore different from the healthy controls used in our imaging analyses.",
+      "silent": false,
+      "slideNumber": 19,
+      "step": 6,
+      "title": "REPCon cohort · trial design",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "repcon-trial-design/7": {
+      "say": "The comparison group continues usual activity and care. The training group also receives tailored aerobic exercise below a substantial symptom-provocation threshold.",
+      "silent": false,
+      "slideNumber": 19,
+      "step": 7,
+      "title": "REPCon cohort · trial design",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "repcon-trial-design/8": {
+      "say": "The intervention lasts twelve weeks, with supervised sessions twice a week. The prescription can be adjusted as exercise tolerance changes.",
+      "silent": false,
+      "slideNumber": 19,
+      "step": 8,
+      "title": "REPCon cohort · trial design",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "repcon-trial-design/9": {
+      "say": "Repeat assessments allow the wider trial to examine changes after the intervention.",
+      "silent": false,
+      "slideNumber": 19,
+      "step": 9,
+      "title": "REPCon cohort · trial design",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "repcon-trial-design/10": {
+      "say": "My thesis analyses use the baseline measurements. They compare patients with healthy controls and do not test whether rehabilitation worked.",
+      "silent": false,
+      "slideNumber": 19,
+      "step": 10,
+      "title": "REPCon cohort · trial design",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "repcon-trial-design/11": {
+      "say": "So we return to the point before training and combine the trial arms for the imaging comparisons.",
+      "silent": false,
+      "slideNumber": 19,
+      "step": 11,
+      "title": "REPCon cohort · trial design",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "repcon-trial-design/12": {
+      "say": "Ten of the seventy participants did not attend baseline MRI, leaving sixty attendees. Not everyone completed both imaging sessions. Let's first look at the people who came to baseline.",
+      "silent": false,
+      "slideNumber": 19,
+      "step": 12,
+      "title": "REPCon cohort · trial design",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "baseline-ppcs-profile/0": {
+      "say": "The average age was about forty, with a range from twenty-three to sixty-six. The distribution makes the variation behind that average visible.",
+      "silent": false,
+      "slideNumber": 20,
+      "step": 0,
+      "title": "Clinical profile",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "baseline-ppcs-profile/1": {
+      "say": "",
+      "silent": true,
+      "slideNumber": 20,
+      "step": 1,
+      "title": "Clinical profile",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "durationSeconds": 1.4,
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "baseline-ppcs-profile/2": {
+      "say": "Forty-eight of the sixty participants were female: eighty percent. This was the composition of the recruited sample, rather than a sex balance selected in advance.",
+      "silent": false,
+      "slideNumber": 20,
+      "step": 2,
+      "title": "Clinical profile",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "baseline-ppcs-profile/3": {
+      "say": "",
+      "silent": true,
+      "slideNumber": 20,
+      "step": 3,
+      "title": "Clinical profile",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "durationSeconds": 1.4,
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "baseline-ppcs-profile/4": {
+      "say": "The mean time since the most recent injury was about thirty-seven months, just over three years. The range extended to eighteen years.",
+      "silent": false,
+      "slideNumber": 20,
+      "step": 4,
+      "title": "Clinical profile",
+      "phase": "Study II",
+      "source": "Mean 37.333 months from the 60 baseline attendees in decks/data/repcon-demographics.json; full range 3–216 months",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "baseline-ppcs-profile/5": {
+      "say": "The logarithmic scale makes that long range readable. These participants shared persistent symptoms, but were at very different times since injury.",
+      "silent": false,
+      "slideNumber": 20,
+      "step": 5,
+      "title": "Clinical profile",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "baseline-ppcs-profile/6": {
+      "say": "Most reported one concussion, with a smaller number reporting repeated injuries. The count ranged from one to five.",
+      "silent": false,
+      "slideNumber": 20,
+      "step": 6,
+      "title": "Clinical profile",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "baseline-ppcs-profile/7": {
+      "say": "Keep that profile in mind: adults, predominantly women, often years after injury. It affects which other populations provide the closest comparison and how broadly we can generalise the results.",
+      "silent": false,
+      "slideNumber": 20,
+      "step": 7,
+      "title": "Clinical profile",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "rivermead-questionnaire/0": {
+      "say": "We assessed symptom burden with the Rivermead Post-Concussion Symptoms Questionnaire, or R P Q. It asks about sixteen symptoms during the previous twenty-four hours, relative to the period before injury.",
+      "silent": false,
+      "slideNumber": 21,
+      "step": 0,
+      "title": "Symptoms at baseline",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "rivermead-questionnaire/1": {
+      "say": "The first three items cover headache, dizziness, and nausea or vomiting. The response describes the degree of the problem, rather than simply whether the symptom exists.",
+      "silent": false,
+      "slideNumber": 21,
+      "step": 1,
+      "title": "Symptoms at baseline",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "rivermead-questionnaire/2": {
+      "say": "The remaining items include fatigue, disturbed sleep, irritability, poor concentration and visual or sensory symptoms. A response of one means no worse than before injury, and is treated as zero in conventional symptom scoring. The comparison with the person's previous state is essential.",
+      "silent": false,
+      "slideNumber": 21,
+      "step": 2,
+      "title": "Symptoms at baseline",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "rivermead-questionnaire/3": {
+      "say": "This plot shows the recorded full-sixteen sums in our baseline dataset. The mean is twenty-seven point seven and the median twenty-seven and a half, with substantial variation. Two people with the same total can have different symptom patterns. The questionnaire describes reported burden; it does not identify the underlying biological mechanism.",
+      "silent": false,
+      "slideNumber": 21,
+      "step": 3,
+      "title": "Symptoms at baseline",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-ii-iii-cohorts/0": {
+      "say": "Attendance does not guarantee a usable quantitative measurement. We reviewed acquisition completeness and signal quality separately for the two protocols.",
+      "silent": false,
+      "slideNumber": 22,
+      "step": 0,
+      "title": "Who entered Studies II and III",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-ii-iii-cohorts/1": {
+      "say": "The final Study Two sample contained forty-six patients and fifteen controls. Study Three included forty-five patients and forty-seven controls at session level, with smaller numbers for particular measurements.",
+      "silent": false,
+      "slideNumber": 22,
+      "step": 1,
+      "title": "Who entered Studies II and III",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-ii-iii-cohorts/2": {
+      "say": "This is a usable tissue curve. Its bolus passages and later behaviour are sufficiently stable for kinetic modelling.",
+      "silent": false,
+      "slideNumber": 22,
+      "step": 2,
+      "title": "Who entered Studies II and III",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-ii-iii-cohorts/3": {
+      "say": "That stability matters because we are estimating small, slow changes. An acquisition artefact could otherwise be mistaken for tracer accumulation.",
+      "silent": false,
+      "slideNumber": 22,
+      "step": 3,
+      "title": "Who entered Studies II and III",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-ii-iii-cohorts/4": {
+      "say": "Some scans contained abrupt distortions like these. They could not support reliable concentration estimates and were excluded. A clearly visible artefact justifies rejecting a measurement, but it does not eliminate the possibility of selection bias in the retained sample.",
+      "silent": false,
+      "slideNumber": 22,
+      "step": 4,
+      "title": "Who entered Studies II and III",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-ii-iii-cohorts/5": {
+      "say": "The contrast flow was sixty baseline attendees, fifty-seven completed acquisitions, and forty-six retained datasets. For hypoxia, fifty-two completed the session and forty-five remained after session-level review. Further exclusions depend on the metric and, for reactivity, sufficient desaturation.",
+      "silent": false,
+      "slideNumber": 22,
+      "step": 5,
+      "title": "Who entered Studies II and III",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-ii-pbrain-cohort/0": {
+      "say": "We applied the contrast analysis to each retained scan, producing the K eye and V B maps.",
+      "silent": false,
+      "slideNumber": 23,
+      "step": 0,
+      "title": "Study II · from cohort to maps",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-ii-pbrain-cohort/1": {
+      "say": "We then summarised the maps within corresponding tissue compartments and parcels, and compared patients with controls using the adjusted models.",
+      "silent": false,
+      "slideNumber": 23,
+      "step": 1,
+      "title": "Study II · from cohort to maps",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "seven-tissues-two-spatial-signatures/0": {
+      "say": "We first examined seven broad tissue compartments. In cortical grey matter, K eye was higher and V B lower in patients. Both comparisons remained significant after false-discovery-rate correction. These are different parameters: one describes net tracer influx, the other the apparent vascular contribution.",
+      "silent": false,
+      "slideNumber": 24,
+      "step": 0,
+      "title": "Tissue-level results",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "seven-tissues-two-spatial-signatures/1": {
+      "say": "In subcortical grey matter, V B was lower as well, while K eye showed no significant difference. The vascular-volume finding already extends beyond the cortex.",
+      "silent": false,
+      "slideNumber": 24,
+      "step": 1,
+      "title": "Tissue-level results",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "seven-tissues-two-spatial-signatures/2": {
+      "say": "The brainstem shows a similar pattern: lower V B, with no significant K eye difference.",
+      "silent": false,
+      "slideNumber": 24,
+      "step": 2,
+      "title": "Tissue-level results",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "seven-tissues-two-spatial-signatures/3": {
+      "say": "In cerebellar grey matter, the vascular-volume reduction is again present. Its K eye comparison does not survive correction.",
+      "silent": false,
+      "slideNumber": 24,
+      "step": 3,
+      "title": "Tissue-level results",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "seven-tissues-two-spatial-signatures/4": {
+      "say": "Cerebral white matter also has lower V B. K eye points higher but does not meet the corrected threshold. That result remains uncertain.",
+      "silent": false,
+      "slideNumber": 24,
+      "step": 4,
+      "title": "Tissue-level results",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "seven-tissues-two-spatial-signatures/5": {
+      "say": "Cerebellar white matter follows the broader pattern of lower V B. The influx differences have been much less widespread.",
+      "silent": false,
+      "slideNumber": 24,
+      "step": 5,
+      "title": "Tissue-level results",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "seven-tissues-two-spatial-signatures/6": {
+      "say": "At the grey-white interface, both higher K eye and lower V B survive correction. This boundary deserves care because partial volume and registration can affect it. Across the seven compartments, the supported influx elevation is restricted to cortex and this interface, while V B is lower throughout.",
+      "silent": false,
+      "slideNumber": 24,
+      "step": 6,
+      "title": "Tissue-level results",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "what-happens-when-we-test-every-parcel/0": {
+      "say": "Could those broad averages conceal a more local pattern? We repeated the comparisons across eighty-five anatomical parcels. The slice view shows where each tested region lies.",
+      "silent": false,
+      "slideNumber": 25,
+      "step": 0,
+      "title": "Parcelwise results",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "what-happens-when-we-test-every-parcel/1": {
+      "say": "For V B, blue indicates a lower estimate in patients. Eighty-three of the eighty-five parcels point in that direction. This describes directional consistency before selecting individual statistically significant comparisons.",
+      "silent": false,
+      "slideNumber": 25,
+      "step": 1,
+      "title": "Parcelwise results",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "what-happens-when-we-test-every-parcel/2": {
+      "say": "After false-discovery-rate correction, fifty-eight parcels retain significant reductions in the primary analysis. Grey does not mean zero blood volume or identical groups; it means that comparison did not meet the corrected threshold.",
+      "silent": false,
+      "slideNumber": 25,
+      "step": 2,
+      "title": "Parcelwise results",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "what-happens-when-we-test-every-parcel/3": {
+      "say": "The K eye pattern is more mixed. Fifty-six parcels point higher and twenty-nine lower. The direction is less uniform than for V B.",
+      "silent": false,
+      "slideNumber": 25,
+      "step": 3,
+      "title": "Parcelwise results",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "what-happens-when-we-test-every-parcel/4": {
+      "say": "After correction, no individual K eye parcel meets the threshold. That does not cancel the broad tissue result. A modest distributed difference may be easier to estimate across a larger tissue compartment than within many smaller, noisier regions.",
+      "silent": false,
+      "slideNumber": 25,
+      "step": 4,
+      "title": "Parcelwise results",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "the-submitted-tissue-result/0": {
+      "say": "These are the tissue-level results together. The upper panel shows the more restricted K eye elevation; the lower panel shows the widespread V B reduction. We also tested associations with self-reported symptoms and fatigue within the patient group. Those associations did not survive correction. The group differences therefore should not be presented as established measures of an individual's symptom severity.",
+      "silent": false,
+      "slideNumber": 26,
+      "step": 0,
+      "title": "the-submitted-tissue-result",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "the-parcel-result-preserves-the-two-spatial-signatures/0": {
+      "say": "The spatial maps make the contrast between the two findings clear. The vascular-volume result is widespread; the influx result is weaker at the parcel scale. These are model-based estimates. They do not directly count capillaries or reveal which cellular feature of the barrier changed.",
+      "silent": false,
+      "slideNumber": 27,
+      "step": 0,
+      "title": "the-parcel-result-preserves-the-two-spatial-signatures",
+      "phase": "Study II",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-iii/0": {
+      "say": "Study Three asks a complementary question: how much oxygen does the brain consume, and what happens when oxygen availability falls?",
+      "silent": false,
+      "slideNumber": 28,
+      "step": 0,
+      "title": "Study III",
+      "phase": "Study III",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-iii-capillary-oxygen/0": {
+      "say": "Return to the vessel within the tissue. Oxygen enters with arterial blood and leaves with venous blood. Some is extracted along the way by the surrounding tissue.",
+      "silent": false,
+      "slideNumber": 29,
+      "step": 0,
+      "title": "Measurement model",
+      "phase": "Study III",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-iii-capillary-oxygen/1": {
+      "say": "If we know the oxygen content on both sides and the blood flow, a mass balance tells us how much oxygen was consumed. Under stable conditions, consumption equals flow multiplied by the arterial-venous content difference.",
+      "silent": false,
+      "slideNumber": 29,
+      "step": 1,
+      "title": "Measurement model",
+      "phase": "Study III",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-iii-capillary-oxygen/2": {
+      "say": "We cannot measure this for each tiny vessel with our protocol. Instead, we estimate the balance globally using the large vessels supplying and draining the brain. That is an MRI implementation of the Fick principle.",
+      "silent": false,
+      "slideNumber": 29,
+      "step": 2,
+      "title": "Measurement model",
+      "phase": "Study III",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-iii-fick-brain/0": {
+      "say": "The estimate combines three measurements and an assumption about haemoglobin. We can build it one term at a time.",
+      "silent": false,
+      "slideNumber": 30,
+      "step": 0,
+      "title": "study-iii-fick-brain",
+      "phase": "Study III",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-iii-fick-brain/1": {
+      "say": "The pulse oximeter on the finger measures peripheral saturation, S P O two. We use it as an estimate of arterial saturation, S A O two.",
+      "silent": false,
+      "slideNumber": 30,
+      "step": 1,
+      "title": "study-iii-fick-brain",
+      "phase": "Study III",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-iii-fick-brain/2": {
+      "say": "Susceptibility-based oximetry estimates venous saturation in the superior sagittal sinus, using the magnetic difference between oxygenated and deoxygenated haemoglobin. Subtracting venous from arterial saturation gives the saturation drop across the circulation. Combined with haemoglobin concentration, this estimates the oxygen content removed from each unit of blood.",
+      "silent": false,
+      "slideNumber": 30,
+      "step": 2,
+      "title": "study-iii-fick-brain",
+      "phase": "Study III",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-iii-fick-brain/3": {
+      "say": "Phase-contrast MRI measures inflow through the two internal carotid arteries and the basilar artery. We normalise their total flow to brain mass and combine it with haemoglobin concentration. In this study haemoglobin was a fixed population value, rather than an individual blood measurement.",
+      "silent": false,
+      "slideNumber": 30,
+      "step": 3,
+      "title": "study-iii-fick-brain",
+      "phase": "Study III",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-iii-fick-brain/4": {
+      "say": "The product is C M R O two: the cerebral metabolic rate of oxygen. It estimates oxygen use from flow and the arterial-venous difference. Haemoglobin is expressed in oxygen-binding units, and saturations enter as fractions. The sinus measurement is a proxy for venous oxygenation, so this remains a global estimate with assumptions.",
+      "silent": false,
+      "slideNumber": 30,
+      "step": 4,
+      "title": "study-iii-fick-brain",
+      "phase": "Study III",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "study-iii-fick-brain/5": {
+      "say": "After measuring at normoxia, we lower the oxygen in the inspired gas through a controlled delivery system and face mask. We aim for a saturation of approximately eighty percent. This challenges the brain to compensate for reduced oxygen availability, while we measure flow and oxygen use again.",
+      "silent": false,
+      "slideNumber": 30,
+      "step": 5,
+      "title": "study-iii-fick-brain",
+      "phase": "Study III",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "a-controlled-descent-not-a-binary-condition/0": {
+      "say": "This trace shows the measured fall in saturation. The central line represents the cohort median, with bands showing variation between participants. The target and achieved saturation are different quantities. The analysis models the repeated measurements against each participant's achieved saturation and tests whether that relationship differs between groups. This accounts for differences in challenge size, but not every influence on physiology. Ventilation and carbon dioxide can also change during hypoxia, and the measurements depend on the timing and stability of the gas exposure.",
+      "silent": false,
+      "slideNumber": 31,
+      "step": 0,
+      "title": "Controlled hypoxia",
+      "phase": "Study III",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "was-the-deficit-delivery-or-oxygen-use/0": {
+      "say": "Start with the top row. Resting global blood flow did not show a significant group difference. Both groups increased flow during hypoxia, and we did not detect a difference in that response. In the middle row, resting oxygen consumption was lower in patients. The age- and sex-adjusted difference was about seventeen micromoles per hundred grams per minute, approximately twelve percent of the control mean. During hypoxia, patients also showed a greater fall in oxygen consumption relative to their desaturation. The bottom row adds a regional measurement: lactate from spectroscopy in the precuneus. Lactate reflects the balance of production, oxidation and transport; it is not a specific marker of oxygen running out. We found no significant group difference at rest or in reactivity, with fewer controls contributing to spectroscopy. These results point to a difference in global oxygen use, without establishing whether the cause lies in exchange, cellular metabolism or demand. A similar bulk blood-flow response does not prove that capillary oxygen delivery or neurovascular coupling is normal.",
+      "silent": false,
+      "slideNumber": 32,
+      "step": 0,
+      "title": "Physiological results",
+      "phase": "Study III",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "did-lower-oxygen-use-track-pulse-intolerance/0": {
+      "say": "We also examined differences within the patient group using the symptom-limited bike test. Exercise intolerance was associated with lower resting oxygen consumption, with an adjusted difference of about twenty micromoles per hundred grams per minute. We did not detect a subgroup difference in oxygen-metabolism reactivity. This was a secondary, uncorrected comparison that needs confirmation. The association does not establish whether reduced oxygen use contributes to exercise intolerance, or whether both reflect a shared upstream process. It also does not diagnose an autonomic disorder.",
+      "silent": false,
+      "slideNumber": 33,
+      "step": 0,
+      "title": "Exercise tolerance",
+      "phase": "Study III",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "conclusion/0": {
+      "say": "To conclude, there are two main findings, and a shared set of questions about what they mean.",
+      "silent": false,
+      "slideNumber": 34,
+      "step": 0,
+      "title": "Conclusion",
+      "phase": "Conclusion",
+      "source": "Final reviewed live-deck topic statements; both submitted manuscripts, Appendix A and primary-source review in qa/conclusion-topic-flow-2026-09-08/sources/",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "three-passes-one-brain/0": {
+      "say": "",
+      "silent": true,
+      "slideNumber": 35,
+      "step": 0,
+      "title": "Main findings",
+      "phase": "Conclusion",
+      "source": "Final reviewed live-deck topic statements; both submitted manuscripts, Appendix A and primary-source review in qa/conclusion-topic-flow-2026-09-08/sources/",
+      "durationSeconds": 1.4,
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "three-passes-one-brain/1": {
+      "say": "So, what did we find? Brain blood volume accessible to the tracer was lower throughout the brain. The increase in blood-brain barrier influx was more restricted, to cortical grey matter and the grey-white matter interface.",
+      "silent": false,
+      "slideNumber": 35,
+      "step": 1,
+      "title": "Main findings",
+      "phase": "Conclusion",
+      "source": "Final reviewed live-deck topic statements; both submitted manuscripts, Appendix A and primary-source review in qa/conclusion-topic-flow-2026-09-08/sources/",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "three-passes-one-brain/2": {
+      "say": "We also found lower global oxygen consumption at rest, and poorer maintenance during hypoxia, with preserved resting global blood flow. These were separately analysed samples with different control groups.",
+      "silent": false,
+      "slideNumber": 35,
+      "step": 2,
+      "title": "Main findings",
+      "phase": "Conclusion",
+      "source": "Final reviewed live-deck topic statements; both submitted manuscripts, Appendix A and primary-source review in qa/conclusion-topic-flow-2026-09-08/sources/",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "oxygen-reserve-interpretation/0": {
+      "say": "",
+      "silent": true,
+      "slideNumber": 36,
+      "step": 0,
+      "title": "CMRO₂ · discussion",
+      "phase": "Conclusion",
+      "source": "Final reviewed live-deck topic statements; both submitted manuscripts, Appendix A and primary-source review in qa/conclusion-topic-flow-2026-09-08/sources/",
+      "durationSeconds": 1.4,
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "oxygen-reserve-interpretation/1": {
+      "say": "A lower resting C M R O two in isolation is ambiguous: it could reflect either reduced oxygen-use capacity or reduced demand.",
+      "silent": false,
+      "slideNumber": 36,
+      "step": 1,
+      "title": "CMRO₂ · discussion",
+      "phase": "Conclusion",
+      "source": "Final reviewed live-deck topic statements; both submitted manuscripts, Appendix A and primary-source review in qa/conclusion-topic-flow-2026-09-08/sources/",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "oxygen-reserve-interpretation/2": {
+      "say": "Under hypoxia, C M R O two falls further despite increased global C B F. Reduced demand and limited oxygen-use capacity could both contribute; these measurements cannot separate their contributions.",
+      "silent": false,
+      "slideNumber": 36,
+      "step": 2,
+      "title": "CMRO₂ · discussion",
+      "phase": "Conclusion",
+      "source": "Final reviewed live-deck topic statements; both submitted manuscripts, Appendix A and primary-source review in qa/conclusion-topic-flow-2026-09-08/sources/",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "oxygen-reserve-interpretation/3": {
+      "say": "One candidate is impaired oxidative metabolism. In mice, microglia are linked to reduced pyruvate dehydrogenase activity. We did not measure mitochondrial function directly.",
+      "silent": false,
+      "slideNumber": 36,
+      "step": 3,
+      "title": "CMRO₂ · discussion",
+      "phase": "Conclusion",
+      "source": "Final reviewed live-deck topic statements; both submitted manuscripts, Appendix A and primary-source review in qa/conclusion-topic-flow-2026-09-08/sources/",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "oxygen-reserve-interpretation/4": {
+      "say": "Our lactate measurement cannot locate the bottleneck either. Concentration alone does not tell us about lactate transport, oxidation or the astrocyte-neuron shuttle.",
+      "silent": false,
+      "slideNumber": 36,
+      "step": 4,
+      "title": "CMRO₂ · discussion",
+      "phase": "Conclusion",
+      "source": "Final reviewed live-deck topic statements; both submitted manuscripts, Appendix A and primary-source review in qa/conclusion-topic-flow-2026-09-08/sources/",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "vascular-interpretation/0": {
+      "say": "",
+      "silent": true,
+      "slideNumber": 37,
+      "step": 0,
+      "title": "BBB · discussion",
+      "phase": "Conclusion",
+      "source": "Final reviewed live-deck topic statements; both submitted manuscripts, Appendix A and primary-source review in qa/conclusion-topic-flow-2026-09-08/sources/",
+      "durationSeconds": 1.4,
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "vascular-interpretation/1": {
+      "say": "For the vascular findings, lower blood volume could reflect altered tone, recruitment or capillary density. The scan cannot distinguish those possibilities.",
+      "silent": false,
+      "slideNumber": 37,
+      "step": 1,
+      "title": "BBB · discussion",
+      "phase": "Conclusion",
+      "source": "Final reviewed live-deck topic statements; both submitted manuscripts, Appendix A and primary-source review in qa/conclusion-topic-flow-2026-09-08/sources/",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "vascular-interpretation/2": {
+      "say": "Global flow also does not tell us how effectively blood exchanges oxygen with tissue. Uneven capillary transit is one proposed explanation.",
+      "silent": false,
+      "slideNumber": 37,
+      "step": 2,
+      "title": "BBB · discussion",
+      "phase": "Conclusion",
+      "source": "Final reviewed live-deck topic statements; both submitted manuscripts, Appendix A and primary-source review in qa/conclusion-topic-flow-2026-09-08/sources/",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "vascular-interpretation/3": {
+      "say": "Inflammation and repair may reshape the vascular-glial interface. In mice, microglia seal leaks while engulfing detached astrocytes. The chronic human consequences remain uncertain.",
+      "silent": false,
+      "slideNumber": 37,
+      "step": 3,
+      "title": "BBB · discussion",
+      "phase": "Conclusion",
+      "source": "Final reviewed live-deck topic statements; both submitted manuscripts, Appendix A and primary-source review in qa/conclusion-topic-flow-2026-09-08/sources/",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "capillary-radius-plausibility/0": {
+      "say": "",
+      "silent": true,
+      "slideNumber": 38,
+      "step": 0,
+      "title": "CMRO₂ and blood volume",
+      "phase": "Conclusion",
+      "source": "Final reviewed live-deck topic statements; both submitted manuscripts, Appendix A and primary-source review in qa/conclusion-topic-flow-2026-09-08/sources/",
+      "durationSeconds": 1.4,
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "capillary-radius-plausibility/1": {
+      "say": "Could capillary geometry connect the findings? In this simplified model, about fifteen percent smaller radius corresponds to the extraction difference, and roughly twelve percent lower oxygen use at equal flow and arterial oxygen content.",
+      "silent": false,
+      "slideNumber": 38,
+      "step": 1,
+      "title": "CMRO₂ and blood volume",
+      "phase": "Conclusion",
+      "source": "Final reviewed live-deck topic statements; both submitted manuscripts, Appendix A and primary-source review in qa/conclusion-topic-flow-2026-09-08/sources/",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "capillary-radius-plausibility/2": {
+      "say": "Because volume scales with radius squared, the model predicts about twenty-seven percent less capillary blood volume, comparable in scale to the twenty percent DCE reduction.",
+      "silent": false,
+      "slideNumber": 38,
+      "step": 2,
+      "title": "CMRO₂ and blood volume",
+      "phase": "Conclusion",
+      "source": "Final reviewed live-deck topic statements; both submitted manuscripts, Appendix A and primary-source review in qa/conclusion-topic-flow-2026-09-08/sources/",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "capillary-radius-plausibility/3": {
+      "say": "This is a plausibility calculation. We did not measure capillary radius, and this does not establish what caused either finding.",
+      "silent": false,
+      "slideNumber": 38,
+      "step": 3,
+      "title": "CMRO₂ and blood volume",
+      "phase": "Conclusion",
+      "source": "Final reviewed live-deck topic statements; both submitted manuscripts, Appendix A and primary-source review in qa/conclusion-topic-flow-2026-09-08/sources/",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "recovery-questions/0": {
+      "say": "",
+      "silent": true,
+      "slideNumber": 39,
+      "step": 0,
+      "title": "Clinical meaning",
+      "phase": "Conclusion",
+      "source": "Final reviewed live-deck topic statements; both submitted manuscripts, Appendix A and primary-source review in qa/conclusion-topic-flow-2026-09-08/sources/",
+      "durationSeconds": 1.4,
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "recovery-questions/1": {
+      "say": "Neither study gave a simple marker of overall symptom severity. Lower resting oxygen consumption was associated with exercise intolerance, but that was an exploratory, uncorrected result. It needs replication before clinical use.",
+      "silent": false,
+      "slideNumber": 39,
+      "step": 1,
+      "title": "Clinical meaning",
+      "phase": "Conclusion",
+      "source": "Final reviewed live-deck topic statements; both submitted manuscripts, Appendix A and primary-source review in qa/conclusion-topic-flow-2026-09-08/sources/",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "recovery-questions/2": {
+      "say": "The next step is to follow these processes during recovery, with well-matched controls and direct mechanistic measurements. Our cross-sectional findings cannot show which change comes first, or whether changing it improves symptoms.",
+      "silent": false,
+      "slideNumber": 39,
+      "step": 2,
+      "title": "Clinical meaning",
+      "phase": "Conclusion",
+      "source": "Final reviewed live-deck topic statements; both submitted manuscripts, Appendix A and primary-source review in qa/conclusion-topic-flow-2026-09-08/sources/",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "take-home/0": {
+      "say": "Thank you for listening.",
+      "silent": false,
+      "slideNumber": 40,
+      "step": 0,
+      "title": "take-home",
+      "phase": "Conclusion",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    },
+    "input-to-tissue-patlak/8": {
+      "say": "The equation has the form Y equals C plus M X. Y is the tissue-to-input ratio; X is accumulated input divided by current input.",
+      "silent": false,
+      "slideNumber": 8,
+      "step": 8,
+      "title": "input-to-tissue-patlak",
+      "phase": "Study I",
+      "source": "Reviewed Voice.m4a rehearsal; substantive corrections documented in phd_voice_review_2026-09-07",
+      "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+      "audioStatus": "ready"
+    }
+  },
+  "voice": {
+    "displayName": "Your documentary narration",
+    "provider": "local",
+    "engine": "mlx-qwen3-tts-1.7b",
+    "precision": "bf16",
+    "seed": 7,
+    "deterministic": true,
+    "outputGainDb": -1.5
+  },
+  "timeline": {
+    "audio": "assets/defense/narration/natural/defence-natural-9ecd9fc7b41c9083.m4a",
+    "durationSeconds": 2487.3,
+    "sourceDurationSeconds": 2487.3,
+    "pitchPreservingTempo": 1,
+    "cues": [
+      {
+        "route": "phd-defence-10-september-2026/0",
+        "atSeconds": 0.0,
+        "speechAtSeconds": 0.0,
+        "speechEndSeconds": 37.52,
+        "anchor": "",
+        "timingMethod": "page-turn-on-continuing-audio; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "the-work-in-one-view/0",
+        "atSeconds": 1.989833,
+        "speechAtSeconds": 1.989833,
+        "speechEndSeconds": 37.519875,
+        "anchor": "I've studied",
+        "timingMethod": "aligned-settle-during-speech; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "the-work-in-one-view/1",
+        "atSeconds": 5.569583,
+        "speechAtSeconds": 5.569583,
+        "speechEndSeconds": 37.519875,
+        "anchor": "when routine imaging",
+        "timingMethod": "aligned-settle-during-speech; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "the-work-in-one-view/2",
+        "atSeconds": 9.409458,
+        "speechAtSeconds": 9.409458,
+        "speechEndSeconds": 37.519875,
+        "anchor": "One way to understand a system",
+        "timingMethod": "aligned-settle-during-speech; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "prelude/0",
+        "atSeconds": 37.359792,
+        "speechAtSeconds": 37.52,
+        "speechEndSeconds": 42.96,
+        "anchor": "",
+        "timingMethod": "page-turn-on-continuing-audio; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "acute-to-persistent-symptoms/0",
+        "atSeconds": 42.800333,
+        "speechAtSeconds": 42.96,
+        "speechEndSeconds": 49.6,
+        "anchor": "",
+        "timingMethod": "page-turn-on-continuing-audio; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "acute-to-persistent-symptoms/1",
+        "atSeconds": 50.100042,
+        "speechAtSeconds": 49.6,
+        "speechEndSeconds": 60.0,
+        "anchor": "impact",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "acute-to-persistent-symptoms/2",
+        "atSeconds": 61.180417,
+        "speechAtSeconds": 60.0,
+        "speechEndSeconds": 76.72,
+        "anchor": "headache",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "acute-to-persistent-symptoms/3",
+        "atSeconds": 80.529625,
+        "speechAtSeconds": 76.72,
+        "speechEndSeconds": 106.32,
+        "anchor": "Others",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "concussion-evidence-landscape/0",
+        "atSeconds": 106.159792,
+        "speechAtSeconds": 106.32,
+        "speechEndSeconds": 128.8,
+        "anchor": "",
+        "timingMethod": "page-turn-on-continuing-audio; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "concussion-evidence-landscape/1",
+        "atSeconds": 129.140458,
+        "speechAtSeconds": 128.8,
+        "speechEndSeconds": 140.4,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "concussion-evidence-landscape/2",
+        "atSeconds": 141.95975,
+        "speechAtSeconds": 140.4,
+        "speechEndSeconds": 146.88,
+        "anchor": "human literature",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "concussion-evidence-landscape/3",
+        "atSeconds": 146.720125,
+        "speechAtSeconds": 146.88,
+        "speechEndSeconds": 157.2,
+        "anchor": "Athletes",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "concussion-evidence-landscape/4",
+        "atSeconds": 160.119625,
+        "speechAtSeconds": 157.2,
+        "speechEndSeconds": 166.48,
+        "anchor": "children and adolescents",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "concussion-evidence-landscape/5",
+        "atSeconds": 166.32,
+        "speechAtSeconds": 166.48,
+        "speechEndSeconds": 176.56,
+        "anchor": "Return to the full human literature",
+        "timingMethod": "aligned-word; locally verified replacement speech; complete natural source PCM"
+      },
+      {
+        "route": "concussion-evidence-landscape/6",
+        "atSeconds": 178.0,
+        "speechAtSeconds": 176.56,
+        "speechEndSeconds": 188.96,
+        "anchor": "adults with persistent symptoms",
+        "timingMethod": "aligned-word; locally verified replacement speech; complete natural source PCM"
+      },
+      {
+        "route": "concussion-evidence-landscape/7",
+        "atSeconds": 191.68,
+        "speechAtSeconds": 188.96,
+        "speechEndSeconds": 201.04,
+        "anchor": "cerebral metabolism and blood flow",
+        "timingMethod": "aligned-word; locally verified replacement speech; complete natural source PCM"
+      },
+      {
+        "route": "concussion-evidence-landscape/8",
+        "atSeconds": 202.86,
+        "speechAtSeconds": 201.04,
+        "speechEndSeconds": 219.12,
+        "anchor": "oxygen metabolism and blood flow",
+        "timingMethod": "aligned-word; locally verified replacement speech; complete natural source PCM"
+      },
+      {
+        "route": "concussion-evidence-landscape/9",
+        "atSeconds": 218.959708,
+        "speechAtSeconds": 219.12,
+        "speechEndSeconds": 230.08,
+        "anchor": "Study Three",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "concussion-evidence-landscape/10",
+        "atSeconds": 232.68,
+        "speechAtSeconds": 230.08,
+        "speechEndSeconds": 238.24,
+        "anchor": "return to the same",
+        "timingMethod": "aligned-word; locally verified replacement speech; complete natural source PCM"
+      },
+      {
+        "route": "concussion-evidence-landscape/11",
+        "atSeconds": 240.870333,
+        "speechAtSeconds": 238.24,
+        "speechEndSeconds": 249.76,
+        "anchor": "dynamic contrast enhanced",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "concussion-evidence-landscape/12",
+        "atSeconds": 249.2905,
+        "speechAtSeconds": 249.76,
+        "speechEndSeconds": 261.44,
+        "anchor": "Study Two",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "concussion-evidence-landscape/13",
+        "atSeconds": 262.979917,
+        "speechAtSeconds": 261.44,
+        "speechEndSeconds": 272.32,
+        "anchor": "Study One",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-i/0",
+        "atSeconds": 272.1605,
+        "speechAtSeconds": 272.32,
+        "speechEndSeconds": 281.68,
+        "anchor": "",
+        "timingMethod": "page-turn-on-continuing-audio; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-i-bolus-to-voxel/0",
+        "atSeconds": 281.519833,
+        "speechAtSeconds": 281.68,
+        "speechEndSeconds": 307.44,
+        "anchor": "",
+        "timingMethod": "page-turn-on-continuing-audio; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-i-bolus-to-voxel/1",
+        "atSeconds": 292.499875,
+        "speechAtSeconds": 292.499875,
+        "speechEndSeconds": 307.860292,
+        "anchor": "Radiofrequency pulses",
+        "timingMethod": "aligned-settle-during-speech; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-i-bolus-to-voxel/2",
+        "atSeconds": 299.540375,
+        "speechAtSeconds": 299.540375,
+        "speechEndSeconds": 307.860292,
+        "anchor": "The contrast agent",
+        "timingMethod": "aligned-settle-during-speech; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-i-bolus-to-voxel/3",
+        "atSeconds": 327.279875,
+        "speechAtSeconds": 307.44,
+        "speechEndSeconds": 328.64,
+        "anchor": "brain's arteries",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-i-bolus-to-voxel/4",
+        "atSeconds": 327.987583,
+        "speechAtSeconds": 328.64,
+        "speechEndSeconds": 333.04,
+        "anchor": "Watch",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-i-bolus-to-voxel/5",
+        "atSeconds": 333.759583,
+        "speechAtSeconds": 333.04,
+        "speechEndSeconds": 350.4,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-i-bolus-to-voxel/6",
+        "atSeconds": 351.079875,
+        "speechAtSeconds": 350.4,
+        "speechEndSeconds": 368.16,
+        "anchor": "real dynamic acquisition",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-i-bolus-to-voxel/7",
+        "atSeconds": 371.519708,
+        "speechAtSeconds": 368.16,
+        "speechEndSeconds": 382.64,
+        "anchor": "voxels",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-i-bolus-to-voxel/8",
+        "atSeconds": 383.1005,
+        "speechAtSeconds": 382.64,
+        "speechEndSeconds": 387.44,
+        "anchor": "select a voxel",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-i-bolus-to-voxel/9",
+        "atSeconds": 389.790542,
+        "speechAtSeconds": 387.44,
+        "speechEndSeconds": 408.32,
+        "anchor": "H zero one",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-i-bolus-to-voxel/10",
+        "atSeconds": 410.509542,
+        "speechAtSeconds": 408.32,
+        "speechEndSeconds": 434.56,
+        "anchor": "neurons",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-i-bolus-to-voxel/11",
+        "atSeconds": 434.190292,
+        "speechAtSeconds": 434.56,
+        "speechEndSeconds": 454.64,
+        "anchor": "Blood supplies",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-i-bolus-to-voxel/12",
+        "atSeconds": 454.610375,
+        "speechAtSeconds": 454.64,
+        "speechEndSeconds": 472.88,
+        "anchor": "Vessel associated cells",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-i-bolus-to-voxel/13",
+        "atSeconds": 473.239958,
+        "speechAtSeconds": 472.88,
+        "speechEndSeconds": 487.92,
+        "anchor": "Microglia",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-i-bolus-to-voxel/14",
+        "atSeconds": 489.0395,
+        "speechAtSeconds": 487.92,
+        "speechEndSeconds": 497.92,
+        "anchor": "Oligodendrocytes",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-i-bolus-to-voxel/15",
+        "atSeconds": 497.679792,
+        "speechAtSeconds": 497.92,
+        "speechEndSeconds": 519.2,
+        "anchor": "Astrocytes",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-i-bolus-to-voxel/16",
+        "atSeconds": 520.820042,
+        "speechAtSeconds": 519.2,
+        "speechEndSeconds": 538.88,
+        "anchor": "contrast passing",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-i-bolus-to-voxel/17",
+        "atSeconds": 541.040042,
+        "speechAtSeconds": 538.88,
+        "speechEndSeconds": 558.08,
+        "anchor": "space between cells",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-i-bolus-to-voxel/18",
+        "atSeconds": 558.7095,
+        "speechAtSeconds": 558.08,
+        "speechEndSeconds": 570.64,
+        "anchor": "scanner",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-i-bolus-to-voxel/19",
+        "atSeconds": 571.229667,
+        "speechAtSeconds": 570.64,
+        "speechEndSeconds": 594.08,
+        "anchor": "convert that signal",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-i-bolus-to-voxel/20",
+        "atSeconds": 595.6695,
+        "speechAtSeconds": 594.08,
+        "speechEndSeconds": 611.84,
+        "anchor": "supplying artery",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "input-to-tissue-patlak/0",
+        "atSeconds": 611.679917,
+        "speechAtSeconds": 611.84,
+        "speechEndSeconds": 622.96,
+        "anchor": "",
+        "timingMethod": "page-turn-on-continuing-audio; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "input-to-tissue-patlak/1",
+        "atSeconds": 623.379875,
+        "speechAtSeconds": 622.96,
+        "speechEndSeconds": 633.92,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "input-to-tissue-patlak/2",
+        "atSeconds": 634.640375,
+        "speechAtSeconds": 633.92,
+        "speechEndSeconds": 659.76,
+        "anchor": "convolution",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "input-to-tissue-patlak/3",
+        "atSeconds": 661.120292,
+        "speechAtSeconds": 659.76,
+        "speechEndSeconds": 676.32,
+        "anchor": "crosses into tissue",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "input-to-tissue-patlak/4",
+        "atSeconds": 676.539833,
+        "speechAtSeconds": 676.32,
+        "speechEndSeconds": 688.16,
+        "anchor": "yellow component",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "input-to-tissue-patlak/5",
+        "atSeconds": 688.529583,
+        "speechAtSeconds": 688.16,
+        "speechEndSeconds": 701.76,
+        "anchor": "purple component",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "input-to-tissue-patlak/6",
+        "atSeconds": 701.249875,
+        "speechAtSeconds": 701.76,
+        "speechEndSeconds": 709.11,
+        "anchor": "Divide",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "input-to-tissue-patlak/7",
+        "atSeconds": 708.95,
+        "speechAtSeconds": 709.11,
+        "speechEndSeconds": 733.68,
+        "anchor": "cancels",
+        "timingMethod": "aligned-word; restored-source-sample-map; Patlak cancellation click; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "input-to-tissue-patlak/8",
+        "atSeconds": 736.25025,
+        "speechAtSeconds": 733.68,
+        "speechEndSeconds": 746.49,
+        "anchor": "Y equals",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "input-to-tissue-patlak/9",
+        "atSeconds": 746.33,
+        "speechAtSeconds": 746.49,
+        "speechEndSeconds": 754.64,
+        "anchor": "Each measurement",
+        "timingMethod": "aligned-word; restored-source-sample-map; separate Patlak plot click; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "input-to-tissue-patlak/10",
+        "atSeconds": 756.430083,
+        "speechAtSeconds": 754.64,
+        "speechEndSeconds": 774.8,
+        "anchor": "late window",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "input-to-tissue-patlak/11",
+        "atSeconds": 775.230208,
+        "speechAtSeconds": 774.8,
+        "speechEndSeconds": 788.4,
+        "anchor": "slope",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "input-to-tissue-patlak/12",
+        "atSeconds": 788.839708,
+        "speechAtSeconds": 788.4,
+        "speechEndSeconds": 803.12,
+        "anchor": "intercept",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "input-to-tissue-patlak/13",
+        "atSeconds": 805.689833,
+        "speechAtSeconds": 803.12,
+        "speechEndSeconds": 831.68,
+        "anchor": "K eye",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "one-voxel-gives-one-fit-what-if-we-repeat-it-everywhere/0",
+        "atSeconds": 831.520083,
+        "speechAtSeconds": 831.68,
+        "speechEndSeconds": 843.84,
+        "anchor": "",
+        "timingMethod": "page-turn-on-continuing-audio; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "one-voxel-gives-one-fit-what-if-we-repeat-it-everywhere/1",
+        "atSeconds": 844.259875,
+        "speechAtSeconds": 843.84,
+        "speechEndSeconds": 854.24,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "one-acquisition-two-patlak-maps/0",
+        "atSeconds": 854.079708,
+        "speechAtSeconds": 854.24,
+        "speechEndSeconds": 864.64,
+        "anchor": "",
+        "timingMethod": "page-turn-on-continuing-audio; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "one-acquisition-two-patlak-maps/1",
+        "atSeconds": 864.969833,
+        "speechAtSeconds": 864.64,
+        "speechEndSeconds": 871.28,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "one-acquisition-two-patlak-maps/2",
+        "atSeconds": 871.3795,
+        "speechAtSeconds": 871.28,
+        "speechEndSeconds": 885.52,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "slide-16/0",
+        "atSeconds": 885.360458,
+        "speechAtSeconds": 885.52,
+        "speechEndSeconds": 905.52,
+        "anchor": "",
+        "timingMethod": "page-turn-on-continuing-audio; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "slide-16/1",
+        "atSeconds": 904.475625,
+        "speechAtSeconds": 905.52,
+        "speechEndSeconds": 919.36,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "slide-16/2",
+        "atSeconds": 919.9395,
+        "speechAtSeconds": 919.36,
+        "speechEndSeconds": 926.24,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "pbrain-modular-framework/0",
+        "atSeconds": 926.050083,
+        "speechAtSeconds": 926.24,
+        "speechEndSeconds": 932.88,
+        "anchor": "",
+        "timingMethod": "page-turn-on-continuing-audio; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "pbrain-modular-framework/1",
+        "atSeconds": 933.4905,
+        "speechAtSeconds": 932.88,
+        "speechEndSeconds": 950.56,
+        "anchor": "load the images",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "pbrain-modular-framework/2",
+        "atSeconds": 953.25,
+        "speechAtSeconds": 950.56,
+        "speechEndSeconds": 966.96,
+        "anchor": "replace",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "pbrain-modular-framework/3",
+        "atSeconds": 967.88,
+        "speechAtSeconds": 966.96,
+        "speechEndSeconds": 980.88,
+        "anchor": "add capabilities",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "pbrain-modular-framework/4",
+        "atSeconds": 981.79975,
+        "speechAtSeconds": 980.88,
+        "speechEndSeconds": 998.88,
+        "anchor": "automated input function",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "pbrain-modular-framework/5",
+        "atSeconds": 999.320292,
+        "speechAtSeconds": 998.88,
+        "speechEndSeconds": 1017.04,
+        "anchor": "example",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "pbrain-modular-framework/6",
+        "atSeconds": 1017.120042,
+        "speechAtSeconds": 1017.04,
+        "speechEndSeconds": 1025.36,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "pbrain-modular-framework/7",
+        "atSeconds": 1027.650125,
+        "speechAtSeconds": 1025.36,
+        "speechEndSeconds": 1039.28,
+        "anchor": "cluster analysis",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "pbrain-input-workflow/0",
+        "atSeconds": 1038.900167,
+        "speechAtSeconds": 1039.28,
+        "speechEndSeconds": 1055.28,
+        "anchor": "",
+        "timingMethod": "page-turn-on-continuing-audio; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "pbrain-input-workflow/1",
+        "atSeconds": 1055.119792,
+        "speechAtSeconds": 1055.28,
+        "speechEndSeconds": 1066.0,
+        "anchor": "Manual setup",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "pbrain-input-workflow/2",
+        "atSeconds": 1066.910167,
+        "speechAtSeconds": 1066.0,
+        "speechEndSeconds": 1079.52,
+        "anchor": "connect each file",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "pbrain-input-workflow/3",
+        "atSeconds": 1079.359792,
+        "speechAtSeconds": 1079.52,
+        "speechEndSeconds": 1097.2,
+        "anchor": "Then choose",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "pbrain-input-workflow/4",
+        "atSeconds": 1098.379958,
+        "speechAtSeconds": 1097.2,
+        "speechEndSeconds": 1114.16,
+        "anchor": "local language model assistant",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "pbrain-input-workflow/5",
+        "atSeconds": 1115.000167,
+        "speechAtSeconds": 1114.16,
+        "speechEndSeconds": 1134.0,
+        "anchor": "proposes",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "pbrain-input-workflow/6",
+        "atSeconds": 1134.4295,
+        "speechAtSeconds": 1134.0,
+        "speechEndSeconds": 1151.84,
+        "anchor": "confirmation",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "pbrain-paper-patient-study/0",
+        "atSeconds": 1151.679542,
+        "speechAtSeconds": 1151.84,
+        "speechEndSeconds": 1160.96,
+        "anchor": "",
+        "timingMethod": "page-turn-on-continuing-audio; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "pbrain-paper-patient-study/1",
+        "atSeconds": 1161.410458,
+        "speechAtSeconds": 1160.96,
+        "speechEndSeconds": 1167.84,
+        "anchor": "authors describe",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "pbrain-paper-patient-study/2",
+        "atSeconds": 1169.280125,
+        "speechAtSeconds": 1167.84,
+        "speechEndSeconds": 1175.68,
+        "anchor": "reusable modules",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "pbrain-paper-patient-study/3",
+        "atSeconds": 1175.540208,
+        "speechAtSeconds": 1175.68,
+        "speechEndSeconds": 1189.36,
+        "anchor": "Another group",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "pbrain-paper-to-module/0",
+        "atSeconds": 1189.19975,
+        "speechAtSeconds": 1189.36,
+        "speechEndSeconds": 1193.52,
+        "anchor": "",
+        "timingMethod": "page-turn-on-continuing-audio; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "pbrain-paper-to-module/1",
+        "atSeconds": 1195.449667,
+        "speechAtSeconds": 1193.52,
+        "speechEndSeconds": 1199.76,
+        "anchor": "paper",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "pbrain-paper-to-module/2",
+        "atSeconds": 1202.650125,
+        "speechAtSeconds": 1199.76,
+        "speechEndSeconds": 1206.24,
+        "anchor": "module",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "pbrain-paper-to-module/3",
+        "atSeconds": 1205.829667,
+        "speechAtSeconds": 1206.24,
+        "speechEndSeconds": 1217.84,
+        "anchor": "Other researchers",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "pbrain-publication/0",
+        "atSeconds": 1217.680292,
+        "speechAtSeconds": 1217.84,
+        "speechEndSeconds": 1247.36,
+        "anchor": "",
+        "timingMethod": "page-turn-on-continuing-audio; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "voxelwise-p-brain-outputs/0",
+        "atSeconds": 1247.199833,
+        "speechAtSeconds": 1247.36,
+        "speechEndSeconds": 1275.92,
+        "anchor": "",
+        "timingMethod": "page-turn-on-continuing-audio; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-ii/0",
+        "atSeconds": 1275.75975,
+        "speechAtSeconds": 1275.92,
+        "speechEndSeconds": 1288.4,
+        "anchor": "",
+        "timingMethod": "page-turn-on-continuing-audio; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "repcon-trial-design/0",
+        "atSeconds": 1288.239917,
+        "speechAtSeconds": 1288.4,
+        "speechEndSeconds": 1304.48,
+        "anchor": "",
+        "timingMethod": "page-turn-on-continuing-audio; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "repcon-trial-design/1",
+        "atSeconds": 1304.31975,
+        "speechAtSeconds": 1304.48,
+        "speechEndSeconds": 1315.92,
+        "anchor": "We recruited",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "repcon-trial-design/2",
+        "atSeconds": 1315.760417,
+        "speechAtSeconds": 1315.92,
+        "speechEndSeconds": 1330.08,
+        "anchor": "We excluded",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "repcon-trial-design/3",
+        "atSeconds": 1327.744542,
+        "speechAtSeconds": 1330.08,
+        "speechEndSeconds": 1338.32,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "repcon-trial-design/4",
+        "atSeconds": 1338.400375,
+        "speechAtSeconds": 1338.32,
+        "speechEndSeconds": 1353.76,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "repcon-trial-design/5",
+        "atSeconds": 1354.29,
+        "speechAtSeconds": 1353.76,
+        "speechEndSeconds": 1358.96,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "repcon-trial-design/6",
+        "atSeconds": 1359.289833,
+        "speechAtSeconds": 1358.96,
+        "speechEndSeconds": 1371.12,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "repcon-trial-design/7",
+        "atSeconds": 1371.519625,
+        "speechAtSeconds": 1371.12,
+        "speechEndSeconds": 1383.68,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "repcon-trial-design/8",
+        "atSeconds": 1383.301542,
+        "speechAtSeconds": 1383.68,
+        "speechEndSeconds": 1394.64,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "repcon-trial-design/9",
+        "atSeconds": 1394.929917,
+        "speechAtSeconds": 1394.64,
+        "speechEndSeconds": 1401.12,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "repcon-trial-design/10",
+        "atSeconds": 1405.76575,
+        "speechAtSeconds": 1401.12,
+        "speechEndSeconds": 1412.16,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "repcon-trial-design/11",
+        "atSeconds": 1409.197,
+        "speechAtSeconds": 1412.16,
+        "speechEndSeconds": 1419.52,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "repcon-trial-design/12",
+        "atSeconds": 1421.245417,
+        "speechAtSeconds": 1419.52,
+        "speechEndSeconds": 1434.88,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "baseline-ppcs-profile/0",
+        "atSeconds": 1434.719792,
+        "speechAtSeconds": 1434.88,
+        "speechEndSeconds": 1445.68,
+        "anchor": "",
+        "timingMethod": "page-turn-on-continuing-audio; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "baseline-ppcs-profile/1",
+        "atSeconds": 1440.810292,
+        "speechAtSeconds": 1440.810292,
+        "speechEndSeconds": 1445.649667,
+        "anchor": "The distribution",
+        "timingMethod": "aligned-settle-during-speech; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "baseline-ppcs-profile/2",
+        "atSeconds": 1448.68,
+        "speechAtSeconds": 1445.68,
+        "speechEndSeconds": 1458.64,
+        "anchor": "female",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "baseline-ppcs-profile/3",
+        "atSeconds": 1450.23975,
+        "speechAtSeconds": 1450.23975,
+        "speechEndSeconds": 1458.639917,
+        "anchor": "This was",
+        "timingMethod": "aligned-settle-during-speech; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "baseline-ppcs-profile/4",
+        "atSeconds": 1459.490042,
+        "speechAtSeconds": 1458.64,
+        "speechEndSeconds": 1468.64,
+        "anchor": "time",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "baseline-ppcs-profile/5",
+        "atSeconds": 1469.040125,
+        "speechAtSeconds": 1468.64,
+        "speechEndSeconds": 1480.8,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "baseline-ppcs-profile/6",
+        "atSeconds": 1481.899833,
+        "speechAtSeconds": 1480.8,
+        "speechEndSeconds": 1491.12,
+        "anchor": "one concussion",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "baseline-ppcs-profile/7",
+        "atSeconds": 1491.44975,
+        "speechAtSeconds": 1491.12,
+        "speechEndSeconds": 1506.24,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "rivermead-questionnaire/0",
+        "atSeconds": 1506.079458,
+        "speechAtSeconds": 1506.24,
+        "speechEndSeconds": 1523.68,
+        "anchor": "",
+        "timingMethod": "page-turn-on-continuing-audio; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "rivermead-questionnaire/1",
+        "atSeconds": 1524.140208,
+        "speechAtSeconds": 1523.68,
+        "speechEndSeconds": 1537.28,
+        "anchor": "first three",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "rivermead-questionnaire/2",
+        "atSeconds": 1538.359708,
+        "speechAtSeconds": 1537.28,
+        "speechEndSeconds": 1559.68,
+        "anchor": "remaining items",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "rivermead-questionnaire/3",
+        "atSeconds": 1560.090333,
+        "speechAtSeconds": 1559.68,
+        "speechEndSeconds": 1584.72,
+        "anchor": "plot",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-ii-iii-cohorts/0",
+        "atSeconds": 1584.559917,
+        "speechAtSeconds": 1584.72,
+        "speechEndSeconds": 1595.92,
+        "anchor": "",
+        "timingMethod": "page-turn-on-continuing-audio; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-ii-iii-cohorts/1",
+        "atSeconds": 1597.050417,
+        "speechAtSeconds": 1595.92,
+        "speechEndSeconds": 1613.04,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-ii-iii-cohorts/2",
+        "atSeconds": 1614.090125,
+        "speechAtSeconds": 1613.04,
+        "speechEndSeconds": 1624.16,
+        "anchor": "usable tissue curve",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-ii-iii-cohorts/3",
+        "atSeconds": 1624.779958,
+        "speechAtSeconds": 1624.16,
+        "speechEndSeconds": 1637.28,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-ii-iii-cohorts/4",
+        "atSeconds": 1639.410417,
+        "speechAtSeconds": 1637.28,
+        "speechEndSeconds": 1656.88,
+        "anchor": "abrupt distortions",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-ii-iii-cohorts/5",
+        "atSeconds": 1657.229542,
+        "speechAtSeconds": 1656.88,
+        "speechEndSeconds": 1680.8,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-ii-pbrain-cohort/0",
+        "atSeconds": 1680.639583,
+        "speechAtSeconds": 1680.8,
+        "speechEndSeconds": 1688.88,
+        "anchor": "",
+        "timingMethod": "page-turn-on-continuing-audio; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-ii-pbrain-cohort/1",
+        "atSeconds": 1688.959708,
+        "speechAtSeconds": 1688.88,
+        "speechEndSeconds": 1699.76,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "seven-tissues-two-spatial-signatures/0",
+        "atSeconds": 1699.599958,
+        "speechAtSeconds": 1699.76,
+        "speechEndSeconds": 1722.56,
+        "anchor": "",
+        "timingMethod": "page-turn-on-continuing-audio; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "seven-tissues-two-spatial-signatures/1",
+        "atSeconds": 1723.069958,
+        "speechAtSeconds": 1722.56,
+        "speechEndSeconds": 1735.52,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "seven-tissues-two-spatial-signatures/2",
+        "atSeconds": 1735.599625,
+        "speechAtSeconds": 1735.52,
+        "speechEndSeconds": 1743.6,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "seven-tissues-two-spatial-signatures/3",
+        "atSeconds": 1744.179625,
+        "speechAtSeconds": 1743.6,
+        "speechEndSeconds": 1753.76,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "seven-tissues-two-spatial-signatures/4",
+        "atSeconds": 1754.120417,
+        "speechAtSeconds": 1753.76,
+        "speechEndSeconds": 1765.68,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "seven-tissues-two-spatial-signatures/5",
+        "atSeconds": 1765.760167,
+        "speechAtSeconds": 1765.68,
+        "speechEndSeconds": 1775.76,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "seven-tissues-two-spatial-signatures/6",
+        "atSeconds": 1776.280125,
+        "speechAtSeconds": 1775.76,
+        "speechEndSeconds": 1798.0,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "what-happens-when-we-test-every-parcel/0",
+        "atSeconds": 1797.83975,
+        "speechAtSeconds": 1798.0,
+        "speechEndSeconds": 1811.92,
+        "anchor": "",
+        "timingMethod": "page-turn-on-continuing-audio; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "what-happens-when-we-test-every-parcel/1",
+        "atSeconds": 1812.616583,
+        "speechAtSeconds": 1811.92,
+        "speechEndSeconds": 1828.88,
+        "anchor": "V B",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "what-happens-when-we-test-every-parcel/2",
+        "atSeconds": 1830.870167,
+        "speechAtSeconds": 1828.88,
+        "speechEndSeconds": 1847.04,
+        "anchor": "correction",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "what-happens-when-we-test-every-parcel/3",
+        "atSeconds": 1847.759667,
+        "speechAtSeconds": 1847.04,
+        "speechEndSeconds": 1858.56,
+        "anchor": "K eye",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "what-happens-when-we-test-every-parcel/4",
+        "atSeconds": 1859.370167,
+        "speechAtSeconds": 1858.56,
+        "speechEndSeconds": 1877.2,
+        "anchor": "correction",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "the-submitted-tissue-result/0",
+        "atSeconds": 1876.840292,
+        "speechAtSeconds": 1877.2,
+        "speechEndSeconds": 1906.24,
+        "anchor": "",
+        "timingMethod": "page-turn-on-continuing-audio; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "the-parcel-result-preserves-the-two-spatial-signatures/0",
+        "atSeconds": 1906.079583,
+        "speechAtSeconds": 1906.24,
+        "speechEndSeconds": 1927.44,
+        "anchor": "",
+        "timingMethod": "page-turn-on-continuing-audio; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-iii/0",
+        "atSeconds": 1927.1495,
+        "speechAtSeconds": 1927.44,
+        "speechEndSeconds": 1938.48,
+        "anchor": "",
+        "timingMethod": "page-turn-on-continuing-audio; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-iii-capillary-oxygen/0",
+        "atSeconds": 1938.319958,
+        "speechAtSeconds": 1938.48,
+        "speechEndSeconds": 1951.68,
+        "anchor": "",
+        "timingMethod": "page-turn-on-continuing-audio; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-iii-capillary-oxygen/1",
+        "atSeconds": 1952.350417,
+        "speechAtSeconds": 1951.68,
+        "speechEndSeconds": 1968.48,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-iii-capillary-oxygen/2",
+        "atSeconds": 1968.910375,
+        "speechAtSeconds": 1968.48,
+        "speechEndSeconds": 1984.72,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-iii-fick-brain/0",
+        "atSeconds": 1984.559583,
+        "speechAtSeconds": 1984.72,
+        "speechEndSeconds": 1994.32,
+        "anchor": "",
+        "timingMethod": "page-turn-on-continuing-audio; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-iii-fick-brain/1",
+        "atSeconds": 1994.63975,
+        "speechAtSeconds": 1994.32,
+        "speechEndSeconds": 2006.96,
+        "anchor": "pulse oximeter",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-iii-fick-brain/2",
+        "atSeconds": 2010.300417,
+        "speechAtSeconds": 2006.96,
+        "speechEndSeconds": 2034.88,
+        "anchor": "venous saturation",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-iii-fick-brain/3",
+        "atSeconds": 2034.600458,
+        "speechAtSeconds": 2034.88,
+        "speechEndSeconds": 2058.8,
+        "anchor": "Phase contrast",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-iii-fick-brain/4",
+        "atSeconds": 2059.070333,
+        "speechAtSeconds": 2058.8,
+        "speechEndSeconds": 2086.0,
+        "anchor": "product",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "study-iii-fick-brain/5",
+        "atSeconds": 2088.569667,
+        "speechAtSeconds": 2086.0,
+        "speechEndSeconds": 2106.72,
+        "anchor": "lower the oxygen",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "a-controlled-descent-not-a-binary-condition/0",
+        "atSeconds": 2106.560083,
+        "speechAtSeconds": 2106.72,
+        "speechEndSeconds": 2149.68,
+        "anchor": "",
+        "timingMethod": "page-turn-on-continuing-audio; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "was-the-deficit-delivery-or-oxygen-use/0",
+        "atSeconds": 2149.519917,
+        "speechAtSeconds": 2149.68,
+        "speechEndSeconds": 2229.06,
+        "anchor": "",
+        "timingMethod": "page-turn-on-continuing-audio; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "did-lower-oxygen-use-track-pulse-intolerance/0",
+        "atSeconds": 2228.899917,
+        "speechAtSeconds": 2229.06,
+        "speechEndSeconds": 2271.14,
+        "anchor": "",
+        "timingMethod": "page-turn-on-continuing-audio; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "conclusion/0",
+        "atSeconds": 2270.980042,
+        "speechAtSeconds": 2271.14,
+        "speechEndSeconds": 2279.22,
+        "anchor": "",
+        "timingMethod": "page-turn-on-continuing-audio; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "three-passes-one-brain/0",
+        "atSeconds": 2278.76975,
+        "speechAtSeconds": 2278.76975,
+        "speechEndSeconds": 2279.6105,
+        "anchor": "",
+        "timingMethod": "visual-settle-during-speech; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "three-passes-one-brain/1",
+        "atSeconds": 2281.949583,
+        "speechAtSeconds": 2279.22,
+        "speechEndSeconds": 2296.42,
+        "anchor": "Brain blood volume",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "three-passes-one-brain/2",
+        "atSeconds": 2296.690333,
+        "speechAtSeconds": 2296.42,
+        "speechEndSeconds": 2311.86,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "oxygen-reserve-interpretation/0",
+        "atSeconds": 2310.64075,
+        "speechAtSeconds": 2310.64075,
+        "speechEndSeconds": 2312.310333,
+        "anchor": "",
+        "timingMethod": "visual-settle-during-speech; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "oxygen-reserve-interpretation/1",
+        "atSeconds": 2312.6705,
+        "speechAtSeconds": 2311.86,
+        "speechEndSeconds": 2324.42,
+        "anchor": "resting C M R O two",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "oxygen-reserve-interpretation/2",
+        "atSeconds": 2324.259708,
+        "speechAtSeconds": 2324.42,
+        "speechEndSeconds": 2341.62,
+        "anchor": "Under hypoxia",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "oxygen-reserve-interpretation/3",
+        "atSeconds": 2342.0405,
+        "speechAtSeconds": 2341.62,
+        "speechEndSeconds": 2355.94,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "oxygen-reserve-interpretation/4",
+        "atSeconds": 2356.050417,
+        "speechAtSeconds": 2355.94,
+        "speechEndSeconds": 2369.3,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "vascular-interpretation/0",
+        "atSeconds": 2368.849708,
+        "speechAtSeconds": 2368.849708,
+        "speechEndSeconds": 2369.670458,
+        "anchor": "",
+        "timingMethod": "visual-settle-during-speech; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "vascular-interpretation/1",
+        "atSeconds": 2371.8695,
+        "speechAtSeconds": 2369.3,
+        "speechEndSeconds": 2381.86,
+        "anchor": "lower blood volume",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "vascular-interpretation/2",
+        "atSeconds": 2382.35,
+        "speechAtSeconds": 2381.86,
+        "speechEndSeconds": 2394.98,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "vascular-interpretation/3",
+        "atSeconds": 2395.260083,
+        "speechAtSeconds": 2394.98,
+        "speechEndSeconds": 2409.94,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "capillary-radius-plausibility/0",
+        "atSeconds": 2408.72075,
+        "speechAtSeconds": 2408.72075,
+        "speechEndSeconds": 2409.990333,
+        "anchor": "",
+        "timingMethod": "visual-settle-during-speech; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "capillary-radius-plausibility/1",
+        "atSeconds": 2410.350542,
+        "speechAtSeconds": 2409.94,
+        "speechEndSeconds": 2427.22,
+        "anchor": "capillary geometry",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "capillary-radius-plausibility/2",
+        "atSeconds": 2427.800375,
+        "speechAtSeconds": 2427.22,
+        "speechEndSeconds": 2440.82,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "capillary-radius-plausibility/3",
+        "atSeconds": 2441.079833,
+        "speechAtSeconds": 2440.82,
+        "speechEndSeconds": 2450.58,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "recovery-questions/0",
+        "atSeconds": 2450.129792,
+        "speechAtSeconds": 2450.129792,
+        "speechEndSeconds": 2450.5795,
+        "anchor": "",
+        "timingMethod": "visual-settle-during-speech; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "recovery-questions/1",
+        "atSeconds": 2452.130125,
+        "speechAtSeconds": 2450.58,
+        "speechEndSeconds": 2468.98,
+        "anchor": "simple marker",
+        "timingMethod": "aligned-word; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "recovery-questions/2",
+        "atSeconds": 2469.06,
+        "speechAtSeconds": 2468.98,
+        "speechEndSeconds": 2485.38,
+        "anchor": "",
+        "timingMethod": "passage-boundary; restored-source-sample-map; unchanged source offset after literature replacement"
+      },
+      {
+        "route": "take-home/0",
+        "atSeconds": 2485.219958,
+        "speechAtSeconds": 2485.38,
+        "speechEndSeconds": 2487.3,
+        "anchor": "",
+        "timingMethod": "page-turn-on-continuing-audio; restored-source-sample-map; unchanged source offset after literature replacement"
+      }
+    ],
+    "endRoute": "take-home/0",
+    "stopAtEnd": true,
+    "durationPolicy": "complete-source-audio"
+  },
+  "routeMigrations": [
+    {
+      "id": "population-nested-human-return-2026-09-08",
+      "fromHashes": [
+        "69fe71a86559f1bb4ac5abe438d963d37b976bff2d37a05524bd4e2538ec9c01"
+      ],
+      "routes": {
+        "concussion-evidence-landscape/5": "concussion-evidence-landscape/6",
+        "concussion-evidence-landscape/6": "concussion-evidence-landscape/7",
+        "concussion-evidence-landscape/7": "concussion-evidence-landscape/8",
+        "concussion-evidence-landscape/8": "concussion-evidence-landscape/9",
+        "concussion-evidence-landscape/9": "concussion-evidence-landscape/10",
+        "concussion-evidence-landscape/10": "concussion-evidence-landscape/11",
+        "concussion-evidence-landscape/11": "concussion-evidence-landscape/12",
+        "concussion-evidence-landscape/12": "concussion-evidence-landscape/13"
+      },
+      "merge": true
+    },
+    {
+      "id": "patlak-presenter-clicks-2026-09-09",
+      "fromHashes": [
+        "e5bbdf872ba705a98b55263d2f2e2042488b3c01d9c771985967e404b032f54c"
+      ],
+      "routes": {
+        "input-to-tissue-patlak/3": null,
+        "input-to-tissue-patlak/4": "input-to-tissue-patlak/3",
+        "input-to-tissue-patlak/5": "input-to-tissue-patlak/4",
+        "input-to-tissue-patlak/6": "input-to-tissue-patlak/5",
+        "input-to-tissue-patlak/7": "input-to-tissue-patlak/6",
+        "input-to-tissue-patlak/8": "input-to-tissue-patlak/7"
+      },
+      "merge": true
+    }
+  ]
+}

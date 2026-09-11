@@ -1,0 +1,1538 @@
+/* The palette is the app's, set from field.js at load so a deck's accent and backdrop
+ * settings move every colour at once rather than being repeated here. */
+:root {
+  --page:#20201F; --s1:#191918; --s2:#131313; --hair:#33322E;
+  --hi:#F9F9F7; --mid:#97958D; --lo:#6E6C64;
+  --accent:#D97757; --accent-lite:#EBA680;
+  /* ── the design frame ──────────────────────────────────────────────────────
+   * The deck is authored at one size and everything is expressed as a multiple of --u, so
+   * the whole composition scales together. Without this the background stretches to fill a
+   * lecture-theatre projector while the type stays where clamp() capped it, and the slide
+   * ends up as a postage stamp in the middle of a very large wall.
+   *
+   * --u is ~1px at the design size. It is floored so a small window stays readable and
+   * capped so a very wide one does not turn the body copy into a headline. --zoom is the
+   * user's own multiplier, per deck or per slide. */
+  --frame-w:1280; --frame-h:800; --zoom:1;
+  --u:clamp(0.66px, min(100vw / var(--frame-w), 100vh / var(--frame-h)) * var(--zoom), 2.6px);
+
+  /* The type scale, in frame units. One place to change how loud a deck is. */
+  --t-eyebrow:13; --t-title:74; --t-subtitle:23; --t-heading:38; --t-body:20;
+  --t-mono:16; --t-chapnum:150; --t-quote:34; --t-agenda:25;
+
+  --measure:62ch; --bar-thickness:20px;
+  --sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",system-ui,sans-serif;
+  --serif:"Iowan Old Style",Georgia,"Times New Roman",serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,monospace;
+}
+
+* { box-sizing:border-box; }
+html,body { margin:0; height:100%; overflow:hidden; background:var(--page); }
+body { font-family:var(--sans); color:var(--hi); -webkit-font-smoothing:antialiased; }
+
+#field { position:fixed; inset:0; width:100%; height:100%; z-index:0; }
+
+#stage {
+  position:fixed; inset:0; z-index:1; display:grid;
+  /* The single cell is exactly the stage, and no larger.
+   *
+   * With an implicit row the cell grew to whatever the slide needed, so a page with two tall
+   * figures came out 1160px tall in an 800px window — and because the body is overflow:hidden
+   * there was no scrollbar to say so. The bottom third was simply not on the projector, and
+   * nothing anywhere reported a fault. Pinning the track means content has to fit, and the
+   * min-height:0 below is what lets it shrink rather than overflow. */
+  grid-template-rows:100%; grid-template-columns:100%;
+  padding-bottom:var(--pad-b,0); padding-top:var(--pad-t,0);
+  padding-left:var(--pad-l,0); padding-right:var(--pad-r,0);
+  box-sizing:border-box;
+}
+#deck[data-bar="bottom"] { --pad-b:var(--bar-thickness); }
+#deck[data-bar="top"]    { --pad-t:var(--bar-thickness); }
+#deck[data-bar="left"]   { --pad-l:var(--bar-thickness); }
+#deck[data-bar="right"]  { --pad-r:var(--bar-thickness); }
+
+/* Slides stack in one grid cell so the incoming one can be masked in over the outgoing. */
+.slide {
+  /* Recompute the frame unit here so a slide-level `zoom` participates in the formula.
+   * Inheriting --u from :root freezes the root's --zoom inside it, which made the documented
+   * per-slide zoom field a no-op even though deck-level zoom worked. */
+  --u:clamp(0.66px, min(100vw / var(--frame-w), 100vh / var(--frame-h)) * var(--zoom), 2.6px);
+  grid-area:1/1; display:flex; flex-direction:column; justify-content:center;
+  padding:7vh 7vw; gap:0.9rem; min-width:0; min-height:0; box-sizing:border-box; overflow:hidden;
+  /* the annotation overlay measures itself against THIS box, so it must be the containing
+     block — otherwise it resolves against the stage and everything is drawn a few percent
+     out of register with what it is pointing at */
+  position:relative;
+}
+.slide[data-align="center"] { align-items:center; text-align:center; }
+.slide[data-align="left"]   { align-items:flex-start; }
+.slide.bleed { padding:0; }
+.slide-inner { display:flex; flex-direction:column; gap:inherit; width:100%; max-width:var(--measure);
+               min-height:0; max-height:100%; }
+/* A flex item will not shrink below its content unless told it may. Without this an image
+   already carrying max-height:100% still pushed the column past the page. */
+.slide-inner > * { min-height:0; }
+.slide[data-align="center"] .slide-inner { align-items:center; }
+/* A bleed slide's content centres in the page. The inner column inherited its height but not
+   a reason to sit anywhere in it, so a figure given the whole slide hung from the top edge. */
+.slide.bleed .slide-inner { max-width:none; height:100%; gap:0;
+                            justify-content:center; align-items:center; }
+/* A bleed slide drops the measure so a FIGURE can have the whole page. Prose still needs
+   one: without it a caption runs the full width of a projector and the last words fall off
+   the end of the screen. The figure keeps the bleed; the sentence under it does not. */
+.slide.bleed .body, .slide.bleed .quote, .slide.bleed .bullets {
+  max-width:var(--measure); margin-left:auto; margin-right:auto;
+}
+.slide.bleed .slide-inner > * { width:100%; }
+.slide.incoming { z-index:2; -webkit-mask-size:100% 100%; mask-size:100% 100%;
+                  -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat; }
+
+/* ── the plate ────────────────────────────────────────────────────────────────
+ * What sits between the field and the content. The field has light in it, and text over
+ * light is text you have to work to read — tolerable on a phone at arm's length, not from
+ * the back of a lecture theatre. Each of these holds the animation down under the content
+ * without putting it behind an opaque rectangle and losing it entirely.
+ *
+ * Drawn as a ::before on the content, so it hugs whatever is actually there rather than
+ * being a fixed box the author has to size. */
+.slide-inner { position:relative; }
+.slide-inner > * { position:relative; z-index:1; }
+.slide-inner::before {
+  content:""; position:absolute; z-index:0; pointer-events:none;
+  inset:-2.2em -2.6em; transition:opacity .3s;
+}
+/* an edgeless pool: no border anywhere, just less light in the middle */
+#deck[data-plate="scrim"] .slide-inner::before,
+.slide[data-plate="scrim"] .slide-inner::before {
+  background:radial-gradient(ellipse at center,
+    color-mix(in srgb, var(--page) 92%, transparent) 0%,
+    color-mix(in srgb, var(--page) 78%, transparent) 42%,
+    transparent 74%);
+}
+#deck[data-plate="card"] .slide-inner::before,
+.slide[data-plate="card"] .slide-inner::before {
+  background:color-mix(in srgb, var(--page) 84%, transparent);
+  border:1px solid var(--hair); border-radius:18px;
+  inset:-1.6em -1.9em;
+}
+#deck[data-plate="blur"] .slide-inner::before,
+.slide[data-plate="blur"] .slide-inner::before {
+  background:color-mix(in srgb, var(--page) 42%, transparent);
+  -webkit-backdrop-filter:blur(15px); backdrop-filter:blur(15px);
+  border-radius:22px; inset:-1.7em -2em;
+  /* feather the blur out rather than ending it on a hard rectangle */
+  -webkit-mask-image:radial-gradient(ellipse at center, #000 58%, transparent 92%);
+  mask-image:radial-gradient(ellipse at center, #000 58%, transparent 92%);
+}
+#deck[data-plate="none"] .slide-inner::before,
+.slide[data-plate="none"] .slide-inner::before { background:none; border:0; backdrop-filter:none; }
+/* a full-bleed image is its own plate */
+.slide.bleed .slide-inner::before { display:none; }
+
+/* ── blocks ───────────────────────────────────────────────────────────────────
+ * Every size below is a multiple of --u, never a clamp against the viewport, so the deck
+ * scales as one thing. */
+.eyebrow { font:500 calc(var(--t-eyebrow) * var(--u))/1 var(--mono); letter-spacing:.22em;
+           text-transform:uppercase; color:var(--lo); }
+.title   { font:200 calc(var(--t-title) * var(--u))/1.03 var(--sans); letter-spacing:-.028em;
+           color:var(--hi); margin:0; }
+.subtitle{ font:300 calc(var(--t-subtitle) * var(--u))/1.4 var(--sans); color:var(--mid); margin:0; white-space:pre-line; }
+.heading { font:400 calc(var(--t-heading) * var(--u))/1.15 var(--sans); letter-spacing:-.015em;
+           color:var(--hi); margin:0; }
+.body    { font:calc(var(--t-body) * var(--u))/1.6 var(--sans); color:var(--mid); margin:0; }
+.body strong { color:var(--hi); font-weight:500; }
+.rule    { height:1px; background:var(--hair); width:100%; }
+.mono    { font-family:var(--mono); font-size:.9em; color:var(--accent-lite); }
+
+.bullets { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.7em; }
+.bullets li { display:flex; gap:.7em; font:calc(var(--t-body) * var(--u))/1.5 var(--sans); color:var(--mid); }
+.bullets li::before { content:"·"; color:var(--accent); font-size:1.5em; line-height:.75; }
+
+.quote { margin:0; display:flex; flex-direction:column; gap:.8rem; }
+.quote blockquote { margin:0; font:300 calc(var(--t-quote) * var(--u))/1.42 var(--sans); color:var(--hi); }
+.slide[data-align="center"] .quote { align-items:center; }
+
+.checklist { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.65em; }
+.checklist li { display:flex; align-items:center; gap:.7em;
+                font:calc(var(--t-body) * var(--u))/1.4 var(--sans); color:var(--mid); }
+/* An empty box has to be VISIBLE to mean "not yet".
+   Drawn in --hair it disappeared into the page, so the last item of a checkpoint read as a
+   line with nothing beside it — as if it had been forgotten rather than left to do. */
+.checklist .box { width:1.15em; height:1.15em; border-radius:.28em; border:1px solid var(--lo);
+                  display:grid; place-items:center; font-size:.72em; flex:none; }
+.checklist .done { color:var(--hi); }
+.checklist .done .box { background:var(--accent); border-color:var(--accent); color:var(--page); }
+
+.columns { display:grid; gap:calc(34 * var(--u)); align-items:center; width:100%; }
+.column { display:flex; flex-direction:column; gap:.9rem; min-width:0; }
+
+.table { border-collapse:collapse; width:100%; font:calc(var(--t-mono) * var(--u))/1.7 var(--mono); }
+.table th { text-align:left; font-weight:400; color:var(--lo); border-bottom:1px solid var(--hair);
+            padding:.2em .6em .35em 0; }
+.table td { color:var(--mid); border-bottom:1px solid rgba(255,255,255,.05); padding:.2em .6em .2em 0; }
+.table td:last-child { color:var(--accent-lite); text-align:right; padding-right:0; }
+
+.chapnum { font:200 calc(var(--t-chapnum) * var(--u))/.9 var(--sans); color:var(--accent);
+           letter-spacing:-.04em; opacity:.92; }
+
+.agenda { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.55em; }
+.agenda li { display:flex; gap:1em; font:calc(var(--t-agenda) * var(--u))/1.35 var(--sans); color:var(--lo); }
+.agenda li .n { font-family:var(--mono); font-size:.7em; padding-top:.35em; }
+.agenda li.on { color:var(--hi); }
+.agenda li.on .n { color:var(--accent); }
+
+.code { background:var(--s2); border-radius:12px; padding:1.1em 1.3em; margin:0; overflow:hidden;
+        font:calc(var(--t-mono) * var(--u))/1.6 var(--mono); color:var(--hi); }
+.code .kw { color:var(--accent); } .code .com { color:var(--lo); } .code .str { color:var(--accent-lite); }
+
+/* KaTeX sizes itself off the surrounding text, which on a slide is a caption-sized body
+ * face and far too small to read from the back. Display maths gets its own scale; inline
+ * maths stays with the prose it is sitting in. */
+/* Maths is set relative to the body it sits beside, in frame units like everything else.
+ * fitMath only ever shrinks from here, and never below the legibility floor. */
+.katex-display { margin:.35em 0; font-size:calc(var(--t-math, 30) * var(--u)); }
+/* Overflow is hidden, not scrollable: a slide has no scrollbar an audience can use, and the
+ * one macOS draws lands as a grey bar through the middle of the equation. fitMath shrinks
+ * anything too wide before it gets here. */
+.math-display { width:100%; overflow:hidden; }
+.math-display::-webkit-scrollbar { display:none; }
+#deck[data-style="keynote"] { --t-math:40; }
+
+.image { max-width:100%; border-radius:12px; display:block; }
+.image.cover { width:100%; height:100%; object-fit:cover; border-radius:0; }
+.media-aside { position:absolute; inset:0; z-index:8; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:14px; padding:7vh 5vw;
+  background:rgba(0,0,0,.72); pointer-events:none; }
+.media-aside[hidden] { display:none !important; }
+.media-aside-image { display:block; min-height:0; max-width:94%; max-height:calc(100% - 34px);
+  width:auto; height:auto; object-fit:contain; border-radius:6px; box-shadow:0 18px 70px #000; }
+.media-aside-hint { flex:none; color:#eadfce; font:400 calc(16 * var(--u))/1.3 var(--sans); }
+/* height must scale with width, or a clamped canvas is squashed on one axis only */
+.scene-holder canvas { max-width:100%; max-height:100%; height:auto; }
+.math-sequence { display:grid; place-items:center; min-height:calc(150 * var(--u)); }
+.math-sequence .math-state { grid-area:1 / 1; width:100%; opacity:0; visibility:hidden;
+  transform:translateY(calc(9 * var(--u)));
+  transition:opacity .42s ease, transform .48s cubic-bezier(.2,.72,.26,1), visibility 0s .48s; }
+.math-sequence .math-state.active { opacity:1; visibility:visible; transform:none;
+  transition-delay:0s; }
+.math-sequence-static .math-state { transition:none; transform:none; }
+/* One equation rail shared by every Patlak click. Captions remain inside the scene above. */
+.slide[data-slide-id="input-to-tissue-patlak"] .math-sequence { min-height:calc(110 * var(--u)); }
+.slide[data-slide-id="input-to-tissue-patlak"] .math-sequence-static { --t-math:36; }
+.math-morph-enabled { position:relative; }
+.math-morph-enabled .math-state { transition:none; transform:none; }
+.math-morph-running > .math-state { opacity:0 !important; }
+.math-morph-layer { position:absolute; inset:0; display:block; pointer-events:none; overflow:visible; }
+.mm-frame,.mm-copy { display:grid; place-items:center; }
+.mm-frame { position:absolute; inset:0; width:100%; }
+.mm-ghost { position:absolute; display:block; overflow:hidden; pointer-events:none; }
+.mm-copy { margin:0; padding:0; }
+.mm-term.mm-key-e1,.mm-reference-c { color:#F0C85A; }
+.mm-term.mm-key-e2,.mm-reference-m { color:#B89CFF; }
+.mm-cancel { position:relative; display:inline-block; }
+.mm-cancel-stroke { position:absolute; width:112%; height:0; left:-6%; top:50%;
+  border-top:calc(2 * var(--u)) solid #F0C85A; transform-origin:center;
+  transform:rotate(-25deg) scaleX(1); }
+.mm-key-reference { font-size:.73em; }
+.mm-linear-hidden { visibility:hidden; }
+
+/* Paper figures in a literature walk keep one address while the evidence changes. */
+.image-sequence { width:100%; min-width:0; min-height:0; display:grid;
+  grid-template-rows:minmax(0,1fr) auto; gap:calc(14 * var(--u)); }
+.cell > .image-sequence { height:100%; }
+.image-sequence-frame { min-width:0; min-height:0; display:grid; place-items:center;
+  overflow:hidden; }
+.image-sequence-state { grid-area:1 / 1; width:100%; height:100%; min-width:0; min-height:0;
+  margin:0; padding:calc(10 * var(--u)); display:flex; align-items:center; justify-content:center;
+  opacity:0; visibility:hidden; transform:scale(.996);
+  transition:opacity .32s ease, transform .42s cubic-bezier(.2,.72,.26,1), visibility 0s .42s; }
+.image-sequence-state img { display:block; width:100%; height:100%; min-width:0; min-height:0;
+  max-width:100%; max-height:100%; object-fit:contain; border-radius:calc(8 * var(--u)); }
+.image-sequence-state[data-fit="cover"] img { object-fit:cover; }
+.image-sequence-state.active { opacity:1; visibility:visible; transform:none; transition-delay:0s; }
+.image-sequence-copy { min-height:calc(70 * var(--u)); display:grid; align-items:start; }
+.image-sequence-meta { grid-area:1 / 1; opacity:0; visibility:hidden;
+  transform:translateY(calc(6 * var(--u)));
+  transition:opacity .28s ease, transform .36s cubic-bezier(.2,.72,.26,1), visibility 0s .36s; }
+.image-sequence-meta.active { opacity:1; visibility:visible; transform:none; transition-delay:0s; }
+.image-sequence-tag { font:600 calc(14 * var(--u))/1.35 var(--mono); letter-spacing:.04em;
+  text-transform:uppercase; color:var(--accent-lite); }
+.image-sequence-text { margin-top:calc(5 * var(--u)); max-width:72ch;
+  font:500 calc(21 * var(--u))/1.28 var(--sans); color:var(--hi); }
+
+/* ── evidence landscape ────────────────────────────────────────────────────
+ * The network is a precomputed field, not a live force layout.  Paper figures float above
+ * it without frames; the node they came from remains visible through a restrained shadow. */
+.evidence-network { position:relative; width:100%; height:100%; min-width:0; min-height:0;
+  overflow:hidden; isolation:isolate; background:#000; }
+.cell > .evidence-network { height:100%; }
+.evidence-network-map { position:absolute; inset:0; }
+.evidence-network-map::before { content:""; position:absolute; inset:6% 4% 8%;
+  background:radial-gradient(ellipse at 50% 48%,rgba(61,66,77,.34),rgba(18,19,23,.16) 56%,transparent 79%);
+  filter:blur(calc(25 * var(--u))); }
+.evidence-network-map svg { position:relative; width:100%; height:100%; display:block; overflow:visible;
+  /* A filter on this 1600 × 820 SVG intermittently invalidated Chromium's compositor
+   * surface and left the slide blank while idle.  The static map field below supplies the
+   * restrained depth cue without making the entire interactive network a filtered layer. */
+  filter:none; }
+.evidence-network[data-progressive="1"] .evidence-network-map svg {
+  display:none; }
+.evidence-network-progressive { position:absolute; z-index:1; left:0; top:50%; width:100%; height:auto;
+  transform:translateY(-50%); display:block; pointer-events:none;
+  opacity:1; filter:none; }
+.evidence-network[data-progressive-complete="1"] .evidence-network-progressive { opacity:1; }
+.evidence-corpus-layer { opacity:.76; transition:opacity .45s ease; }
+.evidence-interactive-canvas { position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab; }
+.evidence-network[data-interactive="1"] .evidence-network-map>svg { pointer-events:none; }
+.evidence-network[data-interactive="1"] .evidence-network-state-layer { pointer-events:none; }
+.evidence-network[data-interactive="1"] .evidence-network-state-layer :is(a,video,button) { pointer-events:auto; }
+.evidence-explore-tools { position:absolute;top:2%;right:2%;z-index:8;display:flex;gap:8px;opacity:.35;transition:opacity .2s; }
+.evidence-selection-count { position:absolute;top:calc(48 * var(--u));left:calc(32 * var(--u));max-width:72%;z-index:7;font:500 clamp(12px,calc(17 * var(--u)),21px)/1.4 var(--mono);color:#d7c59e;pointer-events:none; }
+@media (max-width:650px) {
+  .evidence-network[data-interactive="1"] .evidence-selection-count { top:28px;left:16px;max-width:calc(100% - 32px); }
+  .evidence-network[data-interactive="1"] .evidence-explore-tools { top:78px;right:10px; }
+}
+.evidence-selected-paper-label { font:500 21px var(--mono);paint-order:stroke;stroke:#050707;stroke-width:5px;stroke-linejoin:round;cursor:pointer; }
+.evidence-count-scope { display:block;margin-top:.25em;font-size:.73em;color:#85939c; }
+.evidence-count-related { display:block;margin-top:.25em;font-size:.85em;color:#94bbc9; }
+.evidence-count-live { display:block;margin-top:.3em;font-size:.73em;color:#83cfe0; }
+.evidence-explore-tools .evidence-live-toggle { color:#83cfe0; }
+.evidence-live-toggle[data-connected="true"]::before { content:'•';margin-right:6px; }
+.evidence-paper-live { margin:16px 0;padding-top:12px;border-top:1px solid #83cfe040; }
+.evidence-paper-live>strong { color:#83cfe0;font:12px/1.4 var(--mono); }
+.evidence-live-axes { display:grid;grid-template-columns:108px 1fr;gap:5px 12px;font:11px/1.5 var(--mono); }
+.evidence-live-axes dt { color:#a4b1bd; }
+.evidence-live-axes dd { margin:0;color:#d5e1e6; }
+.evidence-live-note { display:block;margin-top:6px;color:#9dbac4;font:11px/1.5 var(--mono); }
+.evidence-selected-paper-method { font:400 16px var(--mono);fill:#c5cbd0; }
+.evidence-selected-paper-qualification { font:400 14px var(--mono);fill:#a6bac3; }
+.evidence-selected-paper-labels [data-related="true"] .evidence-paper-label-leader { stroke:#94bbc9;stroke-dasharray:4 3; }
+.evidence-paper-label-leader { stroke:#c5cbd0;stroke-width:1;opacity:.5;pointer-events:none; }
+.evidence-paper-protocol { color:#f0c27b;font-weight:600; }
+.evidence-paper-classification { font-size:13px;line-height:1.55;color:#d6e1e6; }
+.evidence-paper-review-sources { display:flex;flex-wrap:wrap;gap:6px 14px;font-size:11px; }
+.evidence-network:hover .evidence-explore-tools,.evidence-explore-tools:focus-within { opacity:1; }
+.evidence-explore-tools button { font:11px var(--mono);border:1px solid #b9c5cc45;border-radius:4px;background:#101315cc;color:#c7d0d7;padding:6px 9px;cursor:pointer; }
+.evidence-paper-panel { position:absolute;z-index:20;right:2%;top:8%;width:min(440px,88%);max-height:75%;overflow:auto;padding:20px;background:#0b1014f7;border:1px solid #aeb9c84d;border-radius:6px;box-shadow:0 12px 48px #000b;color:#e4e8e9;pointer-events:auto;font:14px/1.5 Georgia,serif; }
+.evidence-paper-panel[hidden],.evidence-paper-tip[hidden] { display:none; }
+.evidence-paper-heading { display:flex;gap:14px;align-items:start;font-size:18px;line-height:1.3; }
+.evidence-paper-heading strong { flex:1;font-weight:500; }
+.evidence-paper-heading button { border:0;background:transparent;color:#bcc6ce;font:24px/1 sans-serif;cursor:pointer; }
+.evidence-paper-meta,.evidence-paper-status,.evidence-paper-links { font:11px/1.5 var(--mono);color:#a4b1bd;margin:12px 0; }
+.evidence-paper-links { color:#efd094; }
+.evidence-paper-source { color:#93c6e9;text-decoration:underline; }
+.evidence-paper-field { display:block;margin:12px 0;padding:8px 10px;background:#20313c66;border:1px solid #93c6e955;border-radius:4px;color:#bbd8ed;font:12px/1.4 var(--sans);text-align:left;cursor:pointer; }
+.evidence-paper-basis { border-left:2px solid #779aa166;padding-left:9px;font-size:11px; }
+.evidence-paper-panel summary { cursor:pointer;color:#accddd;margin:12px 0;font:12px/1.4 var(--sans); }
+.evidence-connected-papers button { display:block;text-align:left;width:100%;padding:8px 0;border:0;border-top:1px solid #aeb9c829;background:none;color:#baceda;font:12px/1.4 Georgia,serif;cursor:pointer; }
+.evidence-paper-support { font-size:13px;color:#bcc8cd; }
+.evidence-paper-search { box-sizing:border-box;width:100%;margin:14px 0;padding:10px;background:#171d22;border:1px solid #aeb9c84d;border-radius:3px;color:#edf1f3;font:14px var(--sans); }
+.evidence-paper-results button { display:block;width:100%;padding:11px 0;border:0;border-top:1px solid #aeb9c829;background:none;color:#cddfea;text-align:left;font:14px/1.35 Georgia,serif;cursor:pointer; }
+.evidence-paper-results button:hover { color:#f4d57d; }
+.evidence-paper-tip { position:absolute;z-index:19;max-width:280px;padding:7px 10px;border-radius:4px;background:#0a1115f5;box-shadow:0 4px 20px #000b;color:#d5dfe3;font:12px/1.4 var(--sans);pointer-events:none; }
+.evidence-network[data-overview="0"] .evidence-corpus-layer,
+.evidence-network[data-cohort-view="1"] .evidence-corpus-layer { opacity:.20; }
+@media (prefers-reduced-motion: reduce) { .evidence-corpus-layer { transition:none; } }
+.evidence-edge { stroke:color-mix(in srgb,var(--lo) 64%,transparent); stroke-width:.72;
+  vector-effect:non-scaling-stroke; opacity:.16; transition:opacity .72s ease, stroke .72s ease; }
+.evidence-edge.semantic { stroke-dasharray:1.4 3.2; opacity:.09; }
+.evidence-node { opacity:.64; transition:opacity .72s ease; }
+.evidence-node.concealed,
+.evidence-node-label.concealed,
+.evidence-edge.concealed { opacity:0 !important; pointer-events:none; }
+.evidence-node-mark { fill:var(--node-color); stroke:color-mix(in srgb,var(--node-color) 60%,white);
+  stroke-width:.55; vector-effect:non-scaling-stroke; transform-box:fill-box; transform-origin:center;
+  transition:transform .46s cubic-bezier(.2,.72,.26,1), filter .38s ease, stroke-width .38s ease; }
+.evidence-node[data-evidence="review"] .evidence-node-mark { fill:color-mix(in srgb,var(--node-color) 34%,var(--page)); opacity:.72; }
+.evidence-node[data-evidence="in_vitro"] .evidence-node-mark { fill:none; stroke-width:1.15; }
+.evidence-node:is([data-evidence="methods"],[data-evidence="postmortem"],[data-evidence="unknown"]) .evidence-node-mark { fill:none; stroke-width:1.15; }
+.evidence-node[data-evidence="unknown"] .evidence-node-mark { stroke-dasharray:1.5 1; }
+
+.evidence-network:not([data-focus="all"]) .evidence-node { opacity:.075; }
+.evidence-network:not([data-focus="all"]) .evidence-edge { opacity:.018; }
+.evidence-network[data-focus="mechanics"] .evidence-node[data-theme="mechanics"],
+.evidence-network[data-focus="nvu"] .evidence-node[data-theme="nvu"],
+.evidence-network[data-focus="immune"] .evidence-node[data-theme="immune"],
+.evidence-network[data-focus="biomarkers"] .evidence-node[data-theme="biomarkers"],
+.evidence-network[data-focus="metabolism"] .evidence-node[data-theme="metabolism"],
+.evidence-network[data-focus="human_imaging"] .evidence-node[data-theme="human_imaging"],
+.evidence-network[data-focus="challenge"] .evidence-node[data-theme="challenge"],
+.evidence-network[data-focus="clinical"] .evidence-node[data-theme="clinical"] { opacity:.84; }
+.evidence-network[data-focus="mechanics"] .evidence-edge[data-theme="mechanics"],
+.evidence-network[data-focus="nvu"] .evidence-edge[data-theme="nvu"],
+.evidence-network[data-focus="immune"] .evidence-edge[data-theme="immune"],
+.evidence-network[data-focus="biomarkers"] .evidence-edge[data-theme="biomarkers"],
+.evidence-network[data-focus="metabolism"] .evidence-edge[data-theme="metabolism"],
+.evidence-network[data-focus="human_imaging"] .evidence-edge[data-theme="human_imaging"],
+.evidence-network[data-focus="challenge"] .evidence-edge[data-theme="challenge"],
+.evidence-network[data-focus="clinical"] .evidence-edge[data-theme="clinical"] { opacity:.34; stroke:var(--mid); }
+.evidence-network[data-focus="multi"][data-focus-themes~="mechanics"] .evidence-node[data-theme="mechanics"],
+.evidence-network[data-focus="multi"][data-focus-themes~="nvu"] .evidence-node[data-theme="nvu"],
+.evidence-network[data-focus="multi"][data-focus-themes~="immune"] .evidence-node[data-theme="immune"],
+.evidence-network[data-focus="multi"][data-focus-themes~="biomarkers"] .evidence-node[data-theme="biomarkers"],
+.evidence-network[data-focus="multi"][data-focus-themes~="metabolism"] .evidence-node[data-theme="metabolism"],
+.evidence-network[data-focus="multi"][data-focus-themes~="human_imaging"] .evidence-node[data-theme="human_imaging"],
+.evidence-network[data-focus="multi"][data-focus-themes~="challenge"] .evidence-node[data-theme="challenge"],
+.evidence-network[data-focus="multi"][data-focus-themes~="clinical"] .evidence-node[data-theme="clinical"] { opacity:.84; }
+.evidence-network[data-focus="multi"][data-focus-themes~="mechanics"] .evidence-edge[data-theme="mechanics"],
+.evidence-network[data-focus="multi"][data-focus-themes~="nvu"] .evidence-edge[data-theme="nvu"],
+.evidence-network[data-focus="multi"][data-focus-themes~="immune"] .evidence-edge[data-theme="immune"],
+.evidence-network[data-focus="multi"][data-focus-themes~="biomarkers"] .evidence-edge[data-theme="biomarkers"],
+.evidence-network[data-focus="multi"][data-focus-themes~="metabolism"] .evidence-edge[data-theme="metabolism"],
+.evidence-network[data-focus="multi"][data-focus-themes~="human_imaging"] .evidence-edge[data-theme="human_imaging"],
+.evidence-network[data-focus="multi"][data-focus-themes~="challenge"] .evidence-edge[data-theme="challenge"],
+.evidence-network[data-focus="multi"][data-focus-themes~="clinical"] .evidence-edge[data-theme="clinical"] { opacity:.34; stroke:var(--mid); }
+.evidence-network .evidence-node.spotlight { opacity:1 !important; }
+.evidence-node.spotlight .evidence-node-mark { transform:scale(2.05); stroke:#fff; stroke-width:1.25;
+  filter:drop-shadow(0 0 calc(8 * var(--u)) var(--node-color)); }
+.evidence-network .evidence-node.footprint-context { opacity:.9 !important; }
+.evidence-node.footprint-context .evidence-node-mark { stroke:var(--footprint-color); stroke-width:1.05;
+  filter:drop-shadow(0 0 calc(4 * var(--u)) color-mix(in srgb,var(--footprint-color) 72%,transparent)); }
+.evidence-network .evidence-edge.footprint-context { opacity:.48 !important;
+  stroke:color-mix(in srgb,var(--footprint-color) 76%,white); stroke-width:1.12; }
+.evidence-network .evidence-edge.footprint-context.prospective { opacity:.34 !important;
+  stroke-dasharray:4 5; }
+
+.evidence-theme-labels { opacity:0; transition:opacity .62s ease; }
+.evidence-network[data-overview="1"] .evidence-theme-labels,
+.evidence-network[data-circuit-label="1"] .evidence-theme-labels { opacity:1; }
+.evidence-theme-labels text { fill:var(--theme-color); text-anchor:middle;
+  font:600 13px/1 var(--mono); letter-spacing:.025em; paint-order:stroke;
+  stroke:color-mix(in srgb,var(--page) 82%,transparent); stroke-width:5px; stroke-linejoin:round;
+  transition:opacity .58s ease; }
+.evidence-network[data-circuit-label="1"]:not([data-overview="1"]) .evidence-theme-labels text { opacity:0; }
+.evidence-network[data-circuit-label="1"]:not([data-overview="1"]) .evidence-theme-labels text.active { opacity:1; }
+.evidence-node-label { opacity:0; fill:var(--hi); font:600 13px/1 var(--mono);
+  paint-order:stroke; stroke:var(--page); stroke-width:4px; stroke-linejoin:round;
+  transition:opacity .3s ease; }
+.evidence-node-label.active { opacity:1; }
+
+.evidence-regions { pointer-events:none; }
+.evidence-region-state { opacity:0; transition:opacity .34s ease; }
+.evidence-region-state.active { opacity:1; }
+.evidence-region-shape { fill:var(--region-color); fill-opacity:var(--region-opacity,.12);
+  stroke:color-mix(in srgb,var(--region-color) 82%,white); stroke-width:1.35;
+  stroke-dasharray:8 7; stroke-linejoin:round; vector-effect:non-scaling-stroke;
+  filter:drop-shadow(0 0 10px color-mix(in srgb,var(--region-color) 38%,transparent)); }
+.evidence-region.paper .evidence-region-shape { stroke-dasharray:none; stroke-width:1.7;
+  fill:var(--region-color); }
+.evidence-region-label { fill:color-mix(in srgb,var(--region-color) 74%,white); text-anchor:middle;
+  font:650 13px/1 var(--mono); letter-spacing:.03em; paint-order:stroke;
+  stroke:#000; stroke-width:5px; stroke-linejoin:round; }
+
+.evidence-satellites { pointer-events:none; }
+.evidence-satellite-state { opacity:0; transition:opacity .36s ease; }
+.evidence-satellite-state.active { opacity:1; }
+.evidence-satellite-link { stroke:color-mix(in srgb,var(--satellite-color) 68%,white); stroke-width:1.2;
+  stroke-dasharray:5 6; vector-effect:non-scaling-stroke; opacity:.62;
+  filter:drop-shadow(0 0 5px color-mix(in srgb,var(--satellite-color) 42%,transparent)); }
+.evidence-satellite-halo { fill:var(--satellite-color); opacity:.09;
+  stroke:var(--satellite-color); stroke-width:1; stroke-dasharray:3 4; vector-effect:non-scaling-stroke; }
+.evidence-satellite-mark { fill:var(--satellite-color); stroke:#fff; stroke-width:1.25;
+  vector-effect:non-scaling-stroke; filter:drop-shadow(0 0 8px var(--satellite-color)); }
+.evidence-satellite-label { fill:color-mix(in srgb,var(--satellite-color) 72%,white);
+  font:650 13px/1 var(--mono); letter-spacing:.025em; paint-order:stroke;
+  stroke:#000; stroke-width:5px; stroke-linejoin:round; }
+.evidence-satellite-kind { fill:var(--lo); font-size:11px; font-weight:550; letter-spacing:.04em; }
+
+.evidence-network-legend { position:absolute; z-index:2; top:calc(27 * var(--u)); right:calc(35 * var(--u));
+  width:min(510px,42%); opacity:0; color:var(--mid); text-align:right; pointer-events:none;
+  text-shadow:0 2px 14px var(--page),0 0 30px var(--page); transition:opacity .35s ease; }
+.evidence-network[data-overview="1"] .evidence-network-legend { opacity:1; }
+.evidence-network-legend-row { display:flex; justify-content:flex-end; flex-wrap:wrap;
+  gap:calc(4 * var(--u)) calc(13 * var(--u)); font:550 calc(10.5 * var(--u))/1.25 var(--mono); }
+.evidence-network-legend-mark { color:var(--hi); font-weight:650; }
+.evidence-network-legend-methods { margin-top:calc(7 * var(--u));
+  font:550 calc(10.5 * var(--u))/1.3 var(--mono); color:var(--lo); }
+
+.evidence-network-section-header { position:absolute; z-index:4; top:calc(25 * var(--u)); left:calc(32 * var(--u));
+  max-width:54%; pointer-events:none; text-shadow:0 2px 18px #000,0 0 38px #000; }
+.evidence-network-section-header[hidden] { display:none; }
+.evidence-network-section-title { font:650 calc(25 * var(--u))/1.08 var(--sans); letter-spacing:-.018em;
+  color:var(--section-color,var(--hi)); }
+.evidence-network-section-subtitle { margin-top:calc(4 * var(--u));
+  font:550 calc(11.5 * var(--u))/1.3 var(--mono); letter-spacing:.035em;
+  color:var(--mid); }
+
+.evidence-network-timeline { position:absolute; z-index:5; top:calc(31 * var(--u)); left:50%; right:auto;
+  width:min(72%,1120px); transform:translateX(-50%);
+  height:calc(42 * var(--u)); pointer-events:none; color:var(--lo); text-shadow:0 2px 8px #000,0 0 18px #000; }
+.evidence-network-timeline[hidden] { display:none; }
+.evidence-network-timeline-track { position:absolute; left:0; right:0; top:calc(18 * var(--u)); height:1px;
+  background:linear-gradient(90deg,rgba(151,149,141,.12),rgba(151,149,141,.55),rgba(151,149,141,.12)); }
+.evidence-network-timeline-axis { position:absolute; inset:0; }
+.evidence-network-timeline-tick { position:absolute; top:calc(5 * var(--u)); transform:translateX(-50%);
+  font:500 calc(7.7 * var(--u))/1 var(--mono); color:var(--lo); white-space:nowrap; }
+.evidence-network-timeline-tick::before { content:""; position:absolute; left:50%; bottom:calc(100% + 3 * var(--u));
+  width:1px; height:calc(6 * var(--u)); background:var(--lo); opacity:.48; }
+.evidence-network-timeline-mark { position:absolute; top:calc(-3 * var(--u)); width:calc(7 * var(--u)); height:calc(7 * var(--u));
+  z-index:2; border-radius:50%; transform:translateX(-50%) scale(.58); background:var(--timeline-color); opacity:0;
+  box-shadow:0 0 calc(8 * var(--u)) color-mix(in srgb,var(--timeline-color) 45%,transparent);
+  transition:opacity .45s ease,transform .45s cubic-bezier(.2,.72,.26,1); }
+.evidence-network-timeline-mark.visited { opacity:.48; transform:translateX(-50%) scale(.82); }
+.evidence-network-timeline-mark.in-circuit { opacity:.66; }
+.evidence-network-timeline-mark.current { opacity:1; transform:translateX(-50%) scale(1.35); }
+.evidence-network-timeline-range { position:absolute; z-index:1; top:0; height:1px; opacity:0;
+  border-top:1px dashed var(--timeline-color); transform:translateY(-.5px);
+  transition:opacity .45s ease; }
+.evidence-network-timeline-range.visited { opacity:.40; }
+.evidence-network-timeline-range.current { opacity:.92; }
+.evidence-network-timeline-current { position:absolute; left:50%; top:calc(-2 * var(--u)); transform:translateX(-50%);
+  font:600 calc(9.4 * var(--u))/1 var(--mono); letter-spacing:.025em; color:var(--timeline-color); }
+.evidence-network-timeline-current.unindexed { color:var(--mid); }
+
+.evidence-network-state-layer { position:absolute; inset:0; z-index:2; pointer-events:none; }
+.evidence-network-state { position:absolute; inset:0; opacity:0; visibility:hidden;
+  transition:opacity .62s ease, visibility 0s .70s; }
+.evidence-network-state.active { opacity:1; visibility:visible; transition-delay:0s;
+  animation:evidence-state-fade .62s ease both; }
+@keyframes evidence-state-fade { from { opacity:0; } to { opacity:1; } }
+.evidence-network-intro { position:absolute; left:calc(32 * var(--u)); top:calc(69 * var(--u));
+  max-width:min(720px,54%); text-shadow:0 2px 16px var(--page),0 0 34px var(--page); }
+.evidence-network[data-progressive="1"] .evidence-network-intro {
+  text-shadow:0 calc(4 * var(--u)) calc(12 * var(--u)) #000,0 0 calc(28 * var(--u)) #000,
+    0 0 calc(54 * var(--u)) rgba(0,0,0,.96); }
+.evidence-network-kicker { font:600 calc(13 * var(--u))/1.3 var(--mono); letter-spacing:.09em;
+  text-transform:uppercase; color:var(--accent-lite); }
+.evidence-network-heading { margin-top:calc(5 * var(--u)); font:650 calc(37 * var(--u))/1.05 var(--sans);
+  letter-spacing:-.025em; color:var(--hi); }
+.evidence-network-metric { margin-top:calc(7 * var(--u)); font:650 calc(29 * var(--u))/1.02 var(--mono);
+  letter-spacing:-.025em; color:var(--metric-color,#f0805a); }
+.evidence-network-subhead { margin-top:calc(8 * var(--u)); max-width:54ch;
+  font:500 calc(18 * var(--u))/1.32 var(--sans); color:var(--mid); }
+
+.evidence-network-figure { position:absolute; top:var(--figure-top,calc(84 * var(--u)));
+  bottom:max(var(--figure-bottom,calc(222 * var(--u))),calc(var(--copy-height,0px) + 125 * var(--u)));
+  width:min(var(--figure-width,54%),var(--figure-max-width,850px)); margin:0;
+  display:flex; align-items:stretch; justify-content:center;
+  transform:none; opacity:0; transition:opacity .34s ease; }
+.evidence-network-state[data-side="left"] .evidence-network-figure { left:calc(42 * var(--u)); }
+.evidence-network-state[data-side="right"] .evidence-network-figure { right:calc(42 * var(--u)); }
+.evidence-network-state[data-side="center"] .evidence-network-figure { left:50%; right:auto;
+  --figure-width:66%; --figure-max-width:1050px; transform:translateX(-50%); }
+.evidence-network-state.active .evidence-network-figure { opacity:1; }
+.evidence-network-state.active[data-side="center"] .evidence-network-figure { transform:translateX(-50%); }
+.evidence-network-figure.static { transform:none; transition:opacity .34s ease; }
+.evidence-network-state[data-side="center"] .evidence-network-figure.static { transform:translateX(-50%); }
+.evidence-network-state.active .evidence-network-figure.static { transform:none; }
+.evidence-network-state.active[data-side="center"] .evidence-network-figure.static { transform:translateX(-50%); }
+.evidence-network[data-paper-sequence="1"] .evidence-network-figure {
+  left:var(--figure-center,50%) !important; right:auto !important;
+  top:var(--figure-top,calc(72 * var(--u)));
+  width:min(var(--figure-width,72%),var(--figure-max-width,1120px)) !important;
+  transform:translateX(-50%); }
+.evidence-network[data-paper-sequence="1"] .evidence-network-state.active .evidence-network-figure {
+  transform:translateX(-50%); }
+.evidence-network[data-paper-sequence="1"] .evidence-network-figure.static { transform:translateX(-50%); }
+.evidence-network[data-paper-sequence="1"] .evidence-network-state.has-multiple-figures .evidence-network-figure {
+  width:min(84%,1260px) !important;
+  gap:calc(210 * var(--u));
+}
+.evidence-network-figure.multiple { --figure-width:68%; --figure-max-width:1080px; display:grid; grid-auto-flow:column;
+  grid-auto-columns:minmax(0,1fr); gap:calc(14 * var(--u)); align-items:center; }
+.evidence-network-state[data-side="center"] .evidence-network-figure.multiple {
+  --figure-width:72%; --figure-max-width:1150px; }
+.evidence-network-figure-item { min-width:0; min-height:0; width:100%; height:100%;
+  display:flex; flex-direction:column; align-items:stretch; justify-content:center; }
+.evidence-network-media { position:relative; flex:1 1 auto; min-width:0; min-height:0;
+  display:grid; place-items:center; overflow:visible; }
+.evidence-network-media > img,
+.evidence-network-media > video { position:absolute; inset:0; display:block; width:100%; height:100%;
+  min-width:0; min-height:0; object-fit:contain; object-position:center; border:0; border-radius:0;
+  background:transparent; opacity:0;
+  filter:drop-shadow(0 calc(14 * var(--u)) calc(28 * var(--u)) rgba(0,0,0,.52));
+  transition:opacity .68s ease; }
+.evidence-network-media > img.loaded,
+.evidence-network-media > video.loaded { opacity:1; }
+.evidence-network-figure[data-fit="cover"] .evidence-network-media > img,
+.evidence-network-figure[data-fit="cover"] .evidence-network-media > video { object-fit:cover; }
+.evidence-network-figure-label { flex:0 0 auto; min-height:calc(17 * var(--u)); margin-top:calc(4 * var(--u));
+  display:flex; justify-content:space-between; gap:calc(10 * var(--u));
+  font:550 calc(10.5 * var(--u))/1.25 var(--mono); color:var(--mid);
+  text-shadow:0 2px 12px #000,0 0 24px #000; }
+.evidence-network-figure-label-source { margin-left:auto; color:var(--lo); text-align:right; }
+.evidence-network-figure.multiple .evidence-network-figure-label {
+  justify-content:center; text-align:center; flex-wrap:wrap;
+  column-gap:calc(8 * var(--u)); row-gap:calc(2 * var(--u));
+}
+.evidence-network-figure.multiple .evidence-network-figure-label-source {
+  margin-left:0; text-align:center;
+}
+.evidence-network-focus-layer { position:absolute; pointer-events:none; z-index:2; }
+.evidence-network-focus-box { position:absolute; box-sizing:border-box;
+  border:1.5px solid var(--focus-color,#f2a07f); background:color-mix(in srgb,var(--focus-color,#f2a07f) 7%,transparent);
+  box-shadow:0 0 calc(12 * var(--u)) color-mix(in srgb,var(--focus-color,#f2a07f) 44%,transparent),
+    inset 0 0 0 1px rgba(0,0,0,.3); }
+.evidence-network-focus-label { position:absolute; left:0; bottom:calc(100% + 4px); white-space:nowrap;
+  font:650 calc(10.5 * var(--u))/1.2 var(--mono); letter-spacing:.025em;
+  color:color-mix(in srgb,var(--focus-color,#f2a07f) 76%,white);
+  text-shadow:0 2px 8px #000,0 0 18px #000; }
+.evidence-network-media.has-focus-crop > img { opacity:.14; filter:grayscale(.85) brightness(.45) blur(.4px); }
+.evidence-network-focus-crop { position:absolute; z-index:4; left:50%; top:47%; width:min(91%,920px);
+  max-height:91%; opacity:0;
+  transform:translate(-50%,-50%); background-repeat:no-repeat; background-color:#fff;
+  border:1.5px solid color-mix(in srgb,var(--focus-color) 84%,white); overflow:visible;
+  box-shadow:0 calc(18 * var(--u)) calc(46 * var(--u)) rgba(0,0,0,.82),0 0 calc(18 * var(--u)) color-mix(in srgb,var(--focus-color) 32%,transparent);
+  transition:opacity .34s ease; }
+.evidence-network-state.active .evidence-network-focus-crop { opacity:1; transform:translate(-50%,-50%); }
+.evidence-network-focus-crop-label { position:absolute; left:0; bottom:calc(100% + 7 * var(--u));
+  font:650 calc(11.5 * var(--u))/1.15 var(--mono); letter-spacing:.025em; color:var(--focus-color);
+  white-space:nowrap; text-shadow:0 2px 8px #000,0 0 18px #000; }
+.evidence-network-inset { position:absolute; z-index:3; top:calc(118 * var(--u));
+  width:min(17%,230px); margin:0; color:var(--mid); }
+.evidence-network-inset[data-side="left"] { left:calc(36 * var(--u)); }
+.evidence-network-inset[data-side="right"] { right:calc(36 * var(--u)); }
+.evidence-network-inset img { display:block; width:100%; max-height:calc(190 * var(--u)); object-fit:contain;
+  object-position:center; border:0; background:transparent;
+  opacity:0; filter:drop-shadow(0 calc(10 * var(--u)) calc(22 * var(--u)) rgba(0,0,0,.64));
+  transition:opacity .68s ease; }
+.evidence-network-inset img.loaded { opacity:1; }
+
+/* Wu et al. spans four species and two result panels. Keep the species identities as one
+ * aligned top row and let the two scientific figures carry the larger lower row. */
+.evidence-network-figure.multiple[data-layout="species-data"] {
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  /* Context portraits use the same ~200u tier as the other evidence compositions.
+   * The scientific panels retain the larger tier, so four species remain legible
+   * without visually outweighing the measurements they introduce. */
+  grid-template-rows:minmax(0,calc(220 * var(--u))) minmax(0,calc(335 * var(--u)));
+  grid-auto-flow:row !important; grid-auto-columns:auto !important;
+  align-content:center;
+  gap:calc(11 * var(--u)) calc(15 * var(--u)) !important;
+}
+.evidence-network-figure[data-layout="species-data"] .evidence-network-figure-item[data-role="species"] { grid-row:1; }
+.evidence-network-figure[data-layout="species-data"] .evidence-network-figure-item {
+  justify-content:flex-end;
+}
+.evidence-network-figure[data-layout="species-data"] .evidence-network-media {
+  display:grid; flex:1 1 auto; overflow:hidden;
+}
+.evidence-network-figure[data-layout="species-data"] .evidence-network-media > img {
+  position:absolute; inset:0; width:100%; height:100%; max-height:none;
+}
+.evidence-network-figure[data-layout="species-data"] .evidence-network-figure-item[data-role="species"] .evidence-network-media > img {
+  max-height:none;
+}
+.evidence-network-figure[data-layout="species-data"] .evidence-network-figure-item[data-role="species"] .evidence-network-media > img {
+  /* The four presentation crops share one 4:3 field and preserve every face. */
+  object-fit:contain;
+}
+.evidence-network-figure[data-layout="species-data"] .evidence-network-figure-item[data-role="data"] { grid-row:2; }
+.evidence-network-figure[data-layout="species-data"] .evidence-network-figure-item[data-role="data"] .evidence-network-media > img {
+  max-height:none; object-position:center bottom;
+}
+.evidence-network-figure[data-layout="species-data"] .evidence-network-figure-item[data-role="data"]:nth-of-type(5) { grid-column:1 / span 2; }
+.evidence-network-figure[data-layout="species-data"] .evidence-network-figure-item[data-role="data"]:nth-of-type(6) { grid-column:3 / span 2; }
+.evidence-network-figure[data-layout="species-data"] .evidence-network-figure-item[data-role="species"] .evidence-network-figure-label {
+  justify-content:center; text-align:center; font-size:calc(9 * var(--u));
+}
+
+/* The review is a compact conceptual anchor; the moving experiment carries the visual weight. */
+.evidence-network-figure.multiple[data-layout="review-wave-pair"] {
+  grid-template-columns:minmax(calc(285 * var(--u)),1.35fr) repeat(2,minmax(calc(230 * var(--u)),1fr));
+  grid-template-rows:minmax(0,calc(200 * var(--u))) minmax(0,calc(285 * var(--u)));
+  grid-auto-flow:row !important; grid-auto-columns:auto !important;
+  align-content:center;
+  gap:calc(13 * var(--u)) calc(24 * var(--u)) !important;
+}
+.evidence-network-figure[data-layout="review-wave-pair"] .evidence-network-figure-item {
+  height:auto; align-self:center; justify-content:flex-start;
+}
+.evidence-network-figure[data-layout="review-wave-pair"] .evidence-network-media {
+  flex:0 0 calc(268 * var(--u));
+}
+.evidence-network-figure[data-layout="review-wave-pair"] .evidence-network-figure-item[data-role="review"] {
+  grid-column:1; grid-row:2;
+}
+.evidence-network-figure[data-layout="review-wave-pair"] .evidence-network-figure-item[data-role="neuronal"] {
+  grid-column:2; grid-row:2;
+}
+.evidence-network-figure[data-layout="review-wave-pair"] .evidence-network-figure-item[data-role="glutamate"] {
+  grid-column:3; grid-row:2;
+}
+.evidence-network-figure[data-layout="review-wave-pair"] .evidence-network-figure-item[data-role="mouse-context"] {
+  grid-column:2 / span 2; grid-row:1; width:48%; height:100%; justify-self:center;
+}
+.evidence-network-figure[data-layout="review-wave-pair"] .evidence-network-figure-item[data-role="mouse-context"] .evidence-network-media {
+  flex:0 0 calc(178 * var(--u));
+}
+.evidence-network-figure[data-layout="review-wave-pair"] .evidence-network-figure-item[data-role="mouse-context"] .evidence-network-media > img {
+  object-fit:contain; object-position:center bottom;
+}
+.evidence-network-figure[data-layout="review-wave-pair"] .evidence-network-figure-item[data-role="neuronal"] .evidence-network-media,
+.evidence-network-figure[data-layout="review-wave-pair"] .evidence-network-figure-item[data-role="glutamate"] .evidence-network-media {
+  aspect-ratio:1/1;
+}
+.evidence-network-figure[data-layout="review-wave-pair"] .evidence-network-figure-item[data-role="review"] .evidence-network-media {
+  aspect-ratio:1.35/1;
+}
+
+/* The second pass keeps the same two-paper composition but replaces motion with Enger's
+ * aligned traces, so the event order can be read at presentation distance. */
+.evidence-network-figure.multiple[data-layout="neuron-connections"] {
+  display:flex; justify-content:center; width:94%; top:7%; bottom:7%;
+}
+.evidence-network-figure[data-layout="neuron-connections"] .evidence-network-figure-item {
+  width:100%; height:100%; align-items:center;
+}
+.evidence-network-figure[data-layout="neuron-connections"] .evidence-network-media {
+  width:100%; min-height:0; flex:1 1 0;
+}
+.evidence-network-figure[data-layout="neuron-connections"] .evidence-network-media > img {
+  height:100%; width:100%; max-height:none; object-fit:contain;
+}
+.evidence-network-figure[data-layout="neuron-connections"] .evidence-network-figure-label {
+  color:#fff; text-align:center; justify-content:center; flex-shrink:0; flex-direction:column;
+  gap:calc(5 * var(--u)); font-size:calc(12 * var(--u));
+}
+.evidence-network-figure[data-layout="neuron-connections"] .evidence-network-figure-label-source {
+  color:#d5d5d5;
+}
+.evidence-network-figure.multiple[data-layout="review-timing"] {
+  grid-template-columns:minmax(calc(220 * var(--u)),.58fr) minmax(0,1.42fr);
+  grid-template-rows:minmax(0,1fr);
+  grid-auto-flow:row !important; grid-auto-columns:auto !important;
+  align-content:center;
+  gap:calc(28 * var(--u)) !important;
+}
+.evidence-network-figure[data-layout="review-timing"] .evidence-network-figure-item {
+  height:auto; align-self:center; justify-content:flex-start;
+}
+.evidence-network-figure[data-layout="review-timing"] .evidence-network-figure-item[data-role="review"] .evidence-network-media {
+  flex:0 0 calc(300 * var(--u));
+}
+.evidence-network-figure[data-layout="review-timing"] .evidence-network-figure-item[data-role="timing"] .evidence-network-media {
+  flex:0 0 calc(380 * var(--u));
+}
+.evidence-network-figure[data-layout="review-timing"] .evidence-network-media > img {
+  /* Pin both differently proportioned paper panels to their captions.  Any spare
+   * letterbox space now sits above the figure rather than severing image from label. */
+  object-position:center bottom;
+}
+.evidence-network-figure[data-layout="review-timing"] .evidence-network-figure-item[data-role="review"] {
+  grid-column:1; grid-row:1;
+}
+.evidence-network-figure[data-layout="review-timing"] .evidence-network-figure-item[data-role="timing"] {
+  grid-column:2; grid-row:1;
+}
+
+/* Pacheco is the concussion-specific confirmation.  Both tall source figures share one
+ * central field and stay large enough for the electrophysiology and CBF traces to read. */
+.evidence-network-figure.multiple[data-layout="pacheco-full"] {
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  grid-template-rows:minmax(0,.36fr) minmax(0,1.64fr);
+  grid-auto-flow:row !important;
+  grid-auto-columns:auto !important;
+  align-content:center;
+  gap:calc(9 * var(--u)) calc(22 * var(--u)) !important;
+}
+.evidence-network-figure[data-layout="pacheco-full"] .evidence-network-figure-item {
+  align-self:center; justify-content:flex-start;
+}
+.evidence-network-figure[data-layout="pacheco-full"] .evidence-network-figure-item[data-role="mouse-context"] {
+  grid-column:1 / span 2; grid-row:1; width:31%; height:100%; justify-self:center;
+}
+.evidence-network-figure[data-layout="pacheco-full"] .evidence-network-figure-item[data-role="electrophysiology"] { grid-column:1; grid-row:2; }
+.evidence-network-figure[data-layout="pacheco-full"] .evidence-network-figure-item[data-role="flow"] { grid-column:2; grid-row:2; }
+.evidence-network-figure[data-layout="pacheco-full"] .evidence-network-media {
+  align-items:center;
+}
+.evidence-network-figure[data-layout="pacheco-full"] .evidence-network-media > img {
+  object-fit:contain;
+}
+.evidence-network-figure[data-layout="pacheco-full"] .evidence-network-figure-item[data-role="electrophysiology"] .evidence-network-media,
+.evidence-network-figure[data-layout="pacheco-full"] .evidence-network-figure-item[data-role="flow"] .evidence-network-media {
+  min-height:calc(330 * var(--u));
+}
+
+/* One-week persistence is a comparison, not two isolated paper slides.  The wider electrical
+ * panel carries the detailed electrophysiology while the compact blood panel supplies the
+ * second biological clock. */
+.evidence-network-figure.multiple[data-layout="week-pair"] {
+  grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
+  grid-template-rows:minmax(0,calc(205 * var(--u))) minmax(0,calc(325 * var(--u)));
+  grid-auto-flow:row !important; grid-auto-columns:auto !important;
+  align-content:center;
+  gap:calc(11 * var(--u)) calc(28 * var(--u)) !important;
+}
+.evidence-network-figure[data-layout="week-pair"] .evidence-network-figure-item[data-role="pig-context"] { grid-column:1; grid-row:1; width:min(calc(275 * var(--u)),82%); justify-self:center; }
+.evidence-network-figure[data-layout="week-pair"] .evidence-network-figure-item[data-role="human-context"] { grid-column:2; grid-row:1; width:min(calc(275 * var(--u)),82%); justify-self:center; }
+.evidence-network-figure[data-layout="week-pair"] .evidence-network-figure-item[data-role="electrical"] {
+  grid-column:1; grid-row:2; width:100%; justify-self:center;
+}
+.evidence-network-figure[data-layout="week-pair"] .evidence-network-figure-item[data-role="blood"] { grid-column:2; grid-row:2; }
+.evidence-network-figure[data-layout="week-pair"] .evidence-network-figure-item[data-role="pig-context"] .evidence-network-figure-label,
+.evidence-network-figure[data-layout="week-pair"] .evidence-network-figure-item[data-role="human-context"] .evidence-network-figure-label {
+  margin-inline:auto; padding:calc(3 * var(--u)) calc(8 * var(--u));
+  border-radius:calc(3 * var(--u)); background:rgba(0,0,0,.86);
+  box-shadow:0 0 calc(18 * var(--u)) rgba(0,0,0,.85);
+}
+.evidence-network-figure[data-layout="week-pair"] .evidence-network-figure-item[data-role="pig-context"] .evidence-network-media > img,
+.evidence-network-figure[data-layout="week-pair"] .evidence-network-figure-item[data-role="human-context"] .evidence-network-media > img {
+  object-fit:contain;
+}
+.evidence-network-figure[data-layout="week-pair"] .evidence-network-media > img,
+.evidence-network-figure[data-layout="pacheco-full"] .evidence-network-media > img,
+.evidence-network-figure[data-layout="barrier-triptych"] .evidence-network-media > img,
+.evidence-network-figure[data-layout="barrier-triptych"] .evidence-network-media > video,
+.evidence-network-figure[data-layout="barrier-human"] .evidence-network-media > img,
+.evidence-network-figure[data-layout="barrier-human"] .evidence-network-media > video,
+.evidence-network-figure[data-layout="physiology-triptych"] .evidence-network-media > img,
+.evidence-network-figure[data-layout="chronic-pair"] .evidence-network-media > img {
+  object-position:center bottom !important;
+}
+
+/* Nguyen's moving vessel remains the anchor.  The acute perturbation and later ultrastructure
+ * stack beside it, so the audience sees one repair story rather than three paper cards. */
+.evidence-network-figure.multiple[data-layout="barrier-triptych"] {
+  grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);
+  grid-template-rows:minmax(0,calc(205 * var(--u))) repeat(2,minmax(0,calc(145 * var(--u))));
+  grid-auto-flow:row !important; grid-auto-columns:auto !important;
+  align-content:center;
+  gap:calc(10 * var(--u)) calc(22 * var(--u)) !important;
+}
+.evidence-network-figure[data-layout="barrier-triptych"] .evidence-network-figure-item[data-role="mouse-context"] {
+  grid-column:1 / span 2; grid-row:1; width:48%; justify-self:center;
+}
+.evidence-network-figure[data-layout="barrier-triptych"] .evidence-network-figure-item[data-role="movie"] {
+  grid-column:1; grid-row:2 / span 2;
+}
+.evidence-network-figure[data-layout="barrier-triptych"] .evidence-network-figure-item[data-role="repair"] {
+  grid-column:2; grid-row:2;
+}
+.evidence-network-figure[data-layout="barrier-triptych"] .evidence-network-figure-item[data-role="structure"] {
+  grid-column:2; grid-row:3;
+}
+.evidence-network-figure[data-layout="barrier-triptych"] .evidence-network-figure-item[data-role="movie"] .evidence-network-media {
+  aspect-ratio:1/1;
+}
+.evidence-network-figure.multiple[data-layout="barrier-focus"] {
+  grid-template-columns:minmax(0,1fr);
+  grid-template-rows:minmax(0,calc(205 * var(--u))) minmax(0,calc(285 * var(--u)));
+  grid-auto-flow:row !important; grid-auto-columns:auto !important;
+  align-content:center;
+}
+.evidence-network-figure[data-layout="barrier-focus"] .evidence-network-figure-item[data-role="focus"] {
+  grid-column:1; grid-row:2; width:82%; height:auto; justify-self:center; align-self:center; justify-content:flex-start;
+}
+.evidence-network-figure[data-layout="barrier-focus"] .evidence-network-media {
+  flex:0 0 calc(275 * var(--u));
+}
+.evidence-network-figure[data-layout="barrier-focus"] .evidence-network-figure-item[data-role="mouse-context"] {
+  grid-column:1; grid-row:1; width:40%; height:100%; justify-self:center;
+}
+.evidence-network-figure[data-layout="barrier-focus"] .evidence-network-figure-item[data-role="mouse-context"] .evidence-network-media {
+  flex:0 0 calc(178 * var(--u));
+}
+.evidence-network-figure[data-layout="barrier-focus"] .evidence-network-figure-item[data-role="mouse-context"] .evidence-network-media > img {
+  object-fit:contain; object-position:center bottom;
+}
+
+/* The human DCE parameters share the canvas with the vessel-level movie as an explicit scale
+ * change.  Equal heights matter more here than equal source-image aspect ratios. */
+.evidence-network-figure.multiple[data-layout="barrier-human"] {
+  grid-template-columns:minmax(0,.70fr) minmax(0,.70fr) minmax(0,1.40fr);
+  grid-template-rows:minmax(0,calc(205 * var(--u))) minmax(0,calc(260 * var(--u)));
+  grid-auto-flow:row !important; grid-auto-columns:auto !important;
+  align-content:center;
+  gap:calc(11 * var(--u)) calc(20 * var(--u)) !important;
+}
+.evidence-network-figure[data-layout="barrier-human"] .evidence-network-figure-item[data-role="fish-context"] {
+  grid-column:1; grid-row:1; width:100%; justify-self:center;
+}
+.evidence-network-figure[data-layout="barrier-human"] .evidence-network-figure-item[data-role="leakage"] { grid-column:1; grid-row:2; }
+.evidence-network-figure[data-layout="barrier-human"] .evidence-network-figure-item[data-role="human-context"] {
+  grid-column:2 / span 2; grid-row:1; width:min(calc(300 * var(--u)),44%); justify-self:center;
+}
+.evidence-network-figure[data-layout="barrier-human"] .evidence-network-figure-item[data-role="transfer"] { grid-column:2; grid-row:2; }
+.evidence-network-figure[data-layout="barrier-human"] .evidence-network-figure-item[data-role="plasma"] { grid-column:3; grid-row:2; }
+.evidence-network-figure[data-layout="barrier-human"] .evidence-network-figure-item[data-role="leakage"] .evidence-network-media {
+  aspect-ratio:1/1;
+}
+.evidence-network-figure[data-layout="barrier-human"] .evidence-network-figure-item[data-role="fish-context"] .evidence-network-media > img {
+  object-fit:cover; object-position:center 43% !important;
+}
+
+/* Human physiology reads as two comparisons: early flow/metabolism and chronic metabolic
+ * patterning.  These layouts keep the original figures large while removing repeated full-screen
+ * resets between studies. */
+.evidence-network-figure.multiple[data-layout="physiology-triptych"] {
+  grid-template-columns:minmax(0,1.40fr) repeat(2,minmax(0,.80fr));
+  grid-template-rows:minmax(0,calc(210 * var(--u))) minmax(0,calc(300 * var(--u)));
+  grid-auto-flow:row !important; grid-auto-columns:auto !important;
+  align-content:center;
+  gap:calc(10 * var(--u)) calc(24 * var(--u)) !important;
+}
+.evidence-network-figure[data-layout="physiology-triptych"] .evidence-network-figure-item[data-role="adult-context"] {
+  grid-column:1; grid-row:1; width:min(calc(350 * var(--u)),82%); justify-self:center;
+}
+.evidence-network-figure[data-layout="physiology-triptych"] .evidence-network-figure-item[data-role="children-context"] {
+  grid-column:2 / span 2; grid-row:1; width:min(calc(350 * var(--u)),82%); justify-self:center;
+}
+.evidence-network-figure[data-layout="physiology-triptych"] .evidence-network-figure-item[data-role="metabolism"] {
+  grid-column:1; grid-row:2;
+}
+.evidence-network-figure[data-layout="physiology-triptych"] .evidence-network-figure-item[data-role="symptomatic"] {
+  grid-column:2; grid-row:2;
+}
+.evidence-network-figure[data-layout="physiology-triptych"] .evidence-network-figure-item[data-role="recovered"] {
+  grid-column:3; grid-row:2;
+}
+.evidence-network-figure.multiple[data-layout="chronic-pair"] {
+  grid-template-columns:minmax(0,1.35fr) minmax(0,.65fr);
+  grid-template-rows:minmax(0,calc(210 * var(--u))) minmax(0,calc(270 * var(--u)));
+  grid-auto-flow:row !important; grid-auto-columns:auto !important;
+  align-content:center;
+  gap:calc(10 * var(--u)) calc(26 * var(--u)) !important;
+}
+.evidence-network-figure[data-layout="chronic-pair"] .evidence-network-figure-item[data-role="human-context"] {
+  grid-column:1 / span 2; grid-row:1; width:min(calc(320 * var(--u)),34%); justify-self:center;
+}
+.evidence-network-figure[data-layout="chronic-pair"] .evidence-network-figure-item[data-role="mrs"] { grid-column:1; grid-row:2; width:100%; }
+.evidence-network-figure[data-layout="chronic-pair"] .evidence-network-figure-item[data-role="pet"] { grid-column:2; grid-row:2; width:92%; justify-self:center; }
+.evidence-network-figure[data-layout="week-pair"] .evidence-network-figure-item[data-role="human-context"] .evidence-network-media > img,
+.evidence-network-figure[data-layout="barrier-human"] .evidence-network-figure-item[data-role="human-context"] .evidence-network-media > img,
+.evidence-network-figure[data-layout="chronic-pair"] .evidence-network-figure-item[data-role="human-context"] .evidence-network-media > img {
+  object-fit:cover; object-position:center 40% !important;
+}
+.evidence-network-figure[data-layout="chronic-pair"] .evidence-network-figure-item[data-role="human-context"] .evidence-network-media > img {
+  object-fit:contain; object-position:center !important;
+}
+.evidence-network-figure[data-layout="week-pair"] .evidence-network-figure-item[data-role="human-context"] .evidence-network-media > img {
+  object-fit:contain; object-position:center 28% !important;
+}
+
+/* The two football cohorts become one visual comparison.  Participant context occupies a shallow
+ * top row, while the two scientific results align directly underneath. */
+.evidence-network-figure.multiple[data-layout="football-pair"] {
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  grid-template-rows:minmax(0,calc(210 * var(--u))) minmax(0,calc(285 * var(--u)));
+  grid-auto-flow:row !important; grid-auto-columns:auto !important;
+  align-content:center;
+  gap:calc(12 * var(--u)) calc(24 * var(--u)) !important;
+}
+.evidence-network-figure[data-layout="football-pair"] .evidence-network-figure-item[data-role="amateur"] { grid-column:1; grid-row:1; width:min(calc(300 * var(--u)),58%); justify-self:center; }
+.evidence-network-figure[data-layout="football-pair"] .evidence-network-figure-item[data-role="professional"] { grid-column:2; grid-row:1; width:min(calc(300 * var(--u)),58%); justify-self:center; }
+.evidence-network-figure[data-layout="football-pair"] .evidence-network-figure-item[data-role="dce"] { grid-column:1; grid-row:2; }
+.evidence-network-figure[data-layout="football-pair"] .evidence-network-figure-item[data-role="pet"] { grid-column:2; grid-row:2; }
+.evidence-network-figure[data-layout="football-pair"] .evidence-network-figure-item[data-role="amateur"] .evidence-network-media > img,
+.evidence-network-figure[data-layout="football-pair"] .evidence-network-figure-item[data-role="professional"] .evidence-network-media > img {
+  object-fit:cover; object-position:center 18%;
+}
+.evidence-network-figure[data-layout="football-pair"] .evidence-network-figure-item[data-role="amateur"] .evidence-network-media,
+.evidence-network-figure[data-layout="football-pair"] .evidence-network-figure-item[data-role="professional"] .evidence-network-media {
+  aspect-ratio:4/3;
+}
+.evidence-network-inset-caption { margin-top:calc(6 * var(--u)); display:flex; flex-direction:column;
+  gap:calc(2 * var(--u)); font:550 calc(9.8 * var(--u))/1.25 var(--mono);
+  text-shadow:0 2px 10px #000,0 0 20px #000; }
+.evidence-network-inset-label { color:var(--mid); }
+.evidence-network-inset-source { color:var(--lo); }
+.evidence-network-copy { position:absolute; bottom:calc(115 * var(--u)); width:min(48%,780px);
+  text-shadow:0 2px 15px var(--page),0 0 34px var(--page); }
+.evidence-network-state[data-side="left"] .evidence-network-copy { left:calc(42 * var(--u)); }
+.evidence-network-state[data-side="right"] .evidence-network-copy { right:calc(42 * var(--u)); }
+.evidence-network-state[data-side="center"] .evidence-network-copy { left:21%; width:58%; }
+.evidence-network[data-paper-sequence="1"] .evidence-network-copy {
+  left:16% !important; right:auto !important; width:68% !important; bottom:calc(102 * var(--u)); }
+.evidence-network[data-paper-sequence="1"] .evidence-network-inset {
+  top:calc(80 * var(--u)) !important; width:min(var(--inset-width,20%),285px) !important; }
+.evidence-network[data-paper-sequence="1"] .evidence-network-inset[data-side="left"] {
+  left:5%; right:auto; }
+.evidence-network[data-paper-sequence="1"] .evidence-network-inset[data-side="right"] {
+  right:5%; left:auto; }
+.evidence-network[data-paper-sequence="1"] .evidence-network-state.has-multiple-figures .evidence-network-inset {
+  left:50% !important; right:auto !important; top:calc(86 * var(--u)) !important;
+  width:min(var(--inset-width,19%),245px) !important;
+  transform:translateX(-50%);
+}
+.evidence-network[data-paper-sequence="1"] .evidence-network-inset img { max-height:calc(250 * var(--u)); }
+.evidence-network[data-paper-sequence="1"] .evidence-network-state.has-multiple-figures .evidence-network-inset-caption {
+  text-align:center;
+}
+
+/* A paper is one centred composition, not independently anchored islands.  The old absolute
+ * positions happened to line up at 16:9 but pulled the animal, source figure and conclusion
+ * apart on the 4:3 projector canvas.  This stage keeps the visual evidence together, uses the
+ * available height, and deliberately ignores legacy per-paper nudges. */
+.evidence-network[data-paper-sequence="1"] .evidence-network-state.paper-state {
+  display:grid;
+  grid-template-rows:minmax(0,1fr) auto;
+  row-gap:calc(15 * var(--u));
+  padding:calc(72 * var(--u)) max(calc(38 * var(--u)),5.5vw) calc(62 * var(--u));
+  box-sizing:border-box;
+}
+.evidence-network-paper-stage {
+  position:relative; z-index:2; grid-row:1; min-width:0; min-height:0;
+  width:min(100%,calc(1160 * var(--u))); height:100%; justify-self:center;
+  display:grid; grid-template-columns:minmax(0,1fr); align-items:stretch;
+}
+.evidence-network-paper-stage::before {
+  content:""; position:absolute; pointer-events:none; z-index:-1;
+  inset:calc(-22 * var(--u)) calc(-34 * var(--u));
+  background:radial-gradient(ellipse at center,rgba(0,0,0,.78),rgba(0,0,0,.48) 48%,transparent 78%);
+  filter:blur(calc(11 * var(--u)));
+}
+.evidence-network-paper-stage.has-inset {
+  grid-template-columns:minmax(0,3.35fr) minmax(calc(176 * var(--u)),1fr);
+  column-gap:calc(30 * var(--u));
+}
+.evidence-network-paper-stage.has-inset[data-inset-side="left"] {
+  grid-template-columns:minmax(calc(176 * var(--u)),1fr) minmax(0,3.35fr);
+}
+.evidence-network-paper-stage.has-inset[data-inset-side="left"] > .evidence-network-inset { grid-column:1; }
+.evidence-network-paper-stage.has-inset[data-inset-side="left"] > .evidence-network-figure { grid-column:2; }
+.evidence-network-paper-stage.has-inset[data-inset-side="right"] > .evidence-network-figure { grid-column:1; }
+.evidence-network-paper-stage.has-inset[data-inset-side="right"] > .evidence-network-inset { grid-column:2; }
+.evidence-network[data-paper-sequence="1"] .evidence-network-state.paper-state .evidence-network-paper-stage > .evidence-network-figure {
+  position:relative !important; inset:auto !important; grid-row:1;
+  width:100% !important; height:100%; max-width:none !important; min-width:0; min-height:0;
+  transform:none !important; gap:calc(18 * var(--u)) !important;
+}
+.evidence-network[data-paper-sequence="1"] .evidence-network-state.paper-state .evidence-network-paper-stage > .evidence-network-figure.multiple {
+  display:grid; grid-auto-flow:column; grid-auto-columns:minmax(0,1fr);
+}
+.evidence-network[data-paper-sequence="1"] .evidence-network-state.paper-state .evidence-network-paper-stage > .evidence-network-inset {
+  position:relative !important; inset:auto !important; grid-row:1; align-self:center;
+  width:100% !important; max-width:calc(245 * var(--u)); margin:0 auto; transform:none !important;
+}
+.evidence-network[data-paper-sequence="1"] .evidence-network-paper-stage > .evidence-network-inset img {
+  width:100%; max-height:calc(245 * var(--u)); object-fit:contain;
+}
+.evidence-network[data-paper-sequence="1"] .evidence-network-paper-stage .evidence-network-inset-caption {
+  text-align:center;
+}
+.evidence-network[data-paper-sequence="1"] .evidence-network-state.paper-state > .evidence-network-copy {
+  position:relative !important; inset:auto !important; grid-row:2;
+  width:min(100%,calc(1000 * var(--u))) !important; justify-self:center;
+  text-align:left;
+}
+.evidence-network[data-paper-sequence="1"] .evidence-network-paper-stage .evidence-network-focus-crop {
+  width:min(92%,calc(900 * var(--u))); max-height:92%;
+}
+.evidence-network-tag { font:650 calc(10.8 * var(--u))/1.32 var(--mono); letter-spacing:.046em;
+  text-transform:uppercase; color:var(--accent-lite); white-space:pre-line; }
+.evidence-network-text { margin-top:calc(5 * var(--u)); font:550 calc(18.5 * var(--u))/1.22 var(--sans);
+  color:var(--hi); }
+.evidence-network-citation { position:absolute; z-index:5; left:calc(31 * var(--u));
+  right:calc(31 * var(--u)); bottom:calc(19 * var(--u)); display:flex; flex-wrap:wrap;
+  align-items:flex-end; gap:calc(3 * var(--u)) calc(15 * var(--u));
+  font:500 calc(9.8 * var(--u))/1.28 var(--mono); color:var(--lo);
+  text-shadow:0 2px 10px #000,0 0 20px #000; pointer-events:auto; }
+.evidence-network-citation-row { color:inherit; text-decoration:none; }
+.evidence-network-citation-row::before { content:"· "; color:var(--mid); }
+.evidence-network-citation-row:first-child::before { content:""; }
+.evidence-network-citation-row:hover { color:var(--mid); }
+.slide:has(.evidence-network[data-local-citations="1"]) .sources,
+.sources.evidence-sources-suppressed { display:none; }
+.evidence-network-questions { position:absolute; z-index:2; left:16%; right:16%; top:17%; height:31%;
+  display:grid; align-content:center; gap:calc(20 * var(--u)); text-align:center; }
+.evidence-network-question { font:650 calc(29 * var(--u))/1.12 var(--sans); letter-spacing:-.025em;
+  color:var(--hi); text-shadow:0 2px 16px var(--page),0 0 46px var(--page),0 0 70px var(--page); }
+.evidence-network-error { position:absolute; inset:0; display:grid; place-items:center; color:var(--accent); }
+
+/* Opt-in audience narrative: one claim above the evidence, two short observations below it,
+ * and the question that leads to the next theme. This is slide content, not presenter notes.
+ * The graph and all figures retain their authored identities and click sequence. */
+.evidence-network[data-audience-story="1"] .evidence-network-section-header {
+  top:calc(20 * var(--u)); left:calc(32 * var(--u)); right:calc(38 * var(--u)); max-width:none;
+}
+.evidence-network[data-audience-story="1"] .evidence-network-section-title {
+  font-size:calc(30 * var(--u)); line-height:1.12; color:#fff;
+}
+.evidence-network[data-audience-story="1"] .evidence-network-timeline {
+  top:calc(68 * var(--u)); height:calc(32 * var(--u));
+}
+.evidence-network[data-audience-story="1"] .audience-story-state.paper-state {
+  display:grid; grid-template-rows:minmax(0,1fr) calc(137 * var(--u));
+  row-gap:calc(16 * var(--u));
+  padding:calc(111 * var(--u)) max(calc(38 * var(--u)),5.5vw) calc(51 * var(--u));
+  box-sizing:border-box;
+}
+.evidence-network[data-audience-story="1"] .audience-story-state.paper-state .evidence-network-paper-stage > .evidence-network-figure {
+  position:relative !important; inset:auto !important; grid-row:1; width:100% !important;
+  height:100%; max-width:none !important; min-width:0; min-height:0; transform:none !important;
+}
+.evidence-network[data-audience-story="1"] .audience-story-state > .evidence-network-copy {
+  z-index:3; width:min(100%,calc(1160 * var(--u))) !important;
+}
+.evidence-network[data-audience-story="1"] .audience-story-state.paper-state > .evidence-network-copy {
+  position:relative !important; inset:auto !important; grid-row:2; justify-self:center; align-self:start;
+}
+.evidence-network[data-audience-story="1"] .audience-story-state:not(.paper-state) > .evidence-network-copy {
+  left:calc(32 * var(--u)) !important; right:calc(38 * var(--u)); width:auto !important;
+  bottom:calc(49 * var(--u));
+}
+.evidence-network[data-audience-story="1"] .audience-story-state[data-story-position="above-map"] > .evidence-network-copy {
+  top:calc(110 * var(--u)); bottom:auto;
+}
+.audience-story-state > .evidence-network-copy > :is(.evidence-network-tag,.evidence-network-text) { display:none; }
+.evidence-audience-copy { text-align:left; color:#fff; font:500 calc(18 * var(--u))/1.3 var(--sans);
+  text-shadow:0 2px 9px #000,0 0 20px #000,0 0 34px #000; }
+.evidence-audience-points { margin:0; padding-left:calc(21 * var(--u)); display:grid; gap:calc(5 * var(--u)); }
+.evidence-audience-points li { padding-left:calc(2 * var(--u)); }
+.evidence-audience-points li::marker { color:var(--accent-lite); }
+.evidence-audience-points strong { color:#fff; font-weight:750; }
+.evidence-audience-bridge { margin:calc(9 * var(--u)) 0 0; color:#eeb697; font-size:calc(17 * var(--u)); }
+.evidence-audience-definitions { margin-top:calc(9 * var(--u)); color:#eee; font:400 calc(14 * var(--u))/1.3 var(--sans); }
+.evidence-audience-definitions p { margin:0; }
+.evidence-audience-columns { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:calc(36 * var(--u)); }
+.evidence-audience-column { min-width:0; }
+.evidence-audience-column-title { margin:0 0 calc(10 * var(--u)); color:#fff; font:650 calc(24 * var(--u))/1.15 var(--sans); }
+.evidence-network[data-audience-story="1"] .audience-story-columns.paper-state {
+  padding-top:calc(64 * var(--u)); grid-template-rows:minmax(0,1fr) calc(210 * var(--u));
+}
+.evidence-network[data-story-columns="1"] .evidence-network-timeline { top:calc(20 * var(--u)); }
+.evidence-network[data-audience-story="1"] .audience-story-columns.paper-state > .evidence-network-copy { width:100% !important; }
+.audience-story-columns .evidence-network-figure.multiple:is([data-layout="week-pair"],[data-layout="chronic-pair"],[data-layout="football-pair"]) {
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+.evidence-network[data-audience-story="1"] .has-story-definitions.paper-state { grid-template-rows:minmax(0,1fr) calc(163 * var(--u)); }
+.evidence-network[data-audience-story="1"] .evidence-network-figure-label { color:#ddd; }
+.evidence-network[data-audience-story="1"] .evidence-network-figure-label-main { color:#ddd; }
+.evidence-network[data-audience-story="1"] .evidence-network-figure-label-source { color:#bbb; }
+.evidence-network[data-audience-story="1"] .evidence-network-citation { color:#a5a5a0; font-size:calc(9 * var(--u)); }
+.evidence-audience-title {
+  position:absolute; z-index:4; top:calc(20 * var(--u)); left:calc(32 * var(--u)); right:calc(38 * var(--u));
+  margin:0; font:650 calc(30 * var(--u))/1.12 var(--sans); color:#fff; text-align:left;
+  text-shadow:0 2px 9px #000,0 0 25px #000;
+}
+/* Short main-talk tour: fixed graph coordinates and reserved copy bands. The
+ * detailed paper layouts remain unchanged in Extended background. */
+.evidence-network[data-overview-tour="1"] .evidence-network-map {
+  inset:calc(83 * var(--u)) calc(28 * var(--u)) calc(117 * var(--u));
+}
+.evidence-network[data-overview-tour="1"] :is(.evidence-audience-title,.evidence-network-section-title) {
+  font-size:calc(30 * var(--u)); line-height:1.14;
+}
+.evidence-network[data-overview-tour="1"] .audience-story-state:not(.paper-state) > .evidence-network-copy {
+  bottom:calc(31 * var(--u)); min-height:calc(70 * var(--u));
+}
+.evidence-network[data-overview-tour="1"] .evidence-audience-copy {
+  font-size:calc(22 * var(--u)); line-height:1.35;
+}
+.evidence-network[data-overview-tour="1"] .evidence-node-label {
+  font-size:18px; stroke-width:5px;
+}
+.evidence-network[data-overview-tour="1"] .evidence-region-label,
+.evidence-network[data-overview-tour="1"] .evidence-satellite-label { font-size:19px; }
+.evidence-network[data-overview-tour="1"] .evidence-satellite-kind { font-size:15px; fill:#ddd; }
+.evidence-network[data-study-placement="1"] .evidence-satellite-label { font-size:20px; }
+.evidence-network[data-study-placement="1"] .evidence-satellite-kind { font-size:16px; fill:#ddd; }
+.evidence-network[data-study-placement="1"][data-state-citation="1"] .audience-story-state:not(.paper-state):not([data-story-position="above-map"]) > .evidence-network-copy {
+  bottom:calc(90 * var(--u));
+}
+.evidence-network[data-overview-tour="1"]:not([data-focus="all"]) .evidence-node { opacity:.26; }
+.evidence-network[data-overview-tour="1"]:not([data-focus="all"]) .evidence-edge { opacity:.07; }
+.evidence-network[data-overview-tour="1"] .evidence-network-legend { display:none; }
+/* Main-talk speaking cues occupy their own column, not the subtitle band. */
+.evidence-network[data-speaking-prompts="1"] .evidence-network-map { inset:5% 34% 5% 0; }
+.evidence-network[data-speaking-prompts="1"] :is(.evidence-network-section-header,.evidence-audience-title,.evidence-network-copy,.evidence-cohort-legend) { display:none!important; }
+.evidence-speaking-prompt { position:absolute; right:2%; top:12%; bottom:12%; width:30%; display:flex; flex-direction:column; justify-content:center; padding:3% 0 3% 3%; border-left:1px solid #ffffff24; text-align:left; }
+.evidence-speaking-kicker { font:500 calc(11 * var(--u))/1.4 var(--mono); color:#92a4b4; letter-spacing:.12em; margin-bottom:calc(22 * var(--u)); }
+.evidence-speaking-title { font:500 calc(28 * var(--u))/1.17 var(--sans)!important; letter-spacing:-.035em; color:#edf4f8; margin:0 0 calc(26 * var(--u))!important; }
+.evidence-speaking-line { font:400 calc(21 * var(--u))/1.45 var(--sans)!important; color:#b5c1ca; margin:0 0 calc(24 * var(--u))!important; }
+.evidence-speaking-line strong { font-weight:600; color:#83d8e2; }
+.evidence-network[data-speaking-prompts="1"] .evidence-network-state { transition:opacity .25s ease; transform:none!important; }
+.evidence-cohort-state { opacity:0; transition:opacity .6s ease; pointer-events:none; }
+.evidence-cohort-state.active { opacity:1; }
+.evidence-cohort-wash { fill:var(--cohort-color); opacity:.11; filter:blur(15px); }
+.evidence-network[data-cohort-view="1"] .evidence-node:not(.concealed) { opacity:.13 !important; }
+.evidence-network[data-cohort-view="1"] .evidence-edge:not(.concealed) { opacity:.045 !important; }
+.evidence-network[data-cohort-view="1"] .evidence-node.cohort-member { opacity:1 !important; }
+.evidence-network[data-cohort-view="1"] .cohort-member .evidence-node-mark {
+  fill:var(--cohort-color); stroke:var(--cohort-color); stroke-width:1;
+  transform:scale(1.12); filter:none;
+}
+.evidence-network[data-cohort-view="1"] .evidence-edge.cohort-member {
+  stroke:var(--cohort-color); opacity:.26 !important;
+}
+.evidence-network[data-cohort-view="1"] .evidence-node-labels { visibility:hidden; }
+.evidence-cohort-legend { position:absolute; left:calc(28 * var(--u)); top:calc(64 * var(--u));
+  display:flex; gap:calc(30 * var(--u)); font-size:calc(17 * var(--u)); pointer-events:none; }
+.evidence-cohort-legend[hidden] { display:none; }
+.evidence-cohort-legend span { color:var(--cohort-color); }
+.evidence-cohort-legend span::before { content:'●'; margin-right:calc(9 * var(--u)); font-size:.7em; }
+/* One fade for the complete paper composition: no early text, staggered bullets or
+ * delayed image fade. Warm the figures on the preceding paper-highlight click. */
+.evidence-network[data-synchronized-reveal="1"] .evidence-network-state { transition:opacity .45s ease,visibility 0s .45s; }
+.evidence-network[data-synchronized-reveal="1"] .evidence-network-state.active { animation:none; transition-delay:0s; }
+.evidence-network[data-synchronized-reveal="1"] .paper-state:not(.media-ready) { opacity:0; visibility:hidden; }
+.evidence-network[data-synchronized-reveal="1"] .evidence-network-figure,
+.evidence-network[data-synchronized-reveal="1"] .evidence-network-media > :is(img,video) { transition:none; }
+.evidence-network[data-synchronized-reveal="1"][data-paper-visible="1"] :is(.evidence-node-labels,.evidence-theme-labels) { opacity:0; }
+.evidence-network[data-synchronized-reveal="1"][data-paper-visible="0"] .evidence-network-timeline { top:calc(20 * var(--u)); }
+.evidence-network[data-synchronized-reveal="1"][data-audience-story="1"] .evidence-network-legend { display:none; }
+.evidence-network[data-synchronized-reveal="1"] .evidence-network-figure[data-layout="football-pair"]
+  .evidence-network-figure-item:is([data-role="amateur"],[data-role="professional"]) { width:calc(175 * var(--u)); }
+@media (prefers-reduced-motion:reduce) {
+  .evidence-network[data-synchronized-reveal="1"] .evidence-network-state { transition:none; }
+}
+/* Shared layouts for a single source movie/figure and for the human-only DCE result. */
+.evidence-network-figure.multiple[data-layout="source-single"] {
+  grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(0,.29fr) minmax(0,.71fr);
+  grid-auto-flow:row !important;
+}
+.evidence-network-figure[data-layout="source-single"] .evidence-network-figure-item[data-role="mouse-context"] {
+  grid-row:1; width:calc(215 * var(--u)); justify-self:center;
+}
+.evidence-network-figure[data-layout="source-single"] .evidence-network-figure-item:not([data-role="mouse-context"]) {
+  grid-row:2; width:min(100%,calc(760 * var(--u))); justify-self:center;
+}
+.evidence-network-figure.multiple[data-layout="human-dce"] {
+  grid-template-columns:minmax(0,1fr) minmax(0,1.85fr); grid-template-rows:minmax(0,.32fr) minmax(0,.68fr);
+  grid-auto-flow:row !important;
+}
+.evidence-network-figure[data-layout="human-dce"] .evidence-network-figure-item[data-role="human-context"] {
+  grid-column:1 / -1; grid-row:1; width:calc(220 * var(--u)); justify-self:center;
+}
+.evidence-network-figure[data-layout="human-dce"] .evidence-network-figure-item:not([data-role="human-context"]) { grid-row:2; }
+.evidence-network-figure:is([data-layout="source-single"],[data-layout="human-dce"]) .evidence-network-media { flex:1 1 0; min-height:0; }
+.evidence-network-figure:is([data-layout="source-single"],[data-layout="human-dce"]) .evidence-network-media > :is(img,video) { object-fit:contain; object-position:center bottom; }
+.evidence-network[data-audience-story="1"] .movie-story-state.paper-state {
+  grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr); grid-template-rows:minmax(0,1fr);
+  column-gap:calc(36 * var(--u)); padding-bottom:calc(72 * var(--u));
+}
+.movie-story-state .evidence-network-paper-stage { grid-column:1; }
+.evidence-network[data-audience-story="1"] .movie-story-state.paper-state > .evidence-network-copy {
+  grid-column:2; grid-row:1; align-self:center; width:100% !important;
+}
+.movie-story-state .evidence-network-figure[data-layout="source-single"] {
+  grid-template-rows:minmax(0,.23fr) minmax(0,.77fr);
+}
+.movie-story-state .evidence-audience-points { gap:calc(18 * var(--u)); }
+.movie-story-state .evidence-audience-definitions { margin-top:calc(22 * var(--u)); }
+/* Flexible tracks preserve the evidence's size without letting fixed species rows collide
+ * with the claim or takeaway rails on a shorter projector canvas. */
+.evidence-network[data-audience-story="1"] .evidence-network-figure[data-layout="review-wave-pair"] {
+  grid-template-columns:minmax(0,1.15fr) repeat(2,minmax(0,1fr));
+  grid-template-rows:minmax(0,.36fr) minmax(0,.64fr);
+}
+.evidence-network[data-audience-story="1"] .evidence-network-figure[data-layout="review-wave-pair"] .evidence-network-figure-item {
+  height:100%; min-height:0;
+}
+.evidence-network[data-audience-story="1"] .evidence-network-figure[data-layout="review-wave-pair"] .evidence-network-media {
+  flex:1 1 0; min-height:0; aspect-ratio:auto;
+}
+.evidence-network[data-audience-story="1"] .evidence-network-figure[data-layout="review-wave-pair"] .evidence-network-media > :is(img,video) {
+  object-position:center bottom;
+}
+.evidence-network[data-audience-story="1"] .evidence-network-figure:is([data-layout="week-pair"],[data-layout="physiology-triptych"],[data-layout="chronic-pair"],[data-layout="football-pair"]) {
+  grid-template-rows:minmax(0,.34fr) minmax(0,.66fr);
+}
+.evidence-network[data-audience-story="1"] .evidence-network-figure[data-layout="barrier-triptych"] {
+  grid-template-rows:minmax(0,.32fr) repeat(2,minmax(0,.34fr));
+}
+/* One movie and the separate Tagge study; the redundant Nguyen plot is removed. */
+.evidence-network-figure.multiple[data-layout="barrier-pair"] {
+  display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
+  grid-template-rows:minmax(0,.34fr) minmax(0,.66fr);
+  grid-auto-flow:row !important; grid-auto-columns:auto !important;
+  gap:calc(16 * var(--u)) calc(36 * var(--u)) !important;
+}
+.evidence-network-figure[data-layout="barrier-pair"] .evidence-network-figure-item { min-height:0; height:100%; }
+.evidence-network-figure[data-layout="barrier-pair"] .evidence-network-figure-item[data-role="mouse-context"] {
+  grid-column:1 / -1; grid-row:1; width:calc(265 * var(--u)); justify-self:center;
+}
+.evidence-network-figure[data-layout="barrier-pair"] .evidence-network-figure-item[data-role="movie"] { grid-column:1; grid-row:2; }
+.evidence-network-figure[data-layout="barrier-pair"] .evidence-network-figure-item[data-role="structure"] { grid-column:2; grid-row:2; }
+.evidence-network-figure[data-layout="barrier-pair"] .evidence-network-media { flex:1 1 0; min-height:0; }
+.evidence-network-figure[data-layout="barrier-pair"] .evidence-network-media > :is(img,video) { width:100%; height:100%; object-fit:contain; object-position:center bottom; }
+.evidence-network[data-audience-story="1"] .evidence-network-figure[data-layout="pacheco-full"] :is(.evidence-network-figure-item[data-role="electrophysiology"],.evidence-network-figure-item[data-role="flow"]) .evidence-network-media {
+  min-height:0;
+}
+.evidence-network[data-synchronized-reveal="1"] .evidence-network-figure[data-layout="pacheco-full"] {
+  grid-template-rows:minmax(0,.30fr) minmax(0,.70fr);
+}
+.evidence-network[data-synchronized-reveal="1"] .evidence-network-figure[data-layout="species-data"] {
+  grid-template-rows:minmax(0,.39fr) minmax(0,.61fr);
+}
+.evidence-network[data-synchronized-reveal="1"] .evidence-network-figure[data-layout="species-data"] .evidence-network-figure-item[data-role="species"] {
+  width:min(100%,calc(210 * var(--u))); justify-self:center;
+}
+
+.runhead { position:fixed; top:2.6vh; left:7vw; right:7vw; display:flex;
+           justify-content:space-between; pointer-events:none;
+           font:500 11px/1 var(--mono); letter-spacing:.16em; text-transform:uppercase;
+           color:var(--lo); opacity:.62; }
+
+/* ── style overrides ──────────────────────────────────────────────────────── */
+#deck[data-style="seminar"]   { --t-title:52; --t-heading:32; --t-body:18; --t-math:26; }
+.slide[data-style="keynote"]  { --t-title:74; --t-heading:38; --t-body:20; --t-math:40; }
+.slide[data-style="seminar"]  { --t-title:52; --t-heading:32; --t-body:18; --t-math:26;
+                                  gap:.75rem; padding:9vh 8vw; }
+.slide[data-style="editorial"] .heading { font-family:var(--serif); font-weight:400; }
+.slide[data-style="editorial"] .body    { font-family:var(--serif); }
+.slide[data-style="editorial"] .eyebrow { color:var(--accent); }
+.slide[data-style="board"] .heading { font:500 calc(var(--t-mono) * var(--u))/1 var(--mono);
+                                       letter-spacing:.12em; text-transform:uppercase; color:var(--lo); }
+.slide[data-style="board"] .body    { font-family:var(--mono); }
+
+/* The JSON inspector keeps invalid structured text visible, but makes the state unmistakable. */
+textarea.invalid { border-color:var(--accent) !important; box-shadow:0 0 0 1px var(--accent); }
+
+/* Blocks marked `step` wait for a click. The hidden state is written inline by layout.js so
+ * an author can invent an entrance in the .spiral file; all this does is make it animate. */
+/* Hidden from the FIRST paint, in CSS, before any script runs.
+ *
+ * When the hidden state was applied by JavaScript after render, every stepped block was
+ * painted once at full opacity and then hidden a frame later — so each page opened with its
+ * reveals flashing on and vanishing. A default in the stylesheet cannot be beaten to the
+ * screen. layout.js still writes the specific entrance inline; this is only the floor. */
+.step:not(.shown) { opacity:0; transform:translateY(9px); }
+.step { transition:opacity .45s ease, transform .45s cubic-bezier(.2,.72,.26,1); }
+.step.shown { opacity:1; transform:none; }
+
+/* Technical backups use the same stage and editable blocks, with full-contrast prose. */
+.slide[data-backup="true"] { --hi:#fff; --mid:#fff; --t-body:20; --t-math:32; }
+.slide[data-backup="true"] .slide-inner { max-width:calc(1120 * var(--u)); }
+/* Moving a full-stage figure to backup should not shrink its canvas or grid. */
+.slide[data-backup="true"].bleed .slide-inner { max-width:none; }
+.slide[data-backup="true"] .body { color:#fff; width:100%; text-align:left; line-height:1.45; }
+.slide[data-backup="true"] .heading { color:#fff; width:100%; text-align:left; }
+.slide[data-backup="true"] .math-display { color:#fff; }
+.slide[data-backup="true"] .cell { gap:calc(12 * var(--u)); }
+.slide[data-backup="true"] .katex-display { margin:.18em 0; }
+/* Appendix A keeps a stable equation rail: cumulative opacity reveals, no sliding. */
+.slide[data-slide-id^="backup-cmro2-vb-relation"] { --t-math:30; }
+.slide[data-slide-id^="backup-cmro2-vb-relation"] .step { transform:none; transition:opacity .45s ease; }
+.slide[data-slide-id^="backup-cmro2-vb-relation"] .cell[data-cell="definitions"] { --t-math:18; }
+.slide[data-slide-id^="backup-cmro2-vb-relation"] .cell[data-cell="comparison"] { --t-math:23; }
+
+/* ── boxes ────────────────────────────────────────────────────────────────────
+ * A slide with a `layout` becomes a grid of named regions. Repeating a name across cells
+ * joins them, which is how a heading spans the top of a two-column page. */
+.slide-inner.boxed { display:grid; gap:calc(28 * var(--u)); align-content:center; }
+.slide-inner.boxed > * { min-width:0; }
+.slide.bleed .slide-inner.boxed { height:100%; align-items:stretch; }
+/* a region can be given a plate of its own, for a figure that needs holding down */
+.box-plate { position:relative; padding:1.1em 1.3em; border-radius:14px;
+             background:color-mix(in srgb, var(--page) 76%, transparent); }
+.box-card  { position:relative; padding:1.1em 1.3em; border-radius:14px;
+             background:color-mix(in srgb, var(--page) 84%, transparent);
+             border:1px solid var(--hair); }
+
+/* ── the fade transition ─────────────────────────────────────────────────────
+ * Not every page turn should be an event. */
+.slide.fading { opacity:0; transition:opacity var(--slide-fade-duration,.46s) ease; }
+.slide.fading.in { opacity:1; }
+#stage > .slide { transition:opacity var(--slide-fade-duration,.46s) ease; }
+
+/* ── annotations ─────────────────────────────────────────────────────────────
+ * Braces, arrows and rings, drawn over the slide and measured from live elements. */
+svg.annot { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:3;
+            overflow:visible; }
+svg.annot .annot-mark { animation:annot-in .5s cubic-bezier(.2,.72,.26,1) both; }
+svg.annot path { stroke-dasharray:1000; animation:annot-draw .75s cubic-bezier(.3,.7,.3,1) both; }
+@keyframes annot-in { from { opacity:0 } to { opacity:1 } }
+@keyframes annot-draw { from { stroke-dashoffset:1000 } to { stroke-dashoffset:0 } }
+@media (prefers-reduced-motion:reduce) {
+  svg.annot path { animation:none; stroke-dasharray:none; }
+  .step { transition:opacity .2s ease; }
+}
+
+/* ── chapter jump ────────────────────────────────────────────────────────────── */
+#flash { position:fixed; z-index:6; left:50%; top:6vh; transform:translateX(-50%);
+         background:var(--s1); border:1px solid var(--hair); border-radius:10px;
+         padding:8px 14px; font:500 12px/1 var(--mono); letter-spacing:.12em;
+         text-transform:uppercase; color:var(--hi); opacity:0; transition:opacity .2s;
+         pointer-events:none; }
+#flash.on { opacity:1; }
+#chapters { position:fixed; z-index:6; inset:0; display:none; overflow-y:auto;
+            box-sizing:border-box; columns:280px 3; column-fill:auto; column-gap:34px;
+            background:color-mix(in srgb, var(--page) 88%, transparent);
+            -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+            padding:6vh 7vw 8vh; }
+#deck.chapters-open #chapters { display:block; }
+#chapters .chapter-group { display:grid; grid-auto-rows:min-content; gap:1px;
+                           break-inside:avoid; margin:0 0 9px; }
+#chapters button { display:flex; gap:1.2em; align-items:baseline; background:none; border:0;
+                   cursor:pointer; text-align:left; padding:10px 14px; border-radius:10px;
+                   font:300 calc(var(--t-agenda) * var(--u))/1.25 var(--sans); color:var(--mid); }
+#chapters button:hover { background:var(--s1); color:var(--hi); }
+#chapters button .n { font:500 .55em/1 var(--mono); color:var(--accent); }
+#chapters .chapter-link { color:var(--hi); }
+#chapters .subchapter-link { padding:5px 14px 5px 3.5em;
+                            font-size:calc(var(--t-agenda) * var(--u) * .62); color:var(--lo); }
+#chapters .subchapter-link .n { color:var(--lo); }
+@media (max-width:850px) { #chapters { columns:1; } }
+
+/* ── progress ─────────────────────────────────────────────────────────────── */
+/* The strip is the same dots as the background, which is the point of it and also the
+ * problem: sitting straight on the field it disappears into its own texture. It gets its
+ * own scrim — the field fading out under it rather than being cut off by an edge, the same
+ * trick the app uses under its top bar. */
+#bar { position:fixed; z-index:3; pointer-events:none; }
+#bar::before {
+  content:""; position:absolute; z-index:0; pointer-events:none;
+  inset:0; --fade:transparent;
+}
+#deck[data-bar="bottom"] #bar::before { top:-190%; background:linear-gradient(to top,
+  var(--page) 0%, color-mix(in srgb,var(--page) 86%,transparent) 38%, transparent 100%); }
+#deck[data-bar="top"] #bar::before { bottom:-190%; background:linear-gradient(to bottom,
+  var(--page) 0%, color-mix(in srgb,var(--page) 86%,transparent) 38%, transparent 100%); }
+#deck[data-bar="left"] #bar::before { right:-190%; background:linear-gradient(to right,
+  var(--page) 0%, color-mix(in srgb,var(--page) 86%,transparent) 38%, transparent 100%); }
+#deck[data-bar="right"] #bar::before { left:-190%; background:linear-gradient(to left,
+  var(--page) 0%, color-mix(in srgb,var(--page) 86%,transparent) 38%, transparent 100%); }
+#bar canvas { display:block; width:100%; height:100%; position:relative; z-index:1; }
+#deck[data-bar="bottom"] #bar { left:0; right:0; bottom:0; height:var(--bar-thickness); }
+#deck[data-bar="top"]    #bar { left:0; right:0; top:0;    height:var(--bar-thickness); }
+#deck[data-bar="left"]   #bar { top:0; bottom:0; left:0;   width:var(--bar-thickness); }
+#deck[data-bar="right"]  #bar { top:0; bottom:0; right:0;  width:var(--bar-thickness); }
+
+/* ── settings ─────────────────────────────────────────────────────────────── */
+#panel {
+  position:fixed; z-index:5; top:0; right:0; bottom:0; width:288px; background:var(--s1);
+  border-left:1px solid var(--hair); padding:22px 20px; overflow-y:auto;
+  transform:translateX(100%); transition:transform .3s cubic-bezier(.2,.7,.3,1);
+  display:flex; flex-direction:column; gap:16px;
+}
+#deck.panel-open #panel { transform:none; }
+#panel h3 { font:500 10px/1 var(--mono); letter-spacing:.2em; text-transform:uppercase;
+            color:var(--lo); margin:0; }
+.opt { display:flex; flex-wrap:wrap; gap:6px; }
+.opt button { border:1px solid var(--hair); background:transparent; color:var(--mid); cursor:pointer;
+              border-radius:8px; padding:6px 10px; font:12px/1 var(--sans); }
+.opt button:hover { color:var(--hi); border-color:var(--lo); }
+.opt button.on { background:var(--accent); border-color:var(--accent); color:var(--page); }
+.opt .sw { width:24px; height:24px; border-radius:50%; padding:0; border:2px solid transparent; }
+.opt .sw.on { border-color:var(--hi); }
+#hint { position:fixed; z-index:4; left:14px; bottom:calc(var(--bar-thickness) + 10px);
+        font:11px/1 var(--mono); color:var(--lo); opacity:0; transition:opacity .3s; }
+#deck:hover #hint { opacity:.55; }
+
+/* ── boxes are containers ─────────────────────────────────────────────────────
+ * A region is a real element that blocks go inside. Two blocks in one box then lay out as a
+ * column like anything else, instead of being painted over each other in a single grid cell. */
+.cell { display:flex; flex-direction:column; justify-content:center; gap:calc(14 * var(--u)); position:relative;
+        min-width:0; min-height:0; }
+.slide[data-align="center"] .cell { align-items:center; text-align:center; }
+
+/* ── traced images ──────────────────────────────────────────────────────────── */
+.trace-holder { width:100%; min-width:0; min-height:0; display:flex;
+                justify-content:center; align-items:center; overflow:hidden; }
+.cell > .trace-holder { height:100%; }
+.trace-holder canvas { max-width:100%; max-height:100%; height:auto; display:block; }
+.trace-error { font:calc(var(--t-eyebrow) * var(--u))/1.5 var(--mono); color:var(--accent);
+               border:1px dashed var(--hair); border-radius:10px; padding:1em 1.2em; }
+
+/* The outgoing page during a wipe: masked by the complement of the incoming one, so a dot
+   shows one slide or the other and never both. */
+.slide.outgoing { -webkit-mask-size:100% 100%; mask-size:100% 100%;
+                  -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat; }
+
+/* ── images and charts ────────────────────────────────────────────────────────
+ * An <img> with no constraint renders at its native pixel size — a 5000px scan will simply
+ * run off the slide. Everything raster is bounded by its column and keeps its aspect. */
+.shot { margin:0; display:flex; flex-direction:column; gap:.5em; width:100%;
+        min-width:0; min-height:0; }
+.cell > .shot { height:100%; align-items:center; justify-content:center; }
+/* Bounded in BOTH directions.
+ *
+ * `width:100%; height:auto` constrains only the width, so a tall picture became box-width
+ * and proportionally taller — overflowing its box, running over its neighbours, and reading
+ * as "it placed it full res". A box has a height as well as a width and the picture has to
+ * respect both. It is never upscaled past its own resolution either: blowing a small figure
+ * up to fill a column makes it soft, and a fit of `fill` is how you ask for that on purpose. */
+.shot img { max-width:100%; max-height:100%; width:auto; height:auto; min-height:0;
+            flex:1 1 auto;
+            object-fit:contain; display:block; border-radius:12px; margin-inline:auto; }
+.shot figcaption { flex:0 0 auto; }
+.shot[data-fit="fill"] img { width:100%; }
+.shot[data-fit="cover"] img { width:100%; height:100%; object-fit:cover; }
+.slide.image-bleed-slide { padding:0; }
+.shot.bleed-image { position:absolute; inset:0; width:100%; height:100%; margin:0; z-index:0; }
+.shot.bleed-image img { width:100%; height:100%; max-width:none; max-height:none;
+                        object-fit:cover; border-radius:0; }
+.shot.bleed-image::after { content:""; position:absolute; inset:0;
+  background:linear-gradient(90deg, color-mix(in srgb,var(--page) 70%,transparent), transparent 64%); }
+.image-bleed-slide .title, .image-bleed-slide .subtitle, .image-bleed-slide .eyebrow {
+  z-index:2; width:auto !important; margin-left:7vw; margin-right:7vw;
+  text-shadow:0 2px 24px color-mix(in srgb,var(--page) 88%,transparent);
+}
+.shot.framed img { border:1px solid var(--hair); }
+.shot figcaption { font:calc(var(--t-eyebrow) * var(--u))/1.5 var(--mono); color:var(--lo); }
+.chart-holder { width:100%; min-width:0; min-height:0; display:flex;
+                justify-content:center; align-items:center; overflow:hidden; }
+.chart-holder canvas { max-width:100%; max-height:100%; height:auto; display:block; }
+
+/* ── citations ────────────────────────────────────────────────────────────────
+ * A marker is a small accent number sitting where it was written; the bubble at the foot of
+ * the page says what the numbers are, small enough to be there without competing with the
+ * argument. Only the sources cited on THIS slide, so it stays worth glancing at. */
+.cite { color:var(--accent); font-size:0.72em; vertical-align:super; line-height:0;
+        letter-spacing:0.02em; padding-left:0.1em; white-space:nowrap; }
+.sources {
+  position:absolute; left:7vw; right:7vw; bottom:calc(2.2vh + var(--bar-thickness));
+  z-index:2; display:flex; flex-wrap:wrap; gap:calc(6 * var(--u)) calc(16 * var(--u));
+  padding:calc(9 * var(--u)) calc(15 * var(--u));
+  border-radius:calc(13 * var(--u));
+  background:color-mix(in srgb, var(--page) 78%, transparent);
+  border:1px solid var(--hair);
+  -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
+  pointer-events:none;
+}
+.sources .src { display:flex; gap:calc(5 * var(--u)); align-items:baseline;
+                font:calc(10.5 * var(--u))/1.35 var(--sans); color:var(--lo); }
+.sources .src .cite { vertical-align:baseline; font-size:calc(9.5 * var(--u)); }
+.sources .missing { color:var(--accent); font-style:italic; }
+.slide.bleed .sources { left:4vw; right:4vw; }
+
+/* ── walking an equation ──────────────────────────────────────────────────────
+ * Colour does the pointing, not a box.
+ *
+ * A background behind a term is a rectangle around its whole bounding box, and KaTeX gives a
+ * term whatever height its tallest part needs — so a summation or an integral turned the
+ * highlight into a horizontal smear lying across the maths. Worse, the band competed with the
+ * symbols it was meant to single out.
+ *
+ * So nothing is drawn behind anything. The rest of the equation simply steps back, the live
+ * term keeps full brightness and gains a faint warmth, and the eye goes where the light is.
+ * That is what a lecturer's hand actually does. */
+.walkable .term { cursor:pointer; }
+.walkable .term, .walkable .katex, .walkable .katex * {
+  transition:color .34s ease, opacity .34s ease, text-shadow .34s ease;
+}
+/* Everything recedes — but stays READABLE.
+ *
+ * At --lo and 55% the rest of the equation all but vanished, which defeats the point: a term
+ * only means something where it sits, so the shape around it has to survive. --mid holds the
+ * structure legible while being unmistakably subordinate to the term that has the light. */
+.walkable.walking .katex, .walkable.walking .katex * { color:var(--mid); opacity:.72; }
+/* ...except the term being talked about, which keeps its light and warms very slightly */
+.walkable.walking .term.lit, .walkable.walking .term.lit * {
+  color:var(--hi); opacity:1;
+  text-shadow:0 0 calc(14 * var(--u)) color-mix(in srgb, var(--accent) 55%, transparent);
+}
+.walkable .term:hover, .walkable .term:hover * { color:var(--accent-lite); }
+
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .walkable .term, .walkable .katex, .walkable .katex * { transition:none; }
+}
+
+/* Literature pages: retain map identities, remove page-sized editorial titles. */
+.evidence-literature-label{position:absolute;top:1.5%;left:2%;z-index:4;font:500 calc(13 * var(--u))/1.2 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#bd9879}
+.evidence-network[data-plain-headings="1"] :is(.evidence-network-section-header,.evidence-audience-title,.evidence-speaking-title,.evidence-speaking-kicker,.evidence-network-heading){display:none!important}
+.evidence-network[data-overview-tour="1"][data-speaking-prompts="1"] .evidence-network-map{inset:5% 0 26%}
+.evidence-network[data-overview-tour="1"][data-speaking-prompts="1"] .evidence-speaking-prompt{top:auto;bottom:6%;left:8%;right:8%;width:auto;padding:0;border-left:0;display:grid;grid-template-columns:1fr 1fr;gap:4%;align-items:start}
+.evidence-network[data-overview-tour="1"][data-speaking-prompts="1"] .evidence-speaking-line{margin:0!important}
+.evidence-network[data-overview-tour="1"] .evidence-speaking-prompt:has(.evidence-group-label){row-gap:calc(16 * var(--u))}
+.evidence-group-label{grid-column:1/-1;font:400 clamp(19px,calc(28 * var(--u)),34px)/1.35 Georgia,'Times New Roman',serif;text-shadow:none}
+.evidence-group-highlight{font:inherit;color:#18170b;background:linear-gradient(178deg,transparent 0 5%,#efdc60 8%,#f7e979 52%,#e9d453 91%,transparent 95%);padding:.05em .18em;border-radius:.12em .07em .15em .05em;-webkit-box-decoration-break:clone;box-decoration-break:clone;filter:drop-shadow(0 2px 5px #000)}
+.evidence-network[data-show-map-labels="1"] .evidence-theme-labels{opacity:1!important}
+.evidence-network[data-show-map-labels="1"][data-overview="0"] .evidence-theme-labels{opacity:.28!important}
+.evidence-network[data-show-map-labels="1"] .evidence-theme-labels text{opacity:1!important}
+
+/* Introductory MRI prompts share the opening slide's yellow marker treatment. */
+.scene-holder.has-scene-prompts { position:relative; }
+.scene-speaking-prompts { position:absolute; left:5%; top:50%; width:44%; transform:translateY(-50%); z-index:3; color:#e7dfd2; text-align:left; pointer-events:none; }
+.scene-speaking-prompts[hidden] { display:none; }
+.scene-speaking-prompts ul { margin:0; padding:0 0 0 1.05em; list-style:disc; font:400 clamp(16px,calc(25 * var(--u)),32px)/1.5 Georgia,'Times New Roman',serif; text-shadow:0 2px 4px #000,0 0 14px #000; }
+.scene-speaking-prompts li { padding-left:.22em; margin:0 0 1.1em; opacity:0; transition:opacity .65s ease-out; transform:translateZ(0); }
+.scene-speaking-prompts li:last-child { margin-bottom:0; }
+.scene-speaking-prompts li.prompt-visible { opacity:1; }
+.scene-speaking-prompts [data-typing-instant=true] .cs-typed-phrase { transition:none; }
+@media (prefers-reduced-motion:reduce) { .scene-speaking-prompts li { transition:none; } }

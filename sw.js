@@ -134,7 +134,13 @@ async function load(entry,active){
   if(raw.byteLength!==entry.bytes)throw Error('Asset size mismatch');if(session===active&&raw.byteLength<=48*1024*1024){while(memoryBytes+raw.byteLength>96*1024*1024&&memory.size){const first=memory.keys().next().value;memoryBytes-=memory.get(first).byteLength;memory.delete(first);}memory.set(entry.file,raw);memoryBytes+=raw.byteLength;}return raw;})();pending.set(entry.file,promise);try{return await promise;}finally{if(pending.get(entry.file)===promise)pending.delete(entry.file);}
 }
 async function serve(request,clientId){
- const url=new URL(request.url);let rel;try{rel=decodeURIComponent(url.pathname.slice(appPrefix.length));}catch{return new Response('Invalid path',{status:400});}if(!rel||rel.endsWith('/'))rel+='index.html';const active=await sessionForClient(clientId);
+ const url=new URL(request.url);let rel;try{rel=decodeURIComponent(url.pathname.slice(appPrefix.length));}catch{return new Response('Invalid path',{status:400});}if(!rel||rel.endsWith('/'))rel+='index.html';// Old audience links also use native static files, including native byte ranges.
+ if(self.navigator.onLine!==false&&request.mode==='navigate'&&rel==='index.html'&&!url.searchParams.has('presenterSession')&&url.searchParams.get('presenterPreview')!=='1'&&url.searchParams.get('broadcast')!=='1'){
+  const viewer=new URL('watch/index.html',base);viewer.search=url.search;
+  if(viewer.searchParams.get('narration')==='1'&&viewer.searchParams.get('live')!=='1')viewer.searchParams.set('deck','decks/phd-defense.recorded.spiral');
+  return Response.redirect(viewer.href,302);
+ }
+ const active=await sessionForClient(clientId);
  if(!active){if(request.mode==='navigate'){const gate=new URL('./',base);gate.searchParams.set('return',url.pathname+url.search+url.hash);return Response.redirect(gate.href,302);}return new Response('Prepare the presentation online before opening it offline.',{status:503});}
  await pinClient(clientId,active.revision);const entry=active.manifest.entries[rel];if(!entry)return new Response('File unavailable',{status:404});if(!['GET','HEAD'].includes(request.method))return new Response('Read only',{status:405});
  try{let raw=await load(entry,active);if(!allowRestore)return new Response('Presentation closed',{status:401});const headers={'Content-Type':entry.type,'Cache-Control':'no-store','Accept-Ranges':'bytes','X-Content-Type-Options':'nosniff'};
@@ -193,7 +199,7 @@ async function shellResponse(request){
  catch{return new Response('Offline shell unavailable. Prepare offline again when connected.',{status:503});}
 }
 self.addEventListener('fetch',event=>{
- const url=new URL(event.request.url);if(url.origin!==base.origin||!url.pathname.startsWith(base.pathname)||!['GET','HEAD'].includes(event.request.method)||event.request.headers.has('Authorization'))return;
+ const url=new URL(event.request.url);if(url.pathname.startsWith(base.pathname+'watch/'))return;if(url.origin!==base.origin||!url.pathname.startsWith(base.pathname)||!['GET','HEAD'].includes(event.request.method)||event.request.headers.has('Authorization'))return;
  if(url.pathname.startsWith(appPrefix)){event.respondWith(serve(event.request,event.resultingClientId||event.clientId));return;}
  const rel=url.pathname.slice(base.pathname.length);
  if(/^sealed\/[a-f0-9]{64}\.bin$/.test(rel)){event.respondWith(cipher(rel).then(r=>event.request.method==='HEAD'?new Response(null,{status:200,headers:r.response.headers}):r.response).catch(()=>new Response('Saved package file unavailable.',{status:503})));return;}

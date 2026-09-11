@@ -4,7 +4,7 @@ Public browser presentation at https://edtireli.github.io/presentation/. No audi
 
 The existing thesis QR points to https://edtireli.github.io/thesis/, which redirects to this shared entrance. The thesis PDF is available directly at https://edtireli.github.io/thesis/Edis_Tireli_PhD_Thesis.pdf.
 
-Presentation assets retain their compressed AES-GCM bundle format to reuse existing browser caches and keep large media portable. **The asset key is deliberately public in access.json; the presentation is not private or password protected.** A service worker decodes the public package. It does not expose the private presenter key.
+Presentation assets retain their compressed AES-GCM bundle format to reuse existing browser caches and keep large media portable. **The asset key is deliberately public in access.json; the presentation is not private or password protected.** The public audience and recorded edition load ordinary static files under `watch/`, with native streaming audio and no browser storage or service worker requirement. A service worker decodes the separate package only for prepared offline/presenter use. It does not expose the private presenter key.
 
 To present, choose **Give presentation** and enter the presenter password. This checks for the latest published version and automatically saves and verifies every required file before opening notes and controls. The password is verified by the service; the public site contains no presenter credential.
 

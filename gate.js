@@ -4,7 +4,12 @@ import {narrationReleased,showNarrationRelease} from './narration-release.js';
 
 const base=new URL('./',import.meta.url),storageKey='spiral.private:'+base.pathname;
 const recordedDeck='decks/phd-defense.recorded.spiral';
-function recordedDestination(url){if(url.searchParams.get('narration')==='1'&&url.searchParams.get('live')!=='1')url.searchParams.set('deck',recordedDeck);return url;}
+function recordedDestination(url){
+ if(url.searchParams.get('narration')==='1'&&url.searchParams.get('live')!=='1')url.searchParams.set('deck',recordedDeck);
+ if(navigator.onLine===false&&url.pathname===base.pathname+'watch/index.html')url.pathname=base.pathname+'app/index.html';
+ if(navigator.onLine!==false&&url.pathname===base.pathname+'app/index.html'&&!url.searchParams.has('presenterSession')&&url.searchParams.get('presenterPreview')!=='1'&&url.searchParams.get('broadcast')!=='1')url.pathname=base.pathname+'watch/index.html';
+ return url;
+}
 const recordedLink=document.querySelector('#with-narration');
 if(recordedLink){recordedLink.href=recordedDestination(new URL(recordedLink.href)).href;recordedLink.textContent='Recorded edition';recordedLink.setAttribute('aria-label','Watch the recorded edition with narration');}
 const status=document.querySelector('#status'),retryButton=document.querySelector('#retry-open');
@@ -102,8 +107,7 @@ async function openPresentation(saved){
  try{sessionStorage.setItem(storageKey,JSON.stringify(session));}catch{}
  await rpc({type:'unlock',key,manifest,revision:metadata.revision});
  unlocked=true;status.textContent='';document.body.classList.add('is-ready');if(new URLSearchParams(location.search).get('narration')==='locked')showNarrationRelease();
- const target=new URLSearchParams(location.search).get('return');
- if(target){const dest=recordedDestination(new URL(target,base));if(dest.origin===base.origin&&dest.pathname.startsWith(base.pathname+'app/')){if(!dest.hash&&location.hash)dest.hash=location.hash;if(dest.searchParams.get('narration')==='1'&&!narrationReleased()){showNarrationRelease();return;}if(isPresenterDestination(dest)&&!await ensurePresenterReady({handoff:true}))return;await rpc({type:'public-session'});location.replace(dest.href);}}
+
 }
 function isPresenterDestination(url){return /speaker\.html$/.test(url.pathname)||url.searchParams.get('broadcast')==='1';}
 let preparation,navigating=false;
@@ -117,7 +121,16 @@ retryButton.onclick=prepare;
 for(const link of document.querySelectorAll('a[data-presentation]'))link.addEventListener('click',async event=>{
  if(event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
  event.preventDefault();if(navigating)return;navigating=true;
- try{if(!await preparation)return;if(new URL(link.href).searchParams.get('narration')==='1'&&!narrationReleased()){showNarrationRelease();return;}if(isPresenterDestination(new URL(link.href))&&!await ensurePresenterReady({handoff:true}))return;await visuals.bloom();await rpc({type:'public-session'});location.assign(link.href);}catch(error){status.textContent=error.message;retryButton.hidden=false;}finally{navigating=false;}
+ try{
+  const destination=recordedDestination(new URL(link.href));
+  if(destination.searchParams.get('narration')==='1'&&!narrationReleased()){showNarrationRelease();return;}
+  if(isPresenterDestination(destination)||(navigator.onLine===false&&destination.pathname===base.pathname+'app/index.html')){
+   if(!await prepare())return;
+   if(isPresenterDestination(destination)&&!await ensurePresenterReady({handoff:true}))return;
+   await rpc({type:'public-session'});
+  }
+  await visuals.bloom();location.assign(destination.href);
+ }catch(error){status.textContent=error.message;retryButton.hidden=false;}finally{navigating=false;}
 });
 
 function showDialog(dialog,initial){returnFocus.set(dialog,document.activeElement);dialog.showModal();initial?.focus({preventScroll:true});}
@@ -134,13 +147,11 @@ document.querySelector('#open-complaint').onclick=()=>{
 };
 
 async function privateServiceConfig(){
- if(!await preparation)throw Error('The presentation could not be prepared. Please try again.');
  if(serviceConfig)return serviceConfig;
  if(!pendingConfig)pendingConfig=(async()=>{
-  const response=await fetch(new URL('app/live-config.json',base),{cache:'no-store',signal:AbortSignal.timeout(15000)});
+  const response=await fetch(new URL('watch/live-config.json',base),{cache:'no-store',signal:AbortSignal.timeout(15000)});
   if(!response.ok)throw Error('The complaint box is temporarily unavailable. Your text is still here.');
   const data=await response.json();
-  if(!unlocked)throw Error('The presentation is still preparing.');
   const url=new URL(data.apiBase);
   if(url.origin!=='https://tireli-presentation-service.nuggedt.chatgpt.site'||!data.viewerToken||typeof data.viewerToken!=='string')throw Error('The complaint box is temporarily unavailable. Your text is still here.');
   serviceConfig={apiBase:url.href.replace(/\/$/,''),viewerToken:data.viewerToken};return serviceConfig;
@@ -159,7 +170,6 @@ complaintForm.addEventListener('submit',async event=>{
   let result;try{result=await response.json();}catch{throw Error('The server did not confirm a save. Your text is still here; you can retry.');}
   if(!response.ok||result.saved!==true||!result.id)throw Error(response.status===429?'A few too many complaints at once. Please try again shortly.':'Your complaint could not be saved. Your text is still here; please try again.');
   // The playful filing animation is downstream of an actual confirmed save.
-  if(!unlocked)return;
   complaint.dataset.saveState='saved';complaintStatus.textContent='Complaint saved privately for Edis.';
   if(complaint.open)await fileComplaintPaper(paper,document.querySelector('#complaint-bin'),{reducedMotion:visuals.reducedMotion()});
   complaintForm.hidden=true;complaint.classList.add('is-filed');done.hidden=false;complaintStatus.textContent='Saved for Edis.';
@@ -170,4 +180,20 @@ complaintForm.addEventListener('submit',async event=>{
 messageInput.addEventListener('input',()=>messageInput.setCustomValidity(''));
 
 addEventListener('pagehide',()=>{serviceConfig=null;});
-prepare();
+// Public viewing is immediately available. Only presenter/offline mode prepares
+// the encrypted package; ordinary browsers receive normal, streamable files.
+document.body.classList.add('is-ready');
+async function resumeReturn(){
+ const target=new URLSearchParams(location.search).get('return');if(!target)return;
+ const destination=recordedDestination(new URL(target,base));
+ if(destination.origin!==base.origin||![base.pathname+'app/',base.pathname+'watch/'].some(prefix=>destination.pathname.startsWith(prefix)))return;
+ if(!destination.hash&&location.hash)destination.hash=location.hash;
+ if(destination.searchParams.get('narration')==='1'&&!narrationReleased()){showNarrationRelease();return;}
+ if(isPresenterDestination(destination)||(navigator.onLine===false&&destination.pathname===base.pathname+'app/index.html')){
+  if(!await prepare())return;
+  if(isPresenterDestination(destination)&&!await ensurePresenterReady({handoff:true}))return;
+  await rpc({type:'public-session'});
+ }
+ location.replace(destination.href);
+}
+resumeReturn().catch(error=>{status.textContent=error.message;retryButton.hidden=false;});
