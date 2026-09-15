@@ -13,7 +13,7 @@
     if (enhancing || enhanced) return;
     enhancing = true;
     try {
-      const {renderAcknowledgementParagraph} = await import('./acknowledgement-names.js?v=pride-music2');
+      const {renderAcknowledgementParagraph} = await import('./acknowledgement-names.js?v=pride-voice3');
       const nodes = paragraphs.map(renderAcknowledgementParagraph);
       content.replaceChildren(...nodes);
       enhanced = true;
