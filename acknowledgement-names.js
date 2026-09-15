@@ -1,6 +1,6 @@
 import {narrationReleased} from './narration-release.js';
 import {createMuralRenderer} from './acknowledgement-mural.js';
-import {createWordHeartsEffect} from './acknowledgement-word-hearts.js';
+import {createWordHeartsEffect} from './acknowledgement-word-hearts.js?v=pride-music2';
 import {createPsychedelicTextEffect} from './acknowledgement-psychedelic.js';
 import {addEtchedLogo} from './acknowledgement-etched-logo.js';
 import {NICHOLAS_WINDOW, nicholasRainbowActive} from './acknowledgement-nicholas-window.js';
@@ -113,12 +113,46 @@ function showNicholasCycle() {
 
 function showNicholasRainbows() {
   clearAcknowledgementEffect?.();
-  const visual = createWordHeartsEffect({motif: 'rainbow', keepName: 'Nicholas'});
+  const music = new Audio(new URL('./acknowledgement-hava-nagila.mp3', import.meta.url));
+  music.volume = .65;
+  // Begin inside the name's click handler, before preparing the word particles,
+  // so browsers retain the user gesture needed for audible playback.
+  const playback = music.play();
   const names = [...document.querySelectorAll('.acknowledgement-nicholas')];names.forEach(name => name.classList.add('rainbow-active'));
-  const duration = Math.min(visual.duration, Math.max(1, Date.parse(NICHOLAS_WINDOW.expiresAt) - Date.now()));
-  const cleanup = manageEffect({nodes: visual.nodes, duration,
-    onFrame: p => {if (!nicholasRainbowActive()) {cleanup();return;}visual.onFrame(Math.min(1, p * duration / visual.duration));},
-    onCleanup: () => {visual.onCleanup();names.forEach(name => name.classList.remove('rainbow-active'));}});
+  const visual = createWordHeartsEffect({motif: 'pride', keepName: 'Nicholas'});
+  const control = document.createElement('button');
+  control.type = 'button';control.className = 'acknowledgement-audio-control';
+  control.textContent = 'stop music';control.setAttribute('aria-label', 'Stop Hava Nagila and the pride animation');
+  document.body.append(control);
+  const songMs = 24000, reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let disposed = false, retry = false, failedAt = null;
+  const duration = Math.min(45000, Math.max(1, Date.parse(NICHOLAS_WINDOW.expiresAt) - Date.now()));
+  const cleanup = manageEffect({nodes: [...visual.nodes, control], duration,
+    onFrame: () => {
+      if (!nicholasRainbowActive()) {cleanup();return;}
+      const elapsed = failedAt === null ? music.currentTime * 1000 : performance.now() - failedAt;
+      // Keep the original fast word morph, hold the flags through the tune,
+      // then return the words as the music fades. Reduced motion is unchanged.
+      const introMs = visual.duration * .4, outroMs = visual.duration * .3;
+      const progress = reduced ? elapsed / visual.duration : elapsed < introMs ? elapsed / visual.duration
+        : elapsed < songMs - outroMs ? .4 + .3 * (elapsed - introMs) / (songMs - introMs - outroMs)
+        : .7 + (elapsed - songMs + outroMs) / visual.duration;
+      visual.onFrame(Math.min(1, progress));
+      if (elapsed >= songMs) cleanup();
+    },
+    onCleanup: () => {
+      disposed = true;music.pause();music.removeAttribute('src');music.load();
+      visual.onCleanup();names.forEach(name => name.classList.remove('rainbow-active'));
+    }});
+  control.addEventListener('click', () => {if (retry) showNicholasCycle();else cleanup();});
+  music.addEventListener('ended', cleanup, {once: true});
+  const playbackFailed = () => {
+    if (disposed) return;
+    retry = true;failedAt ??= performance.now();
+    control.textContent = 'play music';control.setAttribute('aria-label', 'Retry Hava Nagila playback');
+  };
+  music.addEventListener('error', playbackFailed, {once: true});
+  Promise.resolve(playback).catch(playbackFailed);
 }
 
 const SVG_NS = 'http://www.w3.org/2000/svg';

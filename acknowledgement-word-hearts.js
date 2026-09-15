@@ -1,12 +1,28 @@
 // Each word lends its own glyph pixels to one heart. The source DOM never moves
 // or changes its text: only its paint is borrowed for the duration of the effect.
 const PALETTE = ['#f0eadb', '#c4a46b', '#a8785d', '#ce9cae', '#a293c8'];
-const RAINBOW = ['#ff6978', '#ffad58', '#f4e66d', '#79d58f', '#72c9ef', '#aaa2f3', '#dc95df'];
+const RAINBOW = ['#e40303', '#ff8c00', '#ffed00', '#008026', '#244aff', '#9b39d9'];
 function rainbowPath(context, size, color = false) {
   context.lineCap = 'round';context.lineWidth = size * .065;
   RAINBOW.forEach((band, i) => {
     if (color) context.strokeStyle = band;
     context.beginPath();context.arc(0, size * .19, size * (.49 - i * .059), Math.PI, TAU);context.stroke();
+  });
+}
+function prideFlag(context, size, phase = 0, color = false) {
+  // Six horizontal Pride stripes, with one continuous cloth wave through them.
+  const wave = x => Math.sin((x / size + .5) * Math.PI * 2 + phase) * size * .045;
+  RAINBOW.forEach((band, i) => {
+    if (color) context.fillStyle = band;
+    context.beginPath();
+    for (let n = 0; n <= 18; n++) {
+      const x = size * (n / 18 - .5), y = size * (-.3 + i * .1) + wave(x);
+      if (!n) context.moveTo(x, y);else context.lineTo(x, y);
+    }
+    for (let n = 18; n >= 0; n--) {
+      const x = size * (n / 18 - .5);context.lineTo(x, size * (-.3 + (i + 1) * .1) + wave(x));
+    }
+    context.closePath();context.fill();
   });
 }
 const TAU = Math.PI * 2;
@@ -105,7 +121,8 @@ function prepareWord(word, index, reducedMotion, motif = 'heart') {
   const context = mask.getContext('2d', {willReadFrequently: true});
   context.translate(dimension / 2, dimension / 2);context.rotate(tilt);
   context.fillStyle = context.strokeStyle = '#fff';context.lineWidth = lineWidth;
-  if (motif === 'rainbow') rainbowPath(context, size);
+  if (motif === 'pride') prideFlag(context, size);
+  else if (motif === 'rainbow') rainbowPath(context, size);
   else {heartPath(context, size, width, height);if (filled) context.fill();else context.stroke();}
   const source = reducedMotion ? [] : pixels(canvas, fontSize > 40 ? 1.4 : 1, fontSize > 40 ? 850 : 240);
   const destination = reducedMotion ? [] : pixels(mask, .85, source.length || 1);
@@ -348,10 +365,13 @@ export function createWordHeartsEffect({motif = 'heart', keepName = 'Clara'} = {
         context.fillStyle = morph < .1 ? word.sourceColor : word.color;
         const pointSize = between(1.15, word.filled ? Math.max(1.1, word.size / 16) : word.lineWidth, morph);
         for (const [x, y, tx, ty, alpha] of word.points) {
-          if (motif === 'rainbow' && morph >= .1) {
+          if ((motif === 'rainbow' || motif === 'pride') && morph >= .1) {
             const rx = tx * Math.cos(word.tilt) + ty * Math.sin(word.tilt);
-            const ry = -tx * Math.sin(word.tilt) + ty * Math.cos(word.tilt) - word.size * .19;
-            const band = Math.max(0, Math.min(6, Math.round((.49 - Math.hypot(rx, ry) / word.size) / .059)));
+            const ry = -tx * Math.sin(word.tilt) + ty * Math.cos(word.tilt);
+            const stripe = motif === 'pride'
+              ? Math.floor((ry / word.size - Math.sin((rx / word.size + .5) * Math.PI * 2) * .045 + .3) / .1)
+              : Math.round((.49 - Math.hypot(rx, ry - word.size * .19) / word.size) / .059);
+            const band = Math.max(0, Math.min(RAINBOW.length - 1, stripe));
             context.fillStyle = RAINBOW[band];
           }
           context.globalAlpha = particleOpacity * between(alpha, .88, morph);
@@ -363,7 +383,8 @@ export function createWordHeartsEffect({motif = 'heart', keepName = 'Clara'} = {
         context.save();context.globalAlpha = heartOpacity * .94;
         context.translate(cx + driftX, cy + driftY);context.rotate(word.tilt);
         context.fillStyle = context.strokeStyle = word.color;context.lineWidth = word.lineWidth;
-        if (motif === 'rainbow') rainbowPath(context, word.size, true);
+        if (motif === 'pride') prideFlag(context, word.size, reducedMotion ? 0 : p * TAU * 2, true);
+        else if (motif === 'rainbow') rainbowPath(context, word.size, true);
         else {heartPath(context, word.size, word.width, word.height);if (word.filled) context.fill();else context.stroke();}
         context.restore();
       }

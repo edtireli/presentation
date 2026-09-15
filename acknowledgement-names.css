@@ -62,4 +62,6 @@
 .acknowledgement-logo{display:block;pointer-events:none;object-fit:contain;filter:drop-shadow(0 5px 18px #000a) drop-shadow(0 0 12px #c4a46b25)}
 .acknowledgement-ichiran-logo{position:absolute;z-index:2;width:min(38vw,260px);height:auto;max-height:44svh;aspect-ratio:1}
 .acknowledgement-jak-daxter-logo{width:min(70vw,500px);height:auto;max-height:70svh;aspect-ratio:1000/580}
-.acknowledgement-name > .acknowledgement-person-action.rainbow-active,.acknowledgement-name > .acknowledgement-person-action.rainbow-active:hover:not(:disabled){background:linear-gradient(90deg,#ac2034,#ac5100,#6c6700,#187b3f,#166d9b,#5b3c9c,#922275);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent!important}
+.acknowledgement-name:has(> .rainbow-active){background:#080808;outline:1px solid #ffffff33}
+.acknowledgement-name > .acknowledgement-person-action.rainbow-active,.acknowledgement-name > .acknowledgement-person-action.rainbow-active:hover:not(:disabled){background:linear-gradient(180deg,#ff4545 0 16.666%,#ffa22c 16.666% 33.333%,#fff035 33.333% 50%,#4de276 50% 66.666%,#709dff 66.666% 83.333%,#c57fff 83.333%);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent!important}
+.acknowledgement-audio-control{position:fixed;z-index:100600;right:20px;bottom:20px;max-width:calc(100vw - 40px);padding:10px 14px;border:1px solid #e6d77777;border-radius:6px;color:#f0eadb;background:#080808;font:14px/1.4 system-ui;cursor:pointer}.acknowledgement-audio-control:focus-visible{outline:2px solid #f7e979;outline-offset:4px}
