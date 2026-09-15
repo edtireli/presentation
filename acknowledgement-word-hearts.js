@@ -1,6 +1,14 @@
 // Each word lends its own glyph pixels to one heart. The source DOM never moves
 // or changes its text: only its paint is borrowed for the duration of the effect.
 const PALETTE = ['#f0eadb', '#c4a46b', '#a8785d', '#ce9cae', '#a293c8'];
+const RAINBOW = ['#ff6978', '#ffad58', '#f4e66d', '#79d58f', '#72c9ef', '#aaa2f3', '#dc95df'];
+function rainbowPath(context, size, color = false) {
+  context.lineCap = 'round';context.lineWidth = size * .065;
+  RAINBOW.forEach((band, i) => {
+    if (color) context.strokeStyle = band;
+    context.beginPath();context.arc(0, size * .19, size * (.49 - i * .059), Math.PI, TAU);context.stroke();
+  });
+}
 const TAU = Math.PI * 2;
 const clamp = value => Math.max(0, Math.min(1, value));
 const ease = value => {const t = clamp(value);return t * t * (3 - 2 * t);};
@@ -59,15 +67,15 @@ function spriteFor(word, style) {
   return {canvas, padding};
 }
 
-function collectWords(root) {
+function collectWords(root, keepName = 'Clara') {
   const words = [], range = document.createRange(), walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
   for (let node = walker.nextNode(); node; node = walker.nextNode()) {
     const parent = node.parentElement;
-    if (!parent || !node.textContent.trim() || parent.closest('script, style, noscript, textarea, [hidden], [aria-hidden="true"], .acknowledgement-clara')) continue;
+    if (!parent || !node.textContent.trim() || parent.closest(`script, style, noscript, textarea, [hidden], [aria-hidden="true"], .acknowledgement-${keepName.toLowerCase()}`)) continue;
     const style = getComputedStyle(parent);
     if (style.visibility !== 'visible' || style.display === 'none' || Number(style.opacity) === 0) continue;
     for (const match of node.textContent.matchAll(/\S+/gu)) {
-      if (match[0].replace(/^[^\p{L}]+|[^\p{L}]+$/gu, '') === 'Clara') continue;
+      if (match[0].replace(/^[^\p{L}]+|[^\p{L}]+$/gu, '') === keepName) continue;
       // Standalone ornamental arrows are UI decoration, not words.
       if (!/[\p{L}\p{N}]/u.test(match[0])) continue;
       range.setStart(node, match.index);range.setEnd(node, match.index + match[0].length);
@@ -84,7 +92,7 @@ function collectWords(root) {
   range.detach();return words;
 }
 
-function prepareWord(word, index, reducedMotion) {
+function prepareWord(word, index, reducedMotion, motif = 'heart') {
   const random = randomFor(word.text, index), {canvas, padding} = spriteFor(word, word.style);
   const fontSize = parseFloat(word.style.fontSize);
   const size = Math.max(8, Math.min(word.rect.width * .91, fontSize * (1.04 + random() * .36)));
@@ -96,9 +104,9 @@ function prepareWord(word, index, reducedMotion) {
   mask.width = mask.height = dimension;
   const context = mask.getContext('2d', {willReadFrequently: true});
   context.translate(dimension / 2, dimension / 2);context.rotate(tilt);
-  heartPath(context, size, width, height);
   context.fillStyle = context.strokeStyle = '#fff';context.lineWidth = lineWidth;
-  if (filled) context.fill();else context.stroke();
+  if (motif === 'rainbow') rainbowPath(context, size);
+  else {heartPath(context, size, width, height);if (filled) context.fill();else context.stroke();}
   const source = reducedMotion ? [] : pixels(canvas, fontSize > 40 ? 1.4 : 1, fontSize > 40 ? 850 : 240);
   const destination = reducedMotion ? [] : pixels(mask, .85, source.length || 1);
   // Sort into neighbouring scan lines so letter strokes gather coherently. The
@@ -237,14 +245,15 @@ function drawTulips(context, tulips, progress, reducedMotion, clara, width, heig
   context.restore();
 }
 
-export function createWordHeartsEffect() {
+export function createWordHeartsEffect({motif = 'heart', keepName = 'Clara'} = {}) {
   const root = document.querySelector('#acknowledgements:not([hidden])') ?? document.querySelector('#gate-main') ?? document.body;
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let words = collectWords(root).map((word, index) => prepareWord(word, index, reducedMotion));
+  let words = collectWords(root, keepName).map((word, index) => prepareWord(word, index, reducedMotion, motif));
   const canvas = document.createElement('canvas');
   canvas.id = 'acknowledgement-heart-field';canvas.className = 'acknowledgement-word-hearts';
   canvas.setAttribute('aria-hidden', 'true');canvas.inert = true;
   canvas.dataset.wordCount = String(words.length);
+  canvas.dataset.motif = motif;
   canvas.dataset.reducedMotion = String(reducedMotion);
   Object.assign(canvas.style, {position: 'fixed', inset: '0', width: '100%', height: '100%',
     zIndex: '100500', pointerEvents: 'none', contain: 'strict'});
@@ -277,9 +286,9 @@ export function createWordHeartsEffect() {
     savedStyles.clear();
   };
   const borrowPaint = () => {
-    clara = [...root.querySelectorAll('.acknowledgement-clara')].map(element => ({element, color: getComputedStyle(element).webkitTextFillColor || getComputedStyle(element).color}));
+    clara = [...root.querySelectorAll(`.acknowledgement-${keepName.toLowerCase()}`)].map(element => ({element, color: getComputedStyle(element).webkitTextFillColor || getComputedStyle(element).color}));
     markers = [...root.querySelectorAll('.acknowledgement-name')].filter(mark =>
-      !mark.querySelector('.acknowledgement-clara') && words.some(word => mark.contains(word.parent)));
+      !mark.querySelector(`.acknowledgement-${keepName.toLowerCase()}`) && words.some(word => mark.contains(word.parent)));
     for (const parent of new Set(words.map(word => word.parent))) {
       remember(parent);
       // These painting properties preserve all layout, text, and click targets.
@@ -314,11 +323,11 @@ export function createWordHeartsEffect() {
     if (layoutDirty || width !== innerWidth || height !== innerHeight) {
       // Re-measure responsive type without changing word seeds or the manager's
       // clock. Restore and borrow happen together, before the browser paints.
-      restorePaint();words = collectWords(root).map((word, index) => prepareWord(word, index, reducedMotion));
+      restorePaint();words = collectWords(root, keepName).map((word, index) => prepareWord(word, index, reducedMotion, motif));
       borrowPaint();resizeCanvas();layoutDirty = false;
     }
     context.clearRect(0, 0, width, height);
-    drawTulips(context, tulips, p, reducedMotion, clara, width, height);
+    if (motif === 'heart') drawTulips(context, tulips, p, reducedMotion, clara, width, height);
     const markerMorph = reducedMotion ? ease(p / .17) * (1 - ease((p - .77) / .2)) : ease((p - .04) / .25) * (1 - ease((p - .74) / .22));
     for (const marker of markers) marker.style.opacity = String(1 - markerMorph);
     for (const word of words) {
@@ -339,6 +348,12 @@ export function createWordHeartsEffect() {
         context.fillStyle = morph < .1 ? word.sourceColor : word.color;
         const pointSize = between(1.15, word.filled ? Math.max(1.1, word.size / 16) : word.lineWidth, morph);
         for (const [x, y, tx, ty, alpha] of word.points) {
+          if (motif === 'rainbow' && morph >= .1) {
+            const rx = tx * Math.cos(word.tilt) + ty * Math.sin(word.tilt);
+            const ry = -tx * Math.sin(word.tilt) + ty * Math.cos(word.tilt) - word.size * .19;
+            const band = Math.max(0, Math.min(6, Math.round((.49 - Math.hypot(rx, ry) / word.size) / .059)));
+            context.fillStyle = RAINBOW[band];
+          }
           context.globalAlpha = particleOpacity * between(alpha, .88, morph);
           context.fillRect(cx + between(x, tx, morph) + driftX - pointSize / 2,
             cy + between(y, ty, morph) + driftY - pointSize / 2, pointSize, pointSize);
@@ -348,8 +363,8 @@ export function createWordHeartsEffect() {
         context.save();context.globalAlpha = heartOpacity * .94;
         context.translate(cx + driftX, cy + driftY);context.rotate(word.tilt);
         context.fillStyle = context.strokeStyle = word.color;context.lineWidth = word.lineWidth;
-        heartPath(context, word.size, word.width, word.height);
-        if (word.filled) context.fill();else context.stroke();
+        if (motif === 'rainbow') rainbowPath(context, word.size, true);
+        else {heartPath(context, word.size, word.width, word.height);if (word.filled) context.fill();else context.stroke();}
         context.restore();
       }
     }

@@ -3,6 +3,7 @@ import {createMuralRenderer} from './acknowledgement-mural.js';
 import {createWordHeartsEffect} from './acknowledgement-word-hearts.js';
 import {createPsychedelicTextEffect} from './acknowledgement-psychedelic.js';
 import {addEtchedLogo} from './acknowledgement-etched-logo.js';
+import {NICHOLAS_WINDOW, nicholasRainbowActive} from './acknowledgement-nicholas-window.js';
 
 // Explicit personal mentions in the source acknowledgements. “my dad” identifies
 // a person whose name is not supplied; preserve that phrase rather than invent one.
@@ -105,8 +106,19 @@ function showMiriamGraffiti() {
 
 let nicholasCycle = 0;
 function showNicholasCycle() {
+  if (nicholasRainbowActive()) {showNicholasRainbows();return;}
   const effect = nicholasCycle === 0 ? showNicholasSwords : showJakDaxter;
   nicholasCycle = (nicholasCycle + 1) % 2;effect();
+}
+
+function showNicholasRainbows() {
+  clearAcknowledgementEffect?.();
+  const visual = createWordHeartsEffect({motif: 'rainbow', keepName: 'Nicholas'});
+  const names = [...document.querySelectorAll('.acknowledgement-nicholas')];names.forEach(name => name.classList.add('rainbow-active'));
+  const duration = Math.min(visual.duration, Math.max(1, Date.parse(NICHOLAS_WINDOW.expiresAt) - Date.now()));
+  const cleanup = manageEffect({nodes: visual.nodes, duration,
+    onFrame: p => {if (!nicholasRainbowActive()) {cleanup();return;}visual.onFrame(Math.min(1, p * duration / visual.duration));},
+    onCleanup: () => {visual.onCleanup();names.forEach(name => name.classList.remove('rainbow-active'));}});
 }
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
