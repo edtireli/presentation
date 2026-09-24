@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>spiralengine</title>
+<link rel="stylesheet" href="engine/vendor/katex/katex.min.css">
+<link rel="stylesheet" href="engine/css/spiral.css">
+<!-- classic script, and it must run BEFORE the module: renderMath checks window.katex and
+     falls back to printing the source when it is missing. Vendored, so no network. -->
+<script src="engine/vendor/katex/katex.min.js"></script>
+</head>
+<body>
+<div id="deck">
+  <canvas id="field"></canvas>
+  <div id="stage"></div>
+  <div id="bar"><canvas></canvas></div>
+  <div id="hint">← ↑ / → ↓ step · ⇧↑ ⇧↓ slide · 1–99 chapter · C contents · S settings · E edit · P speaker notes · F fullscreen</div>
+  <div id="chapters"></div>
+  <aside id="panel">
+    <h3>style</h3><div class="opt" id="o-style"></div>
+    <h3>typeface</h3><div class="opt" id="o-font"></div>
+    <h3>plate</h3><div class="opt" id="o-plate"></div>
+    <h3>scale</h3><div class="opt" id="o-zoom"></div>
+    <h3>accent</h3><div class="opt" id="o-accent"></div>
+    <h3>backdrop</h3><div class="opt" id="o-backdrop"></div>
+    <h3>transition</h3><div class="opt" id="o-transition"></div>
+    <h3>progress</h3><div class="opt" id="o-progress"></div>
+    <h3>position</h3><div class="opt" id="o-side"></div>
+  </aside>
+</div>
+
+<script type="module">
+import { Deck, STYLES, FONTS, PLATES, TRANSITIONS } from "./engine/js/deck.js";
+import { ACCENTS, BACKDROPS } from "./engine/js/field.js";
+import { PROGRESS_STYLES, PROGRESS_SIDES } from "./engine/js/progress.js";
+
+/* `?deck=draft` presents whatever the builder has in progress. It comes from storage rather
+ * than the URL because a deck carrying a traced image is far past what a query string holds. */
+const projectResponse = await fetch('project.json', {cache: 'no-store'});
+if (!projectResponse.ok) throw new Error('Missing project.json. Build a project before presenting.');
+const project = await projectResponse.json();
+document.title = project.title || 'Spiral presentation';
+for (const extension of project.extensions || []) {
+  const moduleURL = new URL(extension, location.href);
+  if (moduleURL.origin !== location.origin) throw new Error('Project extensions must be local.');
+  await import(moduleURL.href);
+}
+const url = new URLSearchParams(location.search).get("deck") || project.deck;
+const deckData = url === "draft"
+  ? JSON.parse(localStorage.getItem("spiral.draft") || "null")
+  /* `no-store`, because a deck is the thing being edited. Served with an ordinary cache
+   * header, a .spiral saved a second ago comes back as the version from before the edit and
+   * the page looks like it ignored the change — which costs more time than the request. */
+  : await (await fetch(url, { cache: "no-store" })).json();
+if (!deckData) throw new Error("no deck to present");
+const originalDeckData = structuredClone(deckData);
+const deck = new Deck(document.getElementById("deck"), deckData);
+window.deck = deck;
+const { PresentationEditor } = await import("./engine/js/presentation-editor.js");
+window.spiralEditor = new PresentationEditor(deck, originalDeckData, url);
+const { installPresenterBridge } = await import("./engine/js/presenter-bridge.js");
+window.spiralPresenter = installPresenterBridge(deck, url);
+// Narration is a rehearsal-only layer. The ordinary defence URL does not even load it, so
+// the silent deck remains visually and behaviourally identical.
+const narrationParams = new URLSearchParams(location.search);
+if (narrationParams.get("narration") === "1" && narrationParams.get("live") !== "1"
+    && !narrationParams.has("presenterSession") && narrationParams.get("presenterPreview") !== "1") {
+  import("./engine/js/narration.js");
+}
+
+/* The settings panel is generated from the registries, not written out — a new accent, a new
+ * transition or a new progress style appears here the moment it is added to the module. */
+function group(id, items, current, onPick, swatch) {
+  const host = document.getElementById(id);
+  host.replaceChildren();
+  for (const it of items) {
+    const b = document.createElement("button");
+    if (swatch) { b.className = "sw"; b.style.background = it.base; b.title = it.label; }
+    else b.textContent = it.label ?? it;
+    if ((it.key ?? it) === current()) b.classList.add("on");
+    b.onclick = () => { onPick(it.key ?? it); refresh(); };
+    host.appendChild(b);
+  }
+}
+
+function refresh() {
+  const d = deck.deck;
+  group("o-style", Object.entries(STYLES).map(([k, v]) => ({ key: k, label: v.label })),
+        () => d.style, (v) => deck.set("style", v));
+  group("o-font", Object.entries(FONTS).map(([k, v]) => ({ key: k, label: v.label })),
+        () => d.font, (v) => deck.set("font", v));
+  group("o-plate", Object.entries(PLATES).map(([k, v]) => ({ key: k, label: v.label })),
+        () => d.plate, (v) => deck.set("plate", v));
+  group("o-zoom", [{key:0.8,label:"·80%"},{key:1,label:"100%"},{key:1.25,label:"125%"},{key:1.5,label:"150%"}],
+        () => d.zoom ?? 1, (v) => deck.set("zoom", v));
+  group("o-accent", ACCENTS, () => d.accent, (v) => deck.set("accent", v), true);
+  group("o-backdrop", BACKDROPS, () => d.backdrop, (v) => deck.set("backdrop", v));
+  group("o-transition", TRANSITIONS, () => d.transition,
+        (v) => { d.transition = v; deck.show(deck.i); });
+  group("o-progress", PROGRESS_STYLES, () => deck.bar.style,
+        (v) => { deck.bar.style = v; deck.applyTheme(); });
+  group("o-side", PROGRESS_SIDES, () => deck.bar.side,
+        (v) => { deck.bar.side = v; deck.applyTheme(); });
+}
+refresh();
+</script>
+</body>
+</html>

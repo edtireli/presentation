@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Spiral · Speaker notes</title>
+<link rel="stylesheet" href="engine/css/speaker.css">
+</head>
+<body>
+<header>
+  <div><p class="eyebrow">PRIVATE SPEAKER VIEW</p><h1 id="title">Presentation</h1></div>
+  <div class="timer"><span id="elapsed">00:00</span><button id="timer-toggle">Start timer</button><button id="timer-reset" aria-label="Reset timer">↺</button></div>
+</header>
+<section class="setup" aria-label="Screen setup">
+  <button id="open-audience">Open audience presentation</button>
+  <span id="connection" role="status">Waiting for presentation</span>
+  <button id="split-toggle" aria-pressed="false">Slide + notes</button>
+  <details><summary>Two-screen setup</summary>
+    <p>Use extended desktop, not screen mirroring. Keep this notes window on your laptop. Move the presentation window to the external screen, then press <b>F</b> there for fullscreen. Return focus here to control each click.</p>
+    <p>Slides, animations and videos run only in the audience window. Notes stay here. Rehearsal narration is switched off when entering speaker mode.</p>
+  </details>
+</section>
+<nav aria-label="Presentation controls">
+  <button id="previous">← Previous</button><button id="next">Next →</button>
+  <span id="position">—</span><button id="blackout">Black screen</button>
+  <label class="jump">Slide <select id="slide-jump" aria-label="Jump to slide"><option>Waiting…</option></select></label>
+</nav>
+<main>
+  <section id="slide-preview" hidden aria-label="Read-only current slide preview"><h2>Audience slide</h2><div id="preview-frame"></div><p>The audience screen stays full-screen.</p></section>
+  <section class="current">
+    <div class="note-toolbar"><h2>This click</h2><label id="note-mode-label" hidden>View <select id="note-mode" aria-label="Speaker note view"><option value="cues">Cue bullets</option><option value="speech">Full script</option></select></label><span id="note-kind"></span><button id="edit-note" disabled>Edit note</button><button id="smaller" aria-label="Smaller notes">A−</button><button id="larger" aria-label="Larger notes">A+</button></div>
+    <p id="section-purpose" hidden></p>
+    <p id="visual-cue" class="visual-cue"></p>
+    <article id="notes" tabindex="0"><p>Open the presentation to load the notes for the current click.</p></article>
+    <details id="note-context" hidden><summary>Definitions, qualifications &amp; sources</summary><p id="note-detail"></p><ul id="note-sources"></ul></details>
+    <section id="note-editor" hidden aria-label="Edit this click’s speaker note">
+      <label for="note-text">Speaker note for <span id="editing-route"></span></label>
+      <textarea id="note-text" spellcheck="true" aria-describedby="note-save-status"></textarea>
+      <div class="note-actions"><button id="save-note">Save &amp; close</button><button id="cancel-note">Undo this edit</button></div>
+    </section>
+    <div class="note-files"><button id="export-notes" disabled>Export notes JSON</button><button id="import-notes" disabled>Import notes JSON</button><input id="notes-file" type="file" accept=".json,application/json" hidden></div>
+    <p id="note-save-status" role="status">Edits stay private. Recorded narration is unchanged.</p>
+  </section>
+  <aside class="upcoming"><h2>Next click</h2><p id="next-cue"></p><p id="next-notes"></p></aside>
+</main>
+<footer>← / → or Page Up / Page Down: one click · B: black screen <button id="end">End speaker mode</button></footer>
+<script type="module" src="engine/js/speaker.js"></script>
+</body></html>

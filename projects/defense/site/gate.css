@@ -1,0 +1,11 @@
+:root{color-scheme:dark;--page:#000;--hi:#eee5d2;--mid:#b6aea0;--accent:#eba680;--serif:"Iowan Old Style",Palatino,Georgia,serif}
+*{box-sizing:border-box}html,body{background:#000}body{margin:0;min-height:100svh;display:grid;align-items:center;padding:64px max(6vw,24px);color:var(--hi);font-family:var(--serif)}
+#gate-field{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}main{position:relative;max-width:760px;text-shadow:0 2px 18px #000,0 0 36px #000}
+.eyebrow{font:12px/1.7 ui-monospace,monospace;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin:0 0 30px}
+h1{font-size:clamp(62px,8vw,112px);font-weight:400;letter-spacing:-.04em;line-height:.99;margin:0 0 26px}.author{font-size:clamp(21px,2.5vw,28px);color:var(--mid);margin:0 0 46px}
+a{color:inherit;text-decoration:none}nav{display:grid;gap:22px;max-width:670px}.primary{display:flex;justify-content:space-between;gap:24px;font-size:clamp(25px,3.7vw,40px);padding-bottom:16px;border-bottom:1px solid #a88b65}.primary span{color:var(--accent)}a:hover{color:#fff5df}a:focus-visible,button:focus-visible{outline:2px solid #f1d35b;outline-offset:5px}
+.other-modes{display:flex;flex-wrap:wrap;gap:12px 26px;font:14px/1.6 system-ui,sans-serif;color:var(--mid)}
+#status{min-height:24px;color:var(--accent);font:14px/1.6 system-ui,sans-serif}.footer{font:12px/1.8 system-ui,sans-serif;color:var(--mid);margin-top:36px}
+dialog::backdrop{background:#000c}button{cursor:pointer}
+@media(max-width:600px){body{padding:40px 24px}.eyebrow{font-size:10px}h1{font-size:clamp(60px,16vw,84px)}.author{margin-bottom:32px}.primary{font-size:28px}}
+@media(max-height:650px) and (min-width:601px){body{padding-top:28px;padding-bottom:28px}h1{font-size:64px}.author{margin-bottom:22px}nav{gap:14px}}

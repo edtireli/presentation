@@ -1,0 +1,42 @@
+{
+  "title": "My presentation",
+  "style": "seminar",
+  "font": "serif",
+  "plate": "scrim",
+  "accent": "amber",
+  "backdrop": "black",
+  "transition": "fade",
+  "slides": [
+    {
+      "id": "welcome",
+      "title": "My presentation",
+      "layout": ["title", "subtitle"],
+      "blocks": [
+        {"type": "title", "text": "My presentation", "at": "title"},
+        {"type": "subtitle", "text": "Your name", "at": "subtitle"}
+      ],
+      "notes": "Introduce your subject. Press P to open the speaker view."
+    },
+    {
+      "id": "one-idea",
+      "title": "One idea at a time",
+      "layout": ["head", "body"],
+      "blocks": [
+        {"type": "heading", "text": "One idea at a time", "at": "head"},
+        {"type": "bullets", "items": ["Write your first point here.", "Add the supporting evidence.", "State what it means."], "step": true, "at": "body"}
+      ],
+      "notes": "These notes are editable in speaker view. Export them to keep a portable copy."
+    },
+    {
+      "id": "a-function",
+      "title": "A function",
+      "layout": ["head", "equation", "art"],
+      "blocks": [
+        {"type": "heading", "text": "A function", "at": "head"},
+        {"type": "math", "tex": "f(x)=\\sin(x)", "at": "equation"},
+        {"type": "scene", "scene": "plot", "args": {"fn": "sine"}, "at": "art"}
+      ],
+      "notes": "This example uses the core engine only. No defence data or services are required."
+    }
+  ]
+}

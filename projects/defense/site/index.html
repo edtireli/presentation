@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://tireli-presentation-service.nuggedt.chatgpt.site; worker-src 'self'; form-action 'none'; base-uri 'self'">
+  <title>PhD defence · Edis Tireli</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="gate.css">
+</head>
+<body>
+  <canvas id="gate-field" aria-hidden="true"></canvas>
+  <main>
+    <p class="eyebrow">PhD defence · 10 September 2026</p>
+    <h1>Exploring<br>the Unseen</h1>
+    <p class="author">Edis Devin Tireli</p>
+    <nav aria-label="Presentation options">
+      <a class="primary" href="watch/index.html">Open presentation <span aria-hidden="true">↗</span></a>
+      <a class="primary" id="give-presentation" href="app/speaker.html?deck=decks/phd-defense.spiral">Give presentation <span aria-hidden="true">↗</span></a>
+      <div class="other-modes">
+        <a href="watch/index.html?narration=1&amp;deck=decks/phd-defense.recorded.spiral">Recorded edition</a>
+        <a href="watch/index.html?live=1">Follow live</a>
+        <a href="/thesis/Edis_Tireli_PhD_Thesis.pdf">Thesis</a>
+        <a href="https://github.com/edtireli/presentation">Source &amp; starter project</a>
+      </div>
+    </nav>
+    <p id="status" role="status" aria-live="polite"></p>
+    <p class="footer">University of Copenhagen · Rigshospitalet</p>
+  </main>
+  <script type="module" src="gate.js"></script>
+</body>
+</html>

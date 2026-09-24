@@ -1,0 +1,12 @@
+{
+  "name": "spiral-presentations",
+  "private": true,
+  "type": "module",
+  "engines": {"node": ">=20"},
+  "scripts": {
+    "build": "node tools/build.mjs",
+    "start": "node tools/serve.mjs",
+    "check": "node tools/check.mjs",
+    "test": "node --test tools/*.test.mjs"
+  }
+}
