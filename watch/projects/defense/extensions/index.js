@@ -6,6 +6,7 @@ import {BIOLOGY} from './biology.js';
 import {QUANTUM} from '../../../engine/js/addons/quantum.js';
 import {renderDefenseOverview} from './defense-overview.js';
 import {renderPbrainPuzzle} from './pbrain-puzzle.js';
+import {installDefenseWatermark} from './watermark.js';
 
 registerScenes({...FIGURES, ...BIOLOGY, ...QUANTUM});
 registerBlocks({
@@ -21,3 +22,5 @@ registerBlocks({
     render: b => stepped(renderPbrainPuzzle(b), b),
   },
 });
+
+await installDefenseWatermark();
