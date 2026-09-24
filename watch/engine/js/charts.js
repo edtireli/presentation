@@ -10,7 +10,7 @@
  * in a way nobody can see.
  */
 import { rampAt, cssVar } from "./field.js";
-import { axes, trace } from "./figures.js";
+import { axes, trace } from "./plotting.js";
 
 const TAU = Math.PI * 2;
 const sc = (k, v) => v * k;

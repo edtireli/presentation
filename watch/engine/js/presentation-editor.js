@@ -300,8 +300,8 @@ export class PresentationEditor {
     }return value;
   }
   download(asDeck) {
-    let value=this.payload(),name='phd-presentation-my-edits.json';
-    if(asDeck){value=copy(this.source);value.presentationEdits=this.payload();name='phd-defense-edited.spiral'}
+    let value=this.payload(),name='presentation-my-edits.json';
+    if(asDeck){value=copy(this.source);value.presentationEdits=this.payload();name='presentation-edited.spiral'}
     const a=$('a');const url=URL.createObjectURL(new Blob([JSON.stringify(value,null,2)+'\n'],{type:'application/json'}));a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);this.message(`Downloaded ${name}. Send it back to merge your changes.`);
   }
   makeUI() {
@@ -332,7 +332,7 @@ export class PresentationEditor {
     side.append($('p','Use the pencil or double-click a text object. Native plot labels are editable. Text baked into an imported photograph or paper figure remains part of that image.', 'note'));
     side.append($('p','Changes stay in this browser until you export. Your original .spiral file is preserved.', 'note'));
     this.status=$('p','', 'note');this.status.setAttribute('role','status');side.append(this.status);
-    if(this.staleDraft)button('Export preserved older draft',()=>{const url=URL.createObjectURL(new Blob([JSON.stringify(this.staleDraft,null,2)],{type:'application/json'}));const a=$('a');a.href=url;a.download='phd-presentation-older-draft.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)},side);
+    if(this.staleDraft)button('Export preserved older draft',()=>{const url=URL.createObjectURL(new Blob([JSON.stringify(this.staleDraft,null,2)],{type:'application/json'}));const a=$('a');a.href=url;a.download='presentation-older-draft.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)},side);
     this.outline=$('div',null,'edit-selection');this.outline.hidden=true;const mover=$('button','Move','edit-move');mover.onpointerdown=e=>this.beginDrag(e,'move');const handle=$('div',null,'edit-handle');handle.setAttribute('aria-label','Resize selected object');handle.onpointerdown=e=>this.beginDrag(e,'resize');this.outline.append(mover,handle);
     this.partsLayer=$('div',null,'edit-parts');this.partMarkers=new Map();
     this.textPopover=$('div',null,'edit-text-popover');this.textPopover.hidden=true;this.textPopover.setAttribute('role','dialog');this.textPopover.setAttribute('aria-label','Edit object text');

@@ -13,8 +13,6 @@ import { ARRIVALS } from "./field.js";
 import { resolveEvidenceStates, paperIds, focusThemesFor } from "./evidence-states.js";
 import { mountMathMorph } from "./math-morph.js";
 import { mountPatlakCancellation } from "./patlak-cancellation.js";
-import { renderPbrainPuzzle } from "./pbrain-puzzle.js";
-import { renderDefenseOverview } from './defense-overview.js';
 import { renderClinicalSynthesis } from "./clinical-synthesis.js";
 import { mountEvidenceCorpus } from "./evidence-corpus.js";
 import { mountEvidenceGraph } from "./evidence-graph.js";
@@ -54,22 +52,11 @@ function stepped(node, b) {
 }
 
 export const BLOCKS = {
-  "defense-overview": {
-    label: "Opening research overview", icon: "◉", fields: [],
-    make: () => ({type:"defense-overview"}),
-    render: b => stepped(renderDefenseOverview(b),b),
-  },
   "clinical-synthesis": {
     label: "Clinical findings and interpretation", icon: "◈",
     fields: [{ k: "section", t: "text" }, { k: "states", t: "json" }],
     make: () => ({ type: "clinical-synthesis", states: [] }),
     render: (b) => stepped(renderClinicalSynthesis(b), b),
-  },
-  "pbrain-puzzle": {
-    label: "p-Brain 3D modules", icon: "◇",
-    fields: [{ k: "mode", t: "text" }, { k: "states", t: "json" }],
-    make: () => ({ type: "pbrain-puzzle", mode: "modules", args: { revealSteps: 3 } }),
-    render: (b) => stepped(renderPbrainPuzzle(b), b),
   },
   eyebrow: {
     label: "eyebrow", icon: "▁",
@@ -1733,4 +1720,12 @@ export function mountScenesIn(root) {
   });
 }
 
-export { inline };
+export { inline, stepped };
+
+export function registerBlocks(blocks) {
+  for (const [name, block] of Object.entries(blocks)) {
+    if (BLOCKS[name]) throw new Error(`Block already registered: ${name}`);
+    if (typeof block.render !== 'function') throw new Error(`Block needs render(): ${name}`);
+    BLOCKS[name] = block;
+  }
+}

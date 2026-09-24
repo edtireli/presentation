@@ -1,6 +1,4 @@
 (()=>{const script=document.currentScript,base=new URL('./',script.src),storageKey='spiral.private:'+base.pathname,loadedRevision=script.dataset.revision;
- const narrationReleaseAt='2026-09-10T15:00:00Z';window.spiralNarrationReleaseAt=narrationReleaseAt;
- if(new URLSearchParams(location.search).get('narration')==='1'&&Date.now()<Date.parse(narrationReleaseAt)){const entry=new URL(base);entry.searchParams.set('narration','locked');location.replace(entry.href);return;}
 
  // Public packages recover their own key and manifest in the worker. Only
  // legacy private tabs answer the worker's explicit compatibility request.

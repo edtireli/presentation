@@ -1,7 +1,9 @@
 import {SpeakerNoteStore} from './speaker-note-store.js';
 const $=id=>document.getElementById(id);
 const params=new URLSearchParams(location.search);
-const deckPath=params.get('deck')||'decks/phd-defense.spiral';
+const project=await (await fetch('project.json',{cache:'no-store'})).json();
+document.title=(project.title||'Spiral')+' · Speaker notes';
+const deckPath=params.get('deck')||project.deck;
 const session=params.get('presenterSession')||crypto.randomUUID();
 if(!params.has('presenterSession')){params.set('presenterSession',session);history.replaceState(null,'',`${location.pathname}?${params}${location.hash}`);}
 const channel=new BroadcastChannel(`spiral-presenter:${session}`);
@@ -35,20 +37,7 @@ $('split-toggle').onclick=()=>{split=!split;setSplit();};setSplit();
 const sequence=()=>Object.keys(manifest.states);
 const cueOverrides={}; // Authored per-click pointing cues are the source of truth.
 // Emphasis is a display layer. The approved speech and prerecorded audio stay untouched.
-const terms=[
-  'persistent post-concussion symptoms','spreading depolarisation','spreading depolarization','blood-brain barrier',
-  'membrane potential','action potential','electrically negative','less negative','concentration gradients',
-  'potassium','sodium','calcium','glutamate','glutamine','GLX','glucose','ATP','glycolysis','mitochondria',
-  'neurons','astrocytes','microglia','oligodendrocytes','pericytes','axons','strain',
-  'GFAP','UCH-L1','NfL','IL-6','C57BL/6','Yucatan minipigs','zebrafish','humans',
-  'healthy controls','historical controls','baseline','randomisation','randomization','Rivermead','RPQ',
-  'Patlak','p-Brain','Ki','blood volume','influx constant','perfusion','blood flow','oxygen extraction',
-  'hypoxia','oxygen metabolism','gadolinium','arterial input','tissue concentration','voxels','parcels',
-  'instantaneous','accumulation','intercept','slope','quality control','uncertainty','association',
-  'energy burden','energy use','metabolic crisis','barrier exchange','TSPO','apyrase','Ktrans','PPCS','CBF','CMRO₂',
-  'seventy','sixty','forty-six','seventeen percent','twelve percent','three months','two weeks',
-  'tenfold','seven minutes','ninety minutes','5,600','extraction fraction','low-extraction',
-];
+const terms=[...(project.emphasis || [])];
 const escaped=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
 const emphasis=new RegExp(`\\b(${terms.sort((a,b)=>b.length-a.length).map(escaped).join('|')}|\\d+(?:\\.\\d+)?(?:%|\\s+(?:months|weeks|years|minutes|patients|adults|percent)))\\b`,'gi');
 function addKeywordEmphasis(node,text){
@@ -82,7 +71,7 @@ function entryFor(route){
 function render(force=false){
   if(!state)return;
   const route=state.route,slide=slides.find(s=>s.slug===state.slug);
-  $('title').textContent=slide?.title||entryFor(route).title||'PhD defence';
+  $('title').textContent=slide?.title||entryFor(route).title||project.title||'Presentation';
   $('position').textContent=`Slide ${state.index+1}${slides.length?' / '+slides.length:''} · click ${state.step} / ${state.totalSteps}`;
   $('slide-jump').value=state.slug;
   if(route===currentRoute&&!force)return;
@@ -132,7 +121,7 @@ $('save-note').onclick=()=>{if(editingRoute)noteStore.set(editingRoute,$('note-t
 $('cancel-note').onclick=()=>{if(editingRoute)noteStore.restore(editingRoute,editingBefore);closeEditor();render(true);savedStatus('Restored the note from before this edit. Recorded narration is unchanged.');};
 $('export-notes').onclick=()=>{
   if(!noteStore)return;const blob=new Blob([JSON.stringify(noteStore.review(),null,2)+'\n'],{type:'application/json'});
-  const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download=noteStore.kind==='cues'?'phd-speaker-cue-edits.json':'phd-speaker-notes-edits.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),5000);
+  const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download=noteStore.kind==='cues'?'speaker-cue-edits.json':'speaker-notes-edits.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),5000);
   savedStatus('Exported notes JSON. Send that file back when you are ready. Recorded narration is unchanged.');
 };
 $('import-notes').onclick=()=>$('notes-file').click();
@@ -202,6 +191,12 @@ setInterval(()=>{
 try{
   const deck=await(await fetch(deckPath,{cache:'no-store'})).json();
   const path=params.get('narrationManifest')||deck.narration?.manifest||deck.narration;
+  if(!path){
+    const raw=JSON.stringify(deck);
+    const hash=[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(raw)))].map(b=>b.toString(16).padStart(2,'0')).join('');
+    speechStore=new SpeakerNoteStore(localStorage,`spiral.speaker.notes:${new URL(deckPath,location.href).pathname}`,manifest,hash);
+    noteStore=speechStore;$('export-notes').disabled=false;$('import-notes').disabled=false;render(true);
+  }
   if(path){const response=await fetch(path,{cache:'no-store'});if(!response.ok)throw Error(response.status);
     const raw=await response.text();manifest=JSON.parse(raw);
     const hash=[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(raw)))].map(b=>b.toString(16).padStart(2,'0')).join('');

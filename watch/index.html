@@ -37,7 +37,16 @@ import { PROGRESS_STYLES, PROGRESS_SIDES } from "./engine/js/progress.js";
 
 /* `?deck=draft` presents whatever the builder has in progress. It comes from storage rather
  * than the URL because a deck carrying a traced image is far past what a query string holds. */
-const url = new URLSearchParams(location.search).get("deck") || "decks/phd-defense.spiral";
+const projectResponse = await fetch('project.json', {cache: 'no-store'});
+if (!projectResponse.ok) throw new Error('Missing project.json. Build a project before presenting.');
+const project = await projectResponse.json();
+document.title = project.title || 'Spiral presentation';
+for (const extension of project.extensions || []) {
+  const moduleURL = new URL(extension, location.href);
+  if (moduleURL.origin !== location.origin) throw new Error('Project extensions must be local.');
+  await import(moduleURL.href);
+}
+const url = new URLSearchParams(location.search).get("deck") || project.deck;
 const deckData = url === "draft"
   ? JSON.parse(localStorage.getItem("spiral.draft") || "null")
   /* `no-store`, because a deck is the thing being edited. Served with an ordinary cache

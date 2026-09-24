@@ -1,7 +1,3 @@
-import { FIGURES } from "./figures.js";
-// Addons are merged in here and nowhere else, so adding one is adding a file.
-import { BIOLOGY } from "./addons/biology.js";
-import { QUANTUM } from "./addons/quantum.js";
 import { mountScenePrompts } from "./scene-prompts.js";
 /* Animated mathematics — the drawn-figure idiom (axes appearing, a curve tracing itself,
  * a vector rotating), in the deck's own palette rather than the usual white-on-black.
@@ -179,7 +175,16 @@ const FUNCS = {
 
 /** Mount a scene into a holder element. Replays whenever the slide is entered. */
 /** Everything mountable, drawn-maths and simulations alike. */
-export const ALL_SCENES = { ...SCENES, ...FIGURES, ...BIOLOGY, ...QUANTUM };
+export const ALL_SCENES = { ...SCENES };
+
+/** Projects register optional scenes before constructing their Deck. */
+export function registerScenes(scenes) {
+  for (const [name, scene] of Object.entries(scenes)) {
+    if (ALL_SCENES[name]) throw new Error(`Scene already registered: ${name}`);
+    if (typeof scene.draw !== 'function') throw new Error(`Scene needs draw(): ${name}`);
+    ALL_SCENES[name] = scene;
+  }
+}
 
 /**
  * Mount a scene into a holder element.
@@ -196,7 +201,7 @@ export const ALL_SCENES = { ...SCENES, ...FIGURES, ...BIOLOGY, ...QUANTUM };
  * at this with their eyes".
  */
 export function mountScene(holder, name, args = {}) {
-  const def = SCENES[name] || FIGURES[name] || BIOLOGY[name] || QUANTUM[name] || SCENES.spiral;
+  const def = ALL_SCENES[name] || SCENES.spiral;
   const c = document.createElement("canvas");
   const avail = holder.clientWidth || 640;
   const aspect = args.aspect ?? def.aspect ?? 2.1;
