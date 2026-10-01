@@ -42,5 +42,7 @@ for(const entry of metadata.shell){
 const starterFiles=await filesUnder(path.join(root,'dist/starter'));
 if(starterFiles.some(p=>p.includes('projects/defense/')||p.startsWith('decks/data/')||p==='live-config.json'))throw Error('Starter includes defence assets/services.');
 const pagesFiles=await filesUnder(pages);
-if(pagesFiles.some(p=>/acknowledgement-(?:nicholas|hava|names|word-hearts|mural|psychedelic|water|dancer|jellyfish)/.test(p)))throw Error('Removed website extras remain in deployment.');
+const readerEffects = new Set(['acknowledgement-names.js','acknowledgement-names.css','acknowledgement-word-hearts.js','acknowledgement-psychedelic.js','acknowledgement-mural.js','acknowledgement-mural.png','acknowledgement-etched-logo.js','acknowledgement-ichiran.png','acknowledgement-jak-daxter.png']);
+if(pagesFiles.some(p=>p.startsWith('acknowledgement-')&&!readerEffects.has(p)))throw Error('Unapproved acknowledgement extras remain in deployment.');
+if(pagesFiles.some(p=>/nicholas-window|hava-nagila|nicholas-dedication/i.test(p)))throw Error('Temporary dedication remains in deployment.');
 console.log(`Checked ${checked} source modules/JSON files; decrypted and verified ${Object.keys(manifest.entries).length} offline assets and ${metadata.shell.length} shell files.`);

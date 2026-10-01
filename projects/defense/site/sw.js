@@ -149,10 +149,10 @@ async function serve(request,clientId){
   headers['Content-Length']=raw.byteLength;return new Response(request.method==='HEAD'?null:raw,{status,headers});
  }catch{return new Response('Could not load this asset. Connect and prepare offline again, or reload the saved presentation.',{status:503});}
 }
-// The acknowledgements are now embedded in index.html. Update the actual
-// entrance dependencies together, without waiting for removed effect files.
-const READER_FILES=['index.html','gate.js','gate.css','gate-field.js','offline.js','presenter-ready.js','presenter-access.js'];
-const READER='spiral-public-reading-v3:'+base.pathname;
+// Update the static reading page and its original optional effects together.
+// This cache is independent of the presenter's pinned offline slide package.
+const READER_FILES=['index.html','gate.js','gate.css','gate-field.js','offline.js','presenter-ready.js','presenter-access.js','acknowledgement-names.css','acknowledgement-names.js','acknowledgement-word-hearts.js','acknowledgement-psychedelic.js','acknowledgement-mural.js','acknowledgement-mural.png','acknowledgement-etched-logo.js','acknowledgement-ichiran.png','acknowledgement-jak-daxter.png'];
+const READER='spiral-public-reading-v4:'+base.pathname;
 let readerRefresh=null;
 async function currentReader(){try{const response=await(await caches.open(READER)).match(new URL('__reader_active__',base));return response?await response.json():null;}catch{return null;}}
 async function refreshReader(){

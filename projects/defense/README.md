@@ -11,9 +11,9 @@ Edis Devin Tireli's PhD defence, 10 September 2026.
 
 Run `npm start -- defense` from the root for local rehearsal without the hosted password service. Build the hosted edition with `npm run build -- defense --pages`.
 
-The scientific content and referenced media were retained. Temporary dedication/music and standalone acknowledgement-site effects were removed. Actual acknowledgement slides and normal narration remain.
+The scientific content and referenced media were retained. Temporary dedication/music were removed. Actual acknowledgement slides and normal narration remain.
 
-The entrance retains a prominent thesis download and a separate acknowledgements reading page at `#acknowledgements`. The build embeds the original text from `app/acknowledgements.json`, so reading it does not depend on JavaScript, presentation startup or the hosted service. Edit that JSON to update the wording. The temporary name effects and music are not included.
+The entrance retains a prominent thesis download and a separate acknowledgements reading page at `#acknowledgements`. The build embeds the original text and yellow name highlights from `app/acknowledgements.json`, so reading it does not depend on JavaScript, presentation startup or the hosted service. Edit that JSON to update the wording. Clicking Clara, Miriam, Rikke or Nicholas plays their original visual effects (hearts/tulips, graffiti, psychedelic text, and alternating swords/Ichiran and Jak & Daxter). These site-only effects are cached with the reader and respect reduced motion. The temporary rainbow dedication, spoken dedication and song are not included.
 
 [Model and asset sources](ASSET-SOURCES.md).
 
