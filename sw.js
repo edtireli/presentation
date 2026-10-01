@@ -149,8 +149,10 @@ async function serve(request,clientId){
   headers['Content-Length']=raw.byteLength;return new Response(request.method==='HEAD'?null:raw,{status,headers});
  }catch{return new Response('Could not load this asset. Connect and prepare offline again, or reload the saved presentation.',{status:503});}
 }
-const READER_FILES=['index.html','gate.js','gate.css','acknowledgement-reading.js','acknowledgements.json'];
-const READER='spiral-public-reading-v2:'+base.pathname;
+// The acknowledgements are now embedded in index.html. Update the actual
+// entrance dependencies together, without waiting for removed effect files.
+const READER_FILES=['index.html','gate.js','gate.css','gate-field.js','offline.js','presenter-ready.js','presenter-access.js'];
+const READER='spiral-public-reading-v3:'+base.pathname;
 let readerRefresh=null;
 async function currentReader(){try{const response=await(await caches.open(READER)).match(new URL('__reader_active__',base));return response?await response.json():null;}catch{return null;}}
 async function refreshReader(){

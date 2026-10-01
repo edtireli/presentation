@@ -11,22 +11,37 @@
 </head>
 <body>
   <canvas id="gate-field" aria-hidden="true"></canvas>
-  <main>
+  <main id="gate-main">
+    <div id="landing">
     <p class="eyebrow">PhD defence · 10 September 2026</p>
     <h1>Exploring<br>the Unseen</h1>
     <p class="author">Edis Devin Tireli</p>
     <nav aria-label="Presentation options">
       <a class="primary" href="watch/index.html">Open presentation <span aria-hidden="true">↗</span></a>
-      <a class="primary" id="give-presentation" href="app/speaker.html?deck=decks/phd-defense.spiral">Give presentation <span aria-hidden="true">↗</span></a>
+      <a class="primary" id="download-thesis" href="/thesis/Edis_Tireli_PhD_Thesis.pdf" download="Edis_Tireli_PhD_Thesis.pdf">Download the thesis <span aria-hidden="true">↓</span></a>
+      <a class="ack-link" id="read-acknowledgements" href="#acknowledgements">I only want to read the acknowledgements&nbsp;<span aria-hidden="true">→</span></a>
       <div class="other-modes">
         <a href="watch/index.html?narration=1&amp;deck=decks/phd-defense.recorded.spiral">Recorded edition</a>
         <a href="watch/index.html?live=1">Follow live</a>
-        <a href="/thesis/Edis_Tireli_PhD_Thesis.pdf">Thesis</a>
+        <a id="give-presentation" href="app/speaker.html?deck=decks/phd-defense.spiral">Give presentation</a>
         <a href="https://github.com/edtireli/presentation">Source &amp; starter project</a>
       </div>
     </nav>
     <p id="status" role="status" aria-live="polite"></p>
     <p class="footer">University of Copenhagen · Rigshospitalet</p>
+    </div>
+    <section id="acknowledgements" class="ack-reading-view" aria-labelledby="ack-title" tabindex="-1">
+      <a class="ack-back" href="#"><span aria-hidden="true">←</span> Back</a>
+      <h2 id="ack-title">Acknowledgements</h2>
+      <div id="ack-text" class="ack-prose">
+        <p>I would like to thank my main supervisor, Professor Henrik Larsson, for your encouragement, passion, and support throughout this project, and for letting me explore my own ideas. To my primary co-supervisor Mark, I would like to thank you for our many discussions about the project, and your openness and willingness to share your knowledge and expertise. I would also like to thank my colleagues and friends at FIU and KP, specifically Ulrich for his great help on segmentation, software and MRI sequences, Stig for his help during the project, Martine for being very entertaining, Tanne for the many late scans and her good company through them, and Bodil for academic guidance and support, seen and unseen, and her hospitality. One remarkable thing about the group in general is the openness with which ideas are shared. I have learned a lot from the group, and I am grateful for the opportunity to be a part of it, and I hope to be able to work with all of you again in the future.</p>
+        <p>A very special thanks to my dear cousin, Derya, for initially introducing me to the group, and her many many hours of help, guidance and support, not just academic. It was very meaningful to work together for these past three years, I will miss the times very much.</p>
+        <p>Thank you to my dad, for supporting me these many years, and for his invitation to his PhD defence some 20 years ago.</p>
+        <p>I would also like to thank my friends and colleagues at the NeuroGrad programme and at NRU, especially Miriam, for your friendship, curiosity, and for the many conversations we have had about science, life, and everything around the edges. I am grateful for the many small detours that made these years much richer. I would also like to thank Nicholas for your spontaneous company during my exchange, it was a very warm welcome, the memories of which mean a lot to me. A very special thank you to Rikke for your friendship and support. You have become family to me, and I am so grateful for you.</p>
+        <p>Finally, to Clara, thank you for your love, humour, and support throughout this project. Of all the things these years have brought me, meeting you has meant the most.</p>
+      </div>
+      <a class="ack-back ack-back-bottom" href="#"><span aria-hidden="true">←</span> Back to the presentation</a>
+    </section>
   </main>
   <script type="module" src="gate.js"></script>
 </body>
