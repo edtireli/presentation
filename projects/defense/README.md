@@ -13,6 +13,8 @@ Run `npm start -- defense` from the root for local rehearsal without the hosted 
 
 The scientific content and referenced media were retained. Temporary dedication/music and standalone acknowledgement-site effects were removed. Actual acknowledgement slides and normal narration remain.
 
+The entrance retains a prominent thesis download and a separate acknowledgements reading page at `#acknowledgements`. The build embeds the original text from `app/acknowledgements.json`, so reading it does not depend on JavaScript, presentation startup or the hosted service. Edit that JSON to update the wording. The temporary name effects and music are not included.
+
 [Model and asset sources](ASSET-SOURCES.md).
 
 ## Attribution overlay

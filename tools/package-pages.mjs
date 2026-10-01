@@ -3,6 +3,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import {gzipSync, gunzipSync} from 'node:zlib';
 import {exportPublicView} from './export-public-view.mjs';
+import {renderAcknowledgements} from './render-acknowledgements.mjs';
 
 export const sha256 = b => crypto.createHash('sha256').update(b).digest('hex');
 export const mime = {'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json','.spiral':'application/json','.bib':'text/plain; charset=utf-8','.svg':'image/svg+xml','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.gif':'image/gif','.webp':'image/webp','.mp4':'video/mp4','.webm':'video/webm','.m4a':'audio/mp4','.mp3':'audio/mpeg','.wav':'audio/wav','.woff2':'font/woff2','.woff':'font/woff','.ttf':'font/ttf','.glb':'model/gltf-binary','.gltf':'model/gltf+json','.pdf':'application/pdf','.gz':'application/gzip'};
@@ -78,7 +79,11 @@ export async function packagePages(source, output, shellSource, config, reuse = 
   const shell = [];
   for (const name of await filesUnder(shellSource)) {
     if (name.includes('/')) throw Error('The defence shell uses root-level assets only.');
-    const data = await fs.readFile(path.join(shellSource, name));
+    let data = await fs.readFile(path.join(shellSource, name));
+    if (name === 'index.html') {
+      const acknowledgements = JSON.parse(await fs.readFile(path.join(source, 'acknowledgements.json'), 'utf8'));
+      data = Buffer.from(renderAcknowledgements(data.toString('utf8'), acknowledgements));
+    }
     await fs.writeFile(path.join(output, name), data);
     shell.push({path: name, sha256: sha256(data), bytes: data.length});
   }
